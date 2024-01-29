@@ -1,0 +1,13 @@
+flat_open_library.Rmd:
+  path: dev/flat_open_library.Rmd
+  state: active
+  R: R/call_open_library_api.R
+  tests: tests/testthat/test-call_open_library_api.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_open_library.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask

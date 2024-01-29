@@ -1,0 +1,6 @@
+"type","path","origin"
+"R","R/app_config.R","No existing source path found."
+"R","R/app_server.R","No existing source path found."
+"R","R/app_ui.R","No existing source path found."
+"R","R/run_app.R","No existing source path found."
+"test","tests/testthat/test-golem-recommended.R","No existing source path found."
