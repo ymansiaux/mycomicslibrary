@@ -1,0 +1,106 @@
+---
+title: "flat_full.Rmd for working package"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- Run this 'development' chunk -->
+<!-- Store every call to library() that you need to explore your functions -->
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+<!--
+ You need to run the 'description' chunk in the '0-dev_history.Rmd' file before continuing your code there.
+
+If it is the first time you use {fusen}, after 'description', you can directly run the last chunk of the present file with inflate() inside.
+--> 
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+library(httr2)
+library(jsonlite)
+library(tidyjson)
+
+isbn10 <- "2365772013"
+
+url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+
+req <- request(url)
+
+resp <- req_perform(req)
+
+body <- resp_body_json(resp)
+
+fromJSON(body)
+
+spread_all(body)
+
+# a recuperer à partir des resultats de la requete
+cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
+```
+
+# call_open_library_api
+    
+```{r function-call_open_library_api}
+#' Appel à l'API Open Library
+#' @return un tibble avec les informations de l'API
+#' @importFrom glue glue
+#' @importFrom httr2 request req_perform resp_body_json
+#' @importFrom tidyjson spread_all
+#' @export
+call_open_library_api <- function(isbn10) {
+  if (isFALSE(as.character(isbn10))) {
+    stop("Le numéro ISBN 10 doit être passé sous forme de chaine de caractères")
+  }
+
+  url <- glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+
+  req <- request(url)
+  resp <- req_perform(req)
+  body <- resp_body_json(resp)
+
+  spread_all(body)
+}
+```
+  
+```{r example-call_open_library_api}
+call_open_library_api("2365772013")
+```
+  
+```{r tests-call_open_library_api}
+test_that("call_open_library_api works", {
+  isbn10 <- "1234567890"
+  #  Test 1 : API ne trouve rien
+  url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+
+  req <- request(url)
+  resp <- req_perform(req)
+  body <- resp_body_json(resp)
+
+
+  result <- call_open_library_api()
+
+  #  Test 2 : API trouve un livre
+
+  #  Test 3 : API trouve plusieurs livres
+
+  #  Test 4 : l'api ne répond pas
+})
+```
+  
+
+
+```{r development-inflate, eval=FALSE}
+# Keep eval=FALSE to avoid infinite loop in case you hit the knit button
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_open_library.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+
