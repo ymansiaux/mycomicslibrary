@@ -103,9 +103,8 @@ test_that("call_open_library_api works", {
     isbn10 = "2365772013"
   )
 
-  expect_equal(
-    result,
-    "erreur 404"
+  expect_true(
+    inherits(result, "try-error")
   )
 
   # Error 500
@@ -113,8 +112,8 @@ test_that("call_open_library_api works", {
     root_api = "https://bobi.com/api/books",
     isbn10 = "2365772013"
   )
-  expect_equal(
-    result,
-    "le serveur ne répond pas"
+
+  expect_true(
+    inherits(result, "try-error")
   )
 })

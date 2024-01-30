@@ -23,19 +23,12 @@ call_open_library_api <- function(
 
   req <- request(url)
 
-  result <- tryCatch(
-    req |> req_perform() |> resp_body_json(),
-    httr2_http_404 = function(cnd) "erreur 404",
-    httr2_failure = function(cmd) "le serveur ne répond pas"
+  return(
+    try(
+      req |>
+        req_perform() |>
+        resp_body_json() |>
+        spread_all()
+    )
   )
-
-  if (isTRUE(result == "erreur 404")) {
-    cli_alert_warning("Erreur 404, vérifiez votre requête ")
-  } else if (isTRUE(result == "le serveur ne répond pas")) {
-    cli_alert_warning("Le serveur ne répond pas")
-  } else {
-    result <- spread_all(result)
-  }
-
-  return(result)
 }
