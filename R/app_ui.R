@@ -1,16 +1,40 @@
+link_shiny <- tags$a(
+  shiny::icon("github"),
+  "Shiny",
+  href = "https://github.com/rstudio/shiny",
+  target = "_blank"
+)
+link_posit <- tags$a(
+  shiny::icon("r-project"),
+  "Posit",
+  href = "https://posit.co",
+  target = "_blank"
+)
+
 #' The application User-Interface
 #'
 #' @param request Internal parameter for `{shiny}`.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import bslib
 #' @noRd
 app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("mycomicslibrary")
+    page_navbar(
+      title = "My App",
+      nav_panel(title = "One", p("First page content.")),
+      nav_panel(title = "Two", p("Second page content.")),
+      nav_panel("Three", p("Third page content.")),
+      nav_spacer(),
+      nav_menu(
+        title = "Links",
+        align = "right",
+        nav_item(link_shiny),
+        nav_item(link_posit)
+      )
     )
   )
 }
