@@ -23,12 +23,12 @@ call_open_library_api <- function(
 
   req <- request(url)
 
-  return(
-    try(
-      req |>
-        req_perform() |>
-        resp_body_json() |>
-        spread_all()
-    )
+  result <- try(
+    req |>
+      req_perform() |>
+      resp_body_json() |>
+      spread_all()
   )
+
+  return(result)
 }

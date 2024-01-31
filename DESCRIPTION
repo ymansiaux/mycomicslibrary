@@ -8,16 +8,21 @@ License: MIT + file LICENSE
 URL: https://github.com/ymansiaux/mycomicslibrary
 BugReports: https://github.com/ymansiaux/mycomicslibrary/issues
 Imports: 
+    bslib,
     cli,
     config (>= 0.3.2),
+    DBI,
+    digest,
     glue,
     golem (>= 0.4.1),
     httr2,
+    RSQLite,
     shiny (>= 1.7.5.1),
     tidyjson
 Suggests: 
     spelling,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    withr
 Config/fusen/version: 0.5.2
 Config/testthat/edition: 3
 Encoding: UTF-8
