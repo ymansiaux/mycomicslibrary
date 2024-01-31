@@ -2,6 +2,7 @@
 
 export(call_open_library_api)
 export(run_app)
+import(bslib)
 import(shiny)
 importFrom(cli,cli_alert_warning)
 importFrom(glue,glue)
