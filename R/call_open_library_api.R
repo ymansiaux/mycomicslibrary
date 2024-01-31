@@ -2,7 +2,7 @@
 
 #' Appel à l'API Open Library
 #' @param root_api l'URL de base de l'API
-#' @param isbn10 le numéro ISBN 10
+#' @param isbn_number le numéro ISBN 10
 #' @return un tibble avec les informations de l'API
 #' @importFrom cli cli_alert_warning
 #' @importFrom glue glue
@@ -10,16 +10,16 @@
 #' @importFrom tidyjson spread_all
 #' @export
 #' @examples
-#' call_open_library_api(isbn10 = "2365772013")
+#' call_open_library_api(isbn_number = "2365772013")
 call_open_library_api <- function(
   root_api = "https://openlibrary.org/api/books",
-  isbn10
+  isbn_number
 ) {
-  if (isFALSE(as.character(isbn10))) {
-    stop("Le numéro ISBN 10 doit être passé sous forme de chaine de caractères")
+  if (isFALSE(as.character(isbn_number))) {
+    stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
 
-  url <- glue("{root_api}?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+  url <- glue("{root_api}?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
   req <- request(url)
 
@@ -27,7 +27,8 @@ call_open_library_api <- function(
     req |>
       req_perform() |>
       resp_body_json() |>
-      spread_all()
+      spread_all(),
+    silent = TRUE
   )
 
   return(result)

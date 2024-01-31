@@ -27,14 +27,14 @@ library(tidyjson)
 library(glue)
 library(cli)
 
-isbn10 <- "2365772013"
+isbn_number <- "2365772013"
 
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-url <- glue::glue("https://opddenlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
+url <- glue::glue("https://opddenlibrary.org/api/books?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
 
 # Ne répond pas
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
 req <- request(url)
 
@@ -46,8 +46,8 @@ res <- tryCatch(
 res
 
 #  erreur 404
-isbn10 <- "2365772013"
-url404 <- glue::glue("https://openlibrary.org/api/bouks?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+isbn_number <- "2365772013"
+url404 <- glue::glue("https://openlibrary.org/api/bouks?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
 req <- request(url404)
 
@@ -59,8 +59,8 @@ res <- tryCatch(
 res
 
 #   renvoie rien
-isbn10 <- "2365772013XXXXXXXXXXXXXXXXXX"
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+isbn_number <- "2365772013XXXXXXXXXXXXXXXXXX"
+url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
 req <- request(url)
 
@@ -74,8 +74,8 @@ res
 
 
 #  renvoie un livre
-isbn10 <- "2365772013"
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+isbn_number <- "2365772013"
+url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
 req <- request(url)
 
@@ -111,7 +111,7 @@ cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
 ```{r function-call_open_library_api}
 #' Appel à l'API Open Library
 #' @param root_api l'URL de base de l'API
-#' @param isbn10 le numéro ISBN 10
+#' @param isbn_number le numéro ISBN 10
 #' @return un tibble avec les informations de l'API
 #' @importFrom cli cli_alert_warning
 #' @importFrom glue glue
@@ -120,13 +120,13 @@ cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
 #' @export
 call_open_library_api <- function(
   root_api = "https://openlibrary.org/api/books",
-  isbn10
+  isbn_number
 ) {
-  if (isFALSE(as.character(isbn10))) {
-    stop("Le numéro ISBN 10 doit être passé sous forme de chaine de caractères")
+  if (isFALSE(as.character(isbn_number))) {
+    stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
 
-  url <- glue("{root_api}?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+  url <- glue("{root_api}?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
   req <- request(url)
 
@@ -134,7 +134,8 @@ call_open_library_api <- function(
     req |>
       req_perform() |>
       resp_body_json() |>
-      spread_all()
+      spread_all(),
+    silent = TRUE
   )
 
   return(result)
@@ -142,16 +143,16 @@ call_open_library_api <- function(
 ```
   
 ```{r example-call_open_library_api}
-call_open_library_api(isbn10 = "2365772013")
+call_open_library_api(isbn_number = "2365772013")
 ```
   
 ```{r tests-call_open_library_api}
 test_that("call_open_library_api works", {
   skip_if_offline()
 
-  isbn10 <- "2365772013"
+  isbn_number <- "2365772013"
 
-  result <- call_open_library_api(isbn10 = isbn10)
+  result <- call_open_library_api(isbn_number = isbn_number)
 
   expect_equal(
     result,
@@ -235,8 +236,8 @@ test_that("call_open_library_api works", {
     )
   )
 
-  # No result with a wrong isbn10
-  result <- call_open_library_api(isbn10 = "XXXX")
+  # No result with a wrong isbn_number
+  result <- call_open_library_api(isbn_number = "XXXX")
 
   expect_equal(
     nrow(result),
@@ -246,7 +247,7 @@ test_that("call_open_library_api works", {
   # Error 404
   result <- call_open_library_api(
     root_api = "https://openlibrary.org/api/bouks",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(
@@ -256,7 +257,7 @@ test_that("call_open_library_api works", {
   # Error 500
   result <- call_open_library_api(
     root_api = "https://bobi.com/api/books",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(

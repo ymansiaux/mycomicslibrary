@@ -4,12 +4,15 @@
 \alias{call_open_library_api}
 \title{Appel à l'API Open Library}
 \usage{
-call_open_library_api(root_api = "https://openlibrary.org/api/books", isbn10)
+call_open_library_api(
+  root_api = "https://openlibrary.org/api/books",
+  isbn_number
+)
 }
 \arguments{
 \item{root_api}{l'URL de base de l'API}
 
-\item{isbn10}{le numéro ISBN 10}
+\item{isbn_number}{le numéro ISBN 10}
 }
 \value{
 un tibble avec les informations de l'API
@@ -18,5 +21,5 @@ un tibble avec les informations de l'API
 Appel à l'API Open Library
 }
 \examples{
-call_open_library_api(isbn10 = "2365772013")
+call_open_library_api(isbn_number = "2365772013")
 }

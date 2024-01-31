@@ -3,9 +3,9 @@
 test_that("call_open_library_api works", {
   skip_if_offline()
 
-  isbn10 <- "2365772013"
+  isbn_number <- "2365772013"
 
-  result <- call_open_library_api(isbn10 = isbn10)
+  result <- call_open_library_api(isbn_number = isbn_number)
 
   expect_equal(
     result,
@@ -89,8 +89,8 @@ test_that("call_open_library_api works", {
     )
   )
 
-  # No result with a wrong isbn10
-  result <- call_open_library_api(isbn10 = "XXXX")
+  # No result with a wrong isbn_number
+  result <- call_open_library_api(isbn_number = "XXXX")
 
   expect_equal(
     nrow(result),
@@ -100,7 +100,7 @@ test_that("call_open_library_api works", {
   # Error 404
   result <- call_open_library_api(
     root_api = "https://openlibrary.org/api/bouks",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(
@@ -110,7 +110,7 @@ test_that("call_open_library_api works", {
   # Error 500
   result <- call_open_library_api(
     root_api = "https://bobi.com/api/books",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(

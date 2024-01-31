@@ -1,10 +1,10 @@
-link_shiny <- tags$a(
+link_shiny <- shiny::tags$a(
   shiny::icon("github"),
   "Shiny",
   href = "https://github.com/rstudio/shiny",
   target = "_blank"
 )
-link_posit <- tags$a(
+link_posit <- shiny::tags$a(
   shiny::icon("r-project"),
   "Posit",
   href = "https://posit.co",
