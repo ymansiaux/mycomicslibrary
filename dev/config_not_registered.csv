@@ -2,5 +2,8 @@
 "R","R/app_config.R","No existing source path found."
 "R","R/app_server.R","No existing source path found."
 "R","R/app_ui.R","No existing source path found."
+"R","R/fct_open_library.R","Possibly deprecated file. Please check its link with detected flat source: dev/flat_open_library.Rmd"
+"R","R/globals.R","No existing source path found."
 "R","R/run_app.R","No existing source path found."
+"test","tests/testthat/test-fct_open_library.R","Possibly deprecated file. Please check its link with detected flat source: dev/flat_open_library.Rmd"
 "test","tests/testthat/test-golem-recommended.R","No existing source path found."

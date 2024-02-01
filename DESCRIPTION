@@ -13,12 +13,16 @@ Imports:
     config (>= 0.3.2),
     DBI,
     digest,
+    dplyr,
     glue,
     golem (>= 0.4.1),
     httr2,
+    janitor,
+    purrr,
     RSQLite,
     shiny (>= 1.7.5.1),
-    tidyjson
+    tidyjson,
+    tidyselect
 Suggests: 
     spelling,
     testthat (>= 3.0.0),
