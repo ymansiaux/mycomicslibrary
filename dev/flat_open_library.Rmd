@@ -266,6 +266,73 @@ test_that("call_open_library_api works", {
 })
 ```  
 
+# clean_open_library_result
+    
+```{r function-clean_open_library_result}
+#' Title
+#'
+#' Description
+#'
+#' @return
+#'
+#' @export
+clean_open_library_result <- function(book_tibble) {
+
+}
+```
+  
+```{r example-clean_open_library_result}
+clean_open_library_result()
+```
+  
+```{r tests-clean_open_library_result}
+test_that("clean_open_library_result works", {
+  
+  isbn_number <- "2365772013"
+  result <- call_open_library_api(isbn_number = isbn_number)
+
+  result_without_nested_JSON <- result |> 
+  dplyr::select(-tidyselect::contains("JSON"))
+
+  result  |> 
+  tidyr::unnest("..JSON")
+
+
+  json <- result$`..JSON`
+
+  purrr::map(json, ~.x$details)  |> 
+  purrr::map(~.x$authors)  |>
+  purrr::map(
+    ~.x |> 
+      purrr::map(~.x$name)
+  )
+
+  purrr::map(json, ~.x$details)  |> 
+  purrr::map(~.x$isbn_10)
+
+
+purrr::map(json, ~.x$details)  |> 
+  purrr::map(~.x$isbn_13)
+
+ purrr::map(json, ~.x$details)  |> 
+  purrr::map(~.x$publishers)
+
+
+
+  purrr::map(~.x$name) 
+  
+purrr::map(json, ~.x$authors)
+
+purrr::map(json, tidyr::unnest)
+
+  
+   |> 
+  tibble::as_tibble()  |> 
+  tidyr::unnest(cols = c(`ISBN:2365772013`))
+})
+```
+  
+
 
 ```{r development-inflate, eval=FALSE}
 # Keep eval=FALSE to avoid infinite loop in case you hit the knit button
