@@ -26,82 +26,10 @@ library(jsonlite)
 library(tidyjson)
 library(glue)
 library(cli)
-
-isbn10 <- "2365772013"
-
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-url <- glue::glue("https://opddenlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-
-
-# Ne répond pas
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-
-req <- request(url)
-
-res <- tryCatch(
-  req |> req_perform() |> resp_body_json(),
-  httr2_http_404 = function(cnd) "erreur 404",
-  httr2_failure = function(cmd) "serveur ne répond pas"
-)
-res
-
-#  erreur 404
-isbn10 <- "2365772013"
-url404 <- glue::glue("https://openlibrary.org/api/bouks?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-
-req <- request(url404)
-
-res <- tryCatch(
-  req |> req_perform() |> resp_body_json(),
-  httr2_http_404 = function(cnd) "erreur 404",
-  httr2_failure = function(cmd) "serveur ne répond pas"
-)
-res
-
-#   renvoie rien
-isbn10 <- "2365772013XXXXXXXXXXXXXXXXXX"
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-
-req <- request(url)
-
-res <- tryCatch(
-  req |> req_perform() |> resp_body_json(),
-  httr2_http_404 = function(cnd) "erreur 404",
-  httr2_failure = function(cmd) "serveur ne répond pas"
-)
-res
-# liste vide
-
-
-#  renvoie un livre
-isbn10 <- "2365772013"
-url <- glue::glue("https://openlibrary.org/api/books?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
-
-req <- request(url)
-
-res <- tryCatch(
-  req |> req_perform() |> resp_body_json(),
-  httr2_http_404 = function(cnd) "erreur 404",
-  httr2_failure = function(cmd) "serveur ne répond pas"
-)
-res
-
-
-
-resp <- req_perform(req)
-
-body <- resp_body_json(resp)
-
-fromJSON(body)
-
-spread_all(body)
-
-body <- try(
-  request(url) |>
-    req_error(is_error = \(resp) FALSE) |>
-    req_perform()
-)
-
+library(janitor)
+library(tidyselect)
+library(purrr)
+library(dplyr)
 # a recuperer à partir des resultats de la requete
 cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
 ```
@@ -111,47 +39,49 @@ cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
 ```{r function-call_open_library_api}
 #' Appel à l'API Open Library
 #' @param root_api l'URL de base de l'API
-#' @param isbn10 le numéro ISBN 10
+#' @param isbn_number le numéro ISBN 10
 #' @return un tibble avec les informations de l'API
 #' @importFrom cli cli_alert_warning
 #' @importFrom glue glue
 #' @importFrom httr2 request req_perform resp_body_json
 #' @importFrom tidyjson spread_all
 #' @export
+#' @rdname fct_open_library
 call_open_library_api <- function(
   root_api = "https://openlibrary.org/api/books",
-  isbn10
+  isbn_number
 ) {
-  if (isFALSE(as.character(isbn10))) {
-    stop("Le numéro ISBN 10 doit être passé sous forme de chaine de caractères")
+  if (isFALSE(as.character(isbn_number))) {
+    stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
 
-  url <- glue("{root_api}?bibkeys=ISBN:{isbn10}&jscmd=details&format=json")
+  url <- glue("{root_api}?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
 
   req <- request(url)
 
-  return(
-    try(
-      req |>
-        req_perform() |>
-        resp_body_json() |>
-        spread_all()
-    )
+  result <- try(
+    req |>
+      req_perform() |>
+      resp_body_json() |>
+      spread_all(),
+    silent = TRUE
   )
+
+  return(result)
 }
 ```
   
 ```{r example-call_open_library_api}
-call_open_library_api(isbn10 = "2365772013")
+call_open_library_api(isbn_number = "2365772013")
 ```
   
 ```{r tests-call_open_library_api}
 test_that("call_open_library_api works", {
   skip_if_offline()
 
-  isbn10 <- "2365772013"
+  isbn_number <- "2365772013"
 
-  result <- call_open_library_api(isbn10 = isbn10)
+  result <- call_open_library_api(isbn_number = isbn_number)
 
   expect_equal(
     result,
@@ -235,8 +165,8 @@ test_that("call_open_library_api works", {
     )
   )
 
-  # No result with a wrong isbn10
-  result <- call_open_library_api(isbn10 = "XXXX")
+  # No result with a wrong isbn_number
+  result <- call_open_library_api(isbn_number = "XXXX")
 
   expect_equal(
     nrow(result),
@@ -246,7 +176,7 @@ test_that("call_open_library_api works", {
   # Error 404
   result <- call_open_library_api(
     root_api = "https://openlibrary.org/api/bouks",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(
@@ -256,11 +186,141 @@ test_that("call_open_library_api works", {
   # Error 500
   result <- call_open_library_api(
     root_api = "https://bobi.com/api/books",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(
     inherits(result, "try-error")
+  )
+})
+```  
+
+# clean_open_library_result
+    
+```{r function-clean_open_library_result}
+#' Nettoyage du résultat de l'API Open Library
+#' @param book_tibble a tibble with the result of the API call
+#' @return a tibble with the cleaned result of the API call
+#' @importFrom janitor clean_names
+#' @importFrom tidyjson as_data_frame
+#' @importFrom dplyr select mutate
+#' @importFrom tidyselect everything
+#' @importFrom purrr map map_chr
+#' @export
+#' @rdname fct_open_library
+clean_open_library_result <- function(book_tibble) {
+  book_tibble_cleaned_names <- book_tibble |>
+    clean_names()
+
+  df_part <- book_tibble_cleaned_names |>
+    tidyjson::as_data_frame() |>
+    select(
+      info_url,
+      thumbnail_url,
+      details_title,
+      details_publish_date,
+      details_number_of_pages,
+    )
+
+  json <- book_tibble_cleaned_names$json
+
+  author <- get_authors(json)
+  isbn_10 <- get_isbn10(json)
+  isbn_13 <- get_isbn13(json)
+  publisher <- get_publishers(json)
+
+
+  df_part <- df_part |>
+    mutate(
+      author = author,
+      isbn_10 = isbn_10,
+      isbn_13 = isbn_13,
+      publisher = publisher
+    )
+
+  colnames(df_part) <- gsub("details_", "", colnames(df_part))
+
+  df_part |>
+    select(
+      title,
+      author,
+      everything()
+    )
+}
+
+#' @noRd
+get_nested_field <- function(json, field) {
+  json |>
+    purrr::map(~ .x$details) |>
+    purrr::map(~ .x[[field]]) |>
+    purrr::map(
+      ~ .x |>
+        purrr::map_chr(~ .x[[1]])
+    ) |>
+    purrr::map_chr(~ paste(.x, collapse = ", "))
+}
+
+#' @noRd
+get_authors <- function(json) {
+  json |>
+    purrr::map(~ .x$details) |>
+    purrr::map(~ .x[["authors"]]) |>
+    purrr::map(
+      ~ .x |>
+        purrr::map_chr(~ .x$name)
+    ) |>
+    purrr::map_chr(~ paste(.x, collapse = ", "))
+}
+
+#' @noRd
+get_isbn10 <- function(json) {
+  get_nested_field(json, "isbn_10")
+}
+
+#' @noRd
+get_isbn13 <- function(json) {
+  get_nested_field(json, "isbn_13")
+}
+
+#' @noRd
+get_publishers <- function(json) {
+  get_nested_field(json, "publishers")
+}
+```
+  
+```{r example-clean_open_library_result}
+isbn_number <- "2365772013"
+result <- call_open_library_api(isbn_number = isbn_number)
+
+clean_open_library_result(result)
+```
+  
+```{r tests-clean_open_library_result}
+test_that("clean_open_library_result works", {
+  isbn_number <- "2365772013"
+  result <- call_open_library_api(isbn_number = isbn_number) |>
+    clean_open_library_result()
+
+  expect_equal(
+    result,
+    structure(
+      list(
+        title = "SAGA - Tome 1",
+        author = c(`ISBN:2365772013` = "Brian K. Vaughan, Fiona Staples"),
+        info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
+        thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
+        publish_date = "Mar 14, 2013",
+        number_of_pages = 168,
+        isbn_10 = c(`ISBN:2365772013` = "2365772013"),
+        isbn_13 = c(`ISBN:2365772013` = "9782365772013"),
+        publisher = c(`ISBN:2365772013` = "URBAN COMICS")
+      ),
+      row.names = c(
+        NA,
+        -1L
+      ),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
   )
 })
 ```

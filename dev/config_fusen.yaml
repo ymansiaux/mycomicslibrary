@@ -1,3 +1,16 @@
+flat_database.Rmd:
+  path: dev/flat_database.Rmd
+  state: active
+  R: R/fct_comics_db.R
+  tests: tests/testthat/test-fct_comics_db.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_database.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_open_library.Rmd:
   path: dev/flat_open_library.Rmd
   state: active

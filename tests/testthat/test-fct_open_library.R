@@ -3,9 +3,9 @@
 test_that("call_open_library_api works", {
   skip_if_offline()
 
-  isbn10 <- "2365772013"
+  isbn_number <- "2365772013"
 
-  result <- call_open_library_api(isbn10 = isbn10)
+  result <- call_open_library_api(isbn_number = isbn_number)
 
   expect_equal(
     result,
@@ -89,8 +89,8 @@ test_that("call_open_library_api works", {
     )
   )
 
-  # No result with a wrong isbn10
-  result <- call_open_library_api(isbn10 = "XXXX")
+  # No result with a wrong isbn_number
+  result <- call_open_library_api(isbn_number = "XXXX")
 
   expect_equal(
     nrow(result),
@@ -100,7 +100,7 @@ test_that("call_open_library_api works", {
   # Error 404
   result <- call_open_library_api(
     root_api = "https://openlibrary.org/api/bouks",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(
@@ -110,10 +110,38 @@ test_that("call_open_library_api works", {
   # Error 500
   result <- call_open_library_api(
     root_api = "https://bobi.com/api/books",
-    isbn10 = "2365772013"
+    isbn_number = "2365772013"
   )
 
   expect_true(
     inherits(result, "try-error")
+  )
+})
+
+test_that("clean_open_library_result works", {
+  isbn_number <- "2365772013"
+  result <- call_open_library_api(isbn_number = isbn_number) |>
+    clean_open_library_result()
+
+  expect_equal(
+    result,
+    structure(
+      list(
+        title = "SAGA - Tome 1",
+        author = c(`ISBN:2365772013` = "Brian K. Vaughan, Fiona Staples"),
+        info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
+        thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
+        publish_date = "Mar 14, 2013",
+        number_of_pages = 168,
+        isbn_10 = c(`ISBN:2365772013` = "2365772013"),
+        isbn_13 = c(`ISBN:2365772013` = "9782365772013"),
+        publisher = c(`ISBN:2365772013` = "URBAN COMICS")
+      ),
+      row.names = c(
+        NA,
+        -1L
+      ),
+      class = c("tbl_df", "tbl", "data.frame")
+    )
   )
 })

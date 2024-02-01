@@ -1,0 +1,297 @@
+---
+title: "flat_database.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# get_database_path
+
+```{r function-get_database_path}
+#' get_database_path
+#'
+#' @noRd
+#' @rdname fct_comics_db
+get_database_path <- function() {
+  Sys.getenv(
+    "COMICS_SQL_PATH",
+    unset = file.path(system.file(package = "mycomicslibrary"), "db", "comics_db.sqlite")
+  )
+}
+```
+
+```{r examples-get_database_path}
+get_database_path()
+```
+
+```{r tests-get_database_path}
+test_that("get_database_path works", {
+  expect_equal(
+    withr::with_envvar(
+      c("COMICS_SQL_PATH" = "BOBI"),
+      {
+        get_database_path()
+      }
+    ),
+    "BOBI"
+  )
+})
+```
+
+# connect_to_comics_db
+
+```{r function-connect_to_comics_db}
+#' Connection
+#'
+#' @noRd
+#' @rdname fct_comics_db
+connect_to_comics_db <- function() {
+  DBI::dbConnect(
+    RSQLite::SQLite(),
+    get_database_path()
+  )
+}
+```
+
+```{r example-connect_to_comics_db}
+connect_to_comics_db()
+```
+
+```{r tests-connect_to_comics_db}
+test_that("connect_to_comics_db works", {
+  expect_true(inherits(connect_to_comics_db(), "SQLiteConnection"))
+})
+```
+
+# read/write/update
+
+```{r function-read}
+#' Comics db functions
+#'
+#' @rdname fct_comics_db
+
+init_comics_db <- function() {
+  con <- connect_to_comics_db()
+  on.exit({
+    DBI::dbDisconnect(con)
+  })
+  if (!"comics" %in% DBI::dbListTables(con)) {
+    DBI::dbCreateTable(
+      con,
+      "comics",
+      fields = c(
+        id_db = "TEXT",
+        id_document = "TEXT",
+        ISBN = "TEXT",
+        titre = "TEXT",
+        date_publication = "TEXT",
+        nb_pages = "INTEGER",
+        note = "INTEGER",
+        type_publication = "TEXT",
+        statut = "TEXT",
+        lien_cover = "TEXT",
+        datetime = "TEXT"
+      )
+    )
+  }
+
+  read_comics_db()
+}
+
+
+#' @rdname fct_comics_db
+
+read_comics_db <- function() {
+  con <- connect_to_comics_db()
+  on.exit({
+    DBI::dbDisconnect(con)
+  })
+  DBI::dbReadTable(con, "comics")
+}
+#' @rdname fct_comics_db
+
+append_feedback_db <- function(
+  ISBN,
+  titre,
+  date_publication,
+  nb_pages,
+  note,
+  type_publication,
+  statut,
+  lien_cover
+) {
+  datetime <- Sys.time()
+
+  id_db <- digest::digest(
+    c(
+      ISBN,
+      titre,
+      date_publication,
+      nb_pages,
+      note,
+      type_publication,
+      statut,
+      lien_cover,
+      datetime
+    )
+  )
+  id_document <- paste0(
+    "doc_",
+    digest::digest(ISBN)
+  )
+
+  con <- connect_to_comics_db()
+  on.exit({
+    DBI::dbDisconnect(con)
+  })
+  DBI::dbAppendTable(
+    con,
+    "comics",
+    data.frame(
+      id_db = id_db,
+      id_document = id_document,
+      ISBN = ISBN,
+      titre = titre,
+      date_publication = date_publication,
+      nb_pages = nb_pages,
+      note = note,
+      type_publication = type_publication,
+      statut = statut,
+      lien_cover = lien_cover,
+      datetime = datetime
+    )
+  )
+}
+#' @rdname fct_comics_db
+
+delete_feedback_db <- function() {
+  con <- connect_to_comics_db()
+  on.exit({
+    DBI::dbDisconnect(con)
+  })
+  DBI::dbRemoveTable(
+    con,
+    "comics"
+  )
+}
+```
+
+```{r example-read}
+withr::with_tempdir({
+  withr::with_envvar(
+    c("COMICS_SQL_PATH" = "BOBI.sqlite"),
+    {
+      init_comics_db()
+      read_comics_db()
+      append_feedback_db(
+        ISBN = "1234567890",
+        titre = "BOBI",
+        date_publication = "2020-01-01",
+        nb_pages = 154,
+        note = 5,
+        type_publication = "comics",
+        statut = "Lu",
+        lien_cover = "https://mycover.com"
+      )
+      read_comics_db()
+      delete_feedback_db()
+      unlink("BOBI.sqlite")
+    }
+  )
+})
+```
+
+```{r tests-read}
+test_that("init/read/append works", {
+  withr::with_tempdir({
+    withr::with_envvar(
+      c("COMICS_SQL_PATH" = "BOBI.sqlite"),
+      {
+        init_comics_db()
+        expect_true(inherits(read_comics_db(), "data.frame"))
+        expect_equal(
+          init_comics_db(),
+          read_comics_db()
+        )
+
+        expect_equal(
+          append_feedback_db(
+            ISBN = "1234567890",
+            titre = "BOBI",
+            date_publication = "2020-01-01",
+            nb_pages = 154,
+            note = 5,
+            type_publication = "comics",
+            statut = "Lu",
+            lien_cover = "https://mycover.com"
+          ),
+          1
+        )
+
+        db <- read_comics_db()
+
+        expect_equal(
+          db$ISBN,
+          "1234567890"
+        )
+
+        expect_equal(
+          db$titre,
+          "BOBI"
+        )
+
+        expect_equal(
+          db$date_publication,
+          "2020-01-01"
+        )
+
+        expect_equal(
+          db$nb_pages,
+          154
+        )
+
+        expect_equal(
+          db$note,
+          5
+        )
+
+        expect_equal(
+          db$type_publication,
+          "comics"
+        )
+
+        expect_equal(
+          db$statut,
+          "Lu"
+        )
+
+        expect_equal(
+          db$lien_cover,
+          "https://mycover.com"
+        )
+      }
+    )
+  })
+})
+```
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_database.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+
+ 
