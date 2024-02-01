@@ -34,6 +34,7 @@ test_that("init/read/append works", {
             titre = "BOBI",
             date_publication = "2020-01-01",
             nb_pages = 154,
+            note = 5,
             type_publication = "comics",
             statut = "Lu",
             lien_cover = "https://mycover.com"
@@ -61,6 +62,11 @@ test_that("init/read/append works", {
         expect_equal(
           db$nb_pages,
           154
+        )
+
+        expect_equal(
+          db$note,
+          5
         )
 
         expect_equal(

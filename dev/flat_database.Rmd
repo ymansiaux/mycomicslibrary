@@ -14,7 +14,7 @@ library(testthat)
 pkgload::load_all(export_all = FALSE)
 ```
 
-# my_fun
+# get_database_path
 
 ```{r function-get_database_path}
 #' get_database_path
@@ -95,6 +95,7 @@ init_comics_db <- function() {
         titre = "TEXT",
         date_publication = "TEXT",
         nb_pages = "INTEGER",
+        note = "INTEGER",
         type_publication = "TEXT",
         statut = "TEXT",
         lien_cover = "TEXT",
@@ -123,6 +124,7 @@ append_feedback_db <- function(
   titre,
   date_publication,
   nb_pages,
+  note,
   type_publication,
   statut,
   lien_cover
@@ -135,6 +137,7 @@ append_feedback_db <- function(
       titre,
       date_publication,
       nb_pages,
+      note,
       type_publication,
       statut,
       lien_cover,
@@ -160,6 +163,7 @@ append_feedback_db <- function(
       titre = titre,
       date_publication = date_publication,
       nb_pages = nb_pages,
+      note = note,
       type_publication = type_publication,
       statut = statut,
       lien_cover = lien_cover,
@@ -193,6 +197,7 @@ withr::with_tempdir({
         titre = "BOBI",
         date_publication = "2020-01-01",
         nb_pages = 154,
+        note = 5,
         type_publication = "comics",
         statut = "Lu",
         lien_cover = "https://mycover.com"
@@ -224,6 +229,7 @@ test_that("init/read/append works", {
             titre = "BOBI",
             date_publication = "2020-01-01",
             nb_pages = 154,
+            note = 5,
             type_publication = "comics",
             statut = "Lu",
             lien_cover = "https://mycover.com"
@@ -254,6 +260,11 @@ test_that("init/read/append works", {
         )
 
         expect_equal(
+          db$note,
+          5
+        )
+
+        expect_equal(
           db$type_publication,
           "comics"
         )
@@ -276,7 +287,11 @@ test_that("init/read/append works", {
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
 # Execute in the console directly
-fusen::inflate(flat_file = "dev/flat_database.Rmd", vignette_name = NA, check = FALSE)
+fusen::inflate(
+  flat_file = "dev/flat_database.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
 ```
 
  
