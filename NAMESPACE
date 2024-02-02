@@ -2,6 +2,7 @@
 
 export(call_open_library_api)
 export(clean_open_library_result)
+export(give_me_one_random_isbn)
 export(run_app)
 import(bslib)
 import(shiny)
