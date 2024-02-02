@@ -14,12 +14,8 @@ flat_database.Rmd:
 flat_open_library.Rmd:
   path: dev/flat_open_library.Rmd
   state: active
-  R:
-  - R/fct_open_library.R
-  - R/give_me_one_random_isbn.R
-  tests:
-  - tests/testthat/test-fct_open_library.R
-  - tests/testthat/test-give_me_one_random_isbn.R
+  R: R/fct_open_library.R
+  tests: tests/testthat/test-fct_open_library.R
   vignettes: []
   inflate:
     flat_file: dev/flat_open_library.Rmd

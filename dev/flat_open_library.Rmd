@@ -331,6 +331,7 @@ test_that("clean_open_library_result works", {
 ```{r function-give_me_one_random_isbn}
 #' Return a random ISBN from mycomicslibrary::isbn_sample
 #' @return a random ISBN
+#' @rdname fct_open_library
 #' @export
 give_me_one_random_isbn <- function() {
   mycomicslibrary::isbn_sample |>

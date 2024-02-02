@@ -128,3 +128,15 @@ get_isbn13 <- function(json) {
 get_publishers <- function(json) {
   get_nested_field(json, "publishers")
 }
+
+#' Return a random ISBN from mycomicslibrary::isbn_sample
+#' @return a random ISBN
+#' @rdname fct_open_library
+#' @export
+#' @examples
+#' give_me_one_random_isbn()
+give_me_one_random_isbn <- function() {
+  mycomicslibrary::isbn_sample |>
+    sample(1) |>
+    as.character()
+}

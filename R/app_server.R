@@ -6,4 +6,5 @@
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
+  mod_100_search_isbn_server("100_search_isbn_1")
 }
