@@ -5,5 +5,7 @@ globalVariables(unique(c(
   "details_title",
   "info_url",
   "thumbnail_url",
-  "title"
+  "title",
+  "id_document",
+  "datetime"
 )))

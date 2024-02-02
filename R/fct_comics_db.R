@@ -26,6 +26,19 @@ get_database_path <- function() {
   )
 }
 
+#' Get most recent entry per document
+#' @param db comics db
+#' @return A data.frame with the most recent entry per document
+#' @importFrom dplyr group_by slice_max ungroup
+#' @rdname fct_comics_db
+#' @noRd
+get_most_recent_entry_per_doc <- function(db) {
+  db |>
+    group_by(id_document) |>
+    slice_max(datetime) |>
+    ungroup()
+}
+
 #' Comics db functions
 #'
 #' @rdname fct_comics_db
@@ -40,6 +53,7 @@ get_database_path <- function() {
 #'       append_feedback_db(
 #'         ISBN = "1234567890",
 #'         titre = "BOBI",
+#'         possede = 1,
 #'         date_publication = "2020-01-01",
 #'         nb_pages = 154,
 #'         note = 5,
@@ -67,6 +81,7 @@ init_comics_db <- function() {
         id_db = "TEXT",
         id_document = "TEXT",
         ISBN = "TEXT",
+        possede = "INTEGER",
         titre = "TEXT",
         date_publication = "TEXT",
         nb_pages = "INTEGER",
@@ -97,6 +112,7 @@ read_comics_db <- function() {
 append_feedback_db <- function(
   ISBN,
   titre,
+  possede,
   date_publication,
   nb_pages,
   note,
@@ -110,6 +126,7 @@ append_feedback_db <- function(
     c(
       ISBN,
       titre,
+      possede,
       date_publication,
       nb_pages,
       note,
@@ -136,6 +153,7 @@ append_feedback_db <- function(
       id_document = id_document,
       ISBN = ISBN,
       titre = titre,
+      possede = possede,
       date_publication = date_publication,
       nb_pages = nb_pages,
       note = note,

@@ -326,6 +326,44 @@ test_that("clean_open_library_result works", {
 ```
   
 
+# give_me_one_random_isbn
+    
+```{r function-give_me_one_random_isbn}
+#' Return a random ISBN from mycomicslibrary::isbn_sample
+#' @return a random ISBN
+#' @export
+give_me_one_random_isbn <- function() {
+  mycomicslibrary::isbn_sample$code |>
+    sample(1) |>
+    as.character()
+}
+```
+  
+```{r example-give_me_one_random_isbn}
+give_me_one_random_isbn()
+```
+  
+```{r tests-give_me_one_random_isbn}
+test_that("give_me_one_random_isbn works", {
+  isbn_number <- give_me_one_random_isbn()
+
+  expect_true(
+    is.character(isbn_number)
+  )
+
+  expect_equal(
+    nchar(isbn_number),
+    13
+  )
+
+  expect_equal(
+    regmatches(isbn_number, regexec("^[0-9]{13}$", isbn_number))[[1]],
+    isbn_number
+  )
+})
+```
+  
+
 
 ```{r development-inflate, eval=FALSE}
 # Keep eval=FALSE to avoid infinite loop in case you hit the knit button
