@@ -93,3 +93,163 @@ test_that("init/read/append works", {
     )
   })
 })
+
+test_that("get_most_recent_entry_per_doc works", {
+  withr::with_tempdir({
+    withr::with_envvar(
+      c("COMICS_SQL_PATH" = "BOBI.sqlite"),
+      {
+        init_comics_db()
+
+        # Document 1
+        append_feedback_db(
+          ISBN = "1234567890",
+          titre = "BOBI",
+          possede = 0,
+          date_publication = "2020-01-01",
+          nb_pages = 154,
+          note = 5,
+          type_publication = "comics",
+          statut = "Non-lu",
+          lien_cover = "https://mycover.com"
+        )
+
+        db <- read_comics_db()
+        res <- get_most_recent_entry_per_doc(db)
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "1234567890") |>
+            dplyr::pull(statut),
+          "Non-lu"
+        )
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "1234567890") |>
+            dplyr::pull(possede),
+          0
+        )
+
+        append_feedback_db(
+          ISBN = "1234567890",
+          titre = "BOBI",
+          possede = 1,
+          date_publication = "2020-01-01",
+          nb_pages = 154,
+          note = 5,
+          type_publication = "comics",
+          statut = "Non-lu",
+          lien_cover = "https://mycover.com"
+        )
+
+        db <- read_comics_db()
+        res <- get_most_recent_entry_per_doc(db)
+
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "1234567890") |>
+            dplyr::pull(statut),
+          "Non-lu"
+        )
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "1234567890") |>
+            dplyr::pull(possede),
+          1
+        )
+
+        append_feedback_db(
+          ISBN = "1234567890",
+          titre = "BOBI",
+          possede = 1,
+          date_publication = "2020-01-01",
+          nb_pages = 154,
+          note = 5,
+          type_publication = "comics",
+          statut = "Lu",
+          lien_cover = "https://mycover.com"
+        )
+
+
+        db <- read_comics_db()
+        res <- get_most_recent_entry_per_doc(db)
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "1234567890") |>
+            dplyr::pull(statut),
+          "Lu"
+        )
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "1234567890") |>
+            dplyr::pull(possede),
+          1
+        )
+
+        # Document 2
+        append_feedback_db(
+          ISBN = "9786543210",
+          titre = "BOBI2",
+          possede = 1,
+          date_publication = "2020-01-01",
+          nb_pages = 154,
+          note = 5,
+          type_publication = "comics",
+          statut = "Non-lu",
+          lien_cover = "https://mycover.com"
+        )
+
+        db <- read_comics_db()
+        res <- get_most_recent_entry_per_doc(db)
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "9786543210") |>
+            dplyr::pull(statut),
+          "Non-lu"
+        )
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "9786543210") |>
+            dplyr::pull(possede),
+          1
+        )
+
+        append_feedback_db(
+          ISBN = "9786543210",
+          titre = "BOBI2",
+          possede = 1,
+          date_publication = "2020-01-01",
+          nb_pages = 154,
+          note = 5,
+          type_publication = "comics",
+          statut = "Lu",
+          lien_cover = "https://mycover.com"
+        )
+
+        db <- read_comics_db()
+        res <- get_most_recent_entry_per_doc(db)
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "9786543210") |>
+            dplyr::pull(statut),
+          "Lu"
+        )
+
+        expect_equal(
+          res |>
+            dplyr::filter(ISBN == "9786543210") |>
+            dplyr::pull(possede),
+          1
+        )
+      }
+    )
+  })
+})

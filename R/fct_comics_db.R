@@ -26,6 +26,19 @@ get_database_path <- function() {
   )
 }
 
+#' Get most recent entry per document
+#' @param db comics db
+#' @return A data.frame with the most recent entry per document
+#' @importFrom dplyr group_by slice_max ungroup
+#' @rdname fct_comics_db
+#' @noRd
+get_most_recent_entry_per_doc <- function(db) {
+  db |>
+    group_by(id_document) |>
+    slice_max(datetime) |>
+    ungroup()
+}
+
 #' Comics db functions
 #'
 #' @rdname fct_comics_db
