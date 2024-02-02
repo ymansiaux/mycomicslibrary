@@ -32,6 +32,7 @@ test_that("init/read/append works", {
           append_feedback_db(
             ISBN = "1234567890",
             titre = "BOBI",
+            possede = 1,
             date_publication = "2020-01-01",
             nb_pages = 154,
             note = 5,
@@ -52,6 +53,11 @@ test_that("init/read/append works", {
         expect_equal(
           db$titre,
           "BOBI"
+        )
+
+        expect_equal(
+          db$possede,
+          1
         )
 
         expect_equal(

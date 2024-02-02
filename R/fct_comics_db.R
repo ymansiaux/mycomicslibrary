@@ -40,6 +40,7 @@ get_database_path <- function() {
 #'       append_feedback_db(
 #'         ISBN = "1234567890",
 #'         titre = "BOBI",
+#'         possede = 1,
 #'         date_publication = "2020-01-01",
 #'         nb_pages = 154,
 #'         note = 5,
@@ -67,6 +68,7 @@ init_comics_db <- function() {
         id_db = "TEXT",
         id_document = "TEXT",
         ISBN = "TEXT",
+        possede = "INTEGER",
         titre = "TEXT",
         date_publication = "TEXT",
         nb_pages = "INTEGER",
@@ -97,6 +99,7 @@ read_comics_db <- function() {
 append_feedback_db <- function(
   ISBN,
   titre,
+  possede,
   date_publication,
   nb_pages,
   note,
@@ -110,6 +113,7 @@ append_feedback_db <- function(
     c(
       ISBN,
       titre,
+      possede,
       date_publication,
       nb_pages,
       note,
@@ -136,6 +140,7 @@ append_feedback_db <- function(
       id_document = id_document,
       ISBN = ISBN,
       titre = titre,
+      possede = possede,
       date_publication = date_publication,
       nb_pages = nb_pages,
       note = note,
