@@ -5,14 +5,12 @@
 \alias{isbn_sample}
 \title{isbn_sample}
 \format{
-A data frame with 100000 rows and 2 variables:
+A data frame with  rows and  variables:
 \describe{
-  \item{ code }{  integer64 }
-  \item{ gtinType }{  character }
 }
 }
 \source{
-Source
+https://nudger.fr/opendata
 }
 \usage{
 isbn_sample
