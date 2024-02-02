@@ -6,7 +6,7 @@
 #' @examples
 #' give_me_one_random_isbn()
 give_me_one_random_isbn <- function() {
-  mycomicslibrary::isbn_sample$code |>
+  mycomicslibrary::isbn_sample |>
     sample(1) |>
     as.character()
 }
