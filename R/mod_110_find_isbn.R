@@ -45,6 +45,18 @@ mod_110_find_isbn_ui <- function(id) {
                     )
                   ),
                   div(
+                    h3("Détecter un ISBN à partir d'une photo"),
+                    fileInput(
+                      inputId = ns("upload_picture"),
+                      label = "Uploader une photo",
+                      accept = "image/*"
+                    ),
+                    actionButton(
+                      inputId = ns("detect_isbn_from_picture"),
+                      label = "Détecter l'ISBN"
+                    )
+                  ),
+                  div(
                     actionButton(
                       inputId = ns("search"),
                       label = "Rechercher le livre",
@@ -75,7 +87,8 @@ mod_110_find_isbn_server <- function(id) {
       ns <- session$ns
 
       r_local <- reactiveValues(
-        isbn_is_valid = FALSE
+        isbn_is_valid = FALSE,
+        uploaded_img = NULL
       )
 
       observeEvent(
@@ -98,6 +111,35 @@ mod_110_find_isbn_server <- function(id) {
           value = give_me_one_random_isbn()
         )
       })
+
+      observeEvent(input$upload_picture, {
+        req(input$upload_picture)
+
+        file.copy(
+          from = input$upload_picture$datapath,
+          to = file.path(
+            app_sys("app/www/"),
+            "uploaded_picture.jpg"
+          ),
+          overwrite = TRUE
+        )
+        r_local$uploaded_img <- "www/uploaded_picture.jpg"
+      })
+
+      observeEvent(input$detect_isbn_from_picture, {
+        req(r_local$uploaded_img)
+        golem::invoke_js(
+          "quagga",
+          message = list(src = r_local$uploaded_img)
+        )
+      })
+
+      observeEvent(input$detected_barcode_quagga, {
+        req(input$detected_barcode_quagga)
+        # Faire un template de modal qui affiche le résultat, et permet si on veut de mettre à jour l'ISBN
+      })
+
+
 
       observeEvent(r_local$isbn_is_valid, {
         if (r_local$isbn_is_valid) {
