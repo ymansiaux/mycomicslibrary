@@ -25,7 +25,10 @@ app_ui <- function(request) {
     # Your application UI logic
     page_navbar(
       title = "My App",
-      nav_panel(title = "One", p("First page content.")),
+      nav_panel(
+        title = "One",
+        p("First page content.")
+      ),
       nav_panel(title = "Two", p("Second page content.")),
       nav_panel("Three", p("Third page content.")),
       nav_spacer(),
