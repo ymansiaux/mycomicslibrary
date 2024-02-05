@@ -12,8 +12,10 @@ $(document).ready(function () {
     }, function (result) {
       if (result.codeResult) {
         console.log("result", result.codeResult.code);
+        Shiny.setInputValue("detected_barcode", result.codeResult.code);
       } else {
         console.log("not detected");
+        Shiny.setInputValue("detected_barcode", "0");
       }
     });
   });
