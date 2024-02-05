@@ -145,3 +145,21 @@ test_that("clean_open_library_result works", {
     )
   )
 })
+
+test_that("give_me_one_random_isbn works", {
+  isbn_number <- give_me_one_random_isbn()
+
+  expect_true(
+    is.character(isbn_number)
+  )
+
+  expect_equal(
+    nchar(isbn_number),
+    13
+  )
+
+  expect_equal(
+    regmatches(isbn_number, regexec("^[0-9]{13}$", isbn_number))[[1]],
+    isbn_number
+  )
+})

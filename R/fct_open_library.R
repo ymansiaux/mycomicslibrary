@@ -13,9 +13,8 @@
 #' @examples
 #' call_open_library_api(isbn_number = "2365772013")
 call_open_library_api <- function(
-  root_api = "https://openlibrary.org/api/books",
-  isbn_number
-) {
+    root_api = "https://openlibrary.org/api/books",
+    isbn_number) {
   if (isFALSE(as.character(isbn_number))) {
     stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
@@ -127,4 +126,16 @@ get_isbn13 <- function(json) {
 #' @noRd
 get_publishers <- function(json) {
   get_nested_field(json, "publishers")
+}
+
+#' Return a random ISBN from mycomicslibrary::isbn_sample
+#' @return a random ISBN
+#' @rdname fct_open_library
+#' @export
+#' @examples
+#' give_me_one_random_isbn()
+give_me_one_random_isbn <- function() {
+  mycomicslibrary::isbn_sample |>
+    sample(1) |>
+    as.character()
 }

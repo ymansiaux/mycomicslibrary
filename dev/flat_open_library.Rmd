@@ -48,9 +48,8 @@ cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
 #' @export
 #' @rdname fct_open_library
 call_open_library_api <- function(
-  root_api = "https://openlibrary.org/api/books",
-  isbn_number
-) {
+    root_api = "https://openlibrary.org/api/books",
+    isbn_number) {
   if (isFALSE(as.character(isbn_number))) {
     stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
@@ -331,6 +330,7 @@ test_that("clean_open_library_result works", {
 ```{r function-give_me_one_random_isbn}
 #' Return a random ISBN from mycomicslibrary::isbn_sample
 #' @return a random ISBN
+#' @rdname fct_open_library
 #' @export
 give_me_one_random_isbn <- function() {
   mycomicslibrary::isbn_sample |>

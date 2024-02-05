@@ -3,6 +3,7 @@
 \name{call_open_library_api}
 \alias{call_open_library_api}
 \alias{clean_open_library_result}
+\alias{give_me_one_random_isbn}
 \title{Appel à l'API Open Library}
 \usage{
 call_open_library_api(
@@ -11,6 +12,8 @@ call_open_library_api(
 )
 
 clean_open_library_result(book_tibble)
+
+give_me_one_random_isbn()
 }
 \arguments{
 \item{root_api}{l'URL de base de l'API}
@@ -23,11 +26,15 @@ clean_open_library_result(book_tibble)
 un tibble avec les informations de l'API
 
 a tibble with the cleaned result of the API call
+
+a random ISBN
 }
 \description{
 Appel à l'API Open Library
 
 Nettoyage du résultat de l'API Open Library
+
+Return a random ISBN from mycomicslibrary::isbn_sample
 }
 \examples{
 call_open_library_api(isbn_number = "2365772013")
@@ -35,4 +42,5 @@ isbn_number <- "2365772013"
 result <- call_open_library_api(isbn_number = isbn_number)
 
 clean_open_library_result(result)
+give_me_one_random_isbn()
 }
