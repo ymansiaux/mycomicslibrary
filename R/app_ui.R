@@ -27,20 +27,6 @@ app_ui <- function(request) {
       title = "My App",
       nav_panel(
         title = "One",
-        actionButton("btn", "Click me!"),
-        tags$div(
-          class = "camera",
-          tags$video(id = "video", "Video stream not available"),
-          tags$button(id = "startbutton", "Take photo")
-        ),
-        tags$canvas(id = "canvas"),
-        tags$div(
-          class = "output",
-          tags$img(
-            id = "photo",
-            alt = "The screen capture will appear in this box."
-          )
-        ),
         mod_100_search_isbn_ui("100_search_isbn_1")
       ),
       nav_panel(title = "Two", p("Second page content.")),

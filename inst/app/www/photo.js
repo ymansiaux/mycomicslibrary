@@ -1,6 +1,5 @@
-//https://developer.mozilla.org/en-US/docs/Web/API/Media_Capture_and_Streams_API/Taking_still_photos
 $(document).ready(function () {
-    Shiny.addCustomMessageHandler('takepicture', function (arg) {
+    Shiny.addCustomMessageHandler('takewebcampicture', function (arg) {
         // The width and height of the captured photo. We will set the
         // width to the value defined here, but the height will be
         // calculated based on the aspect ratio of the input stream.
@@ -117,6 +116,7 @@ $(document).ready(function () {
 
                 const data = canvas.toDataURL("image/png");
                 photo.setAttribute("src", data);
+                Shiny.setInputValue("webcam_photo", "data");
             } else {
                 clearphoto();
             }
@@ -125,6 +125,6 @@ $(document).ready(function () {
         // Set up our event listener to run the startup process
         // once loading is complete.
         window.addEventListener("load", startup, false);
-    });
+    })
 });
 

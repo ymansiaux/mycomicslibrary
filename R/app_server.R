@@ -6,9 +6,11 @@
 #' @noRd
 app_server <- function(input, output, session) {
   on.exit({
-    file.remove(app_sys(
-      "app/www/uploaded_picture.jpg"
-    ))
+    if (file.exists(app_sys("app/www/uploaded_picture.jpg"))) {
+      file.remove(app_sys(
+        "app/www/uploaded_picture.jpg"
+      ))
+    }
   })
 
   # Your application server logic

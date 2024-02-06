@@ -1,0 +1,71 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# take_picture_from_webcam_ui
+    
+```{r function-take_picture_from_webcam_ui}
+#' Generate a UI for taking a picture from the webcam
+#'
+#' @return a shiny tagList
+#' @importFrom shiny tagList tags
+#' @rdname fct_webcam_utils
+#' @export
+take_picture_from_webcam_ui <- function(id) {
+  tagList(
+    tags$div(
+      id = id,
+      style = "display: none;",
+      tags$div(
+        class = "camera",
+        tags$video(id = "video", "Video stream not available"),
+        tags$button(id = "startbutton", "Take photo")
+      ),
+      tags$canvas(id = "canvas"),
+      tags$div(
+        class = "output"
+        # ,
+        # tags$img(
+        #   id = "photo",
+        #   alt = "The screen capture will appear in this box."
+        # )
+      )
+    )
+  )
+}
+```
+  
+```{r tests-take_picture_from_webcam_ui}
+test_that("take_picture_from_webcam_ui works", {
+  expect_true(
+    inherits(
+      take_picture_from_webcam_ui(id = "bobi"),
+      "shiny.tag.list"
+    )
+  )
+})
+```
+  
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_webcam_utils.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

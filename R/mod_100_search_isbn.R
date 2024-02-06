@@ -10,7 +10,16 @@
 mod_100_search_isbn_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    mod_110_find_isbn_ui(ns("110_find_isbn_1"))
+    fluidRow(
+      column(
+        width = 6,
+        mod_110_find_isbn_ui(ns("110_find_isbn_1"))
+      ),
+      column(
+        width = 6,
+        mod_120_add_picture_ui(ns("120_add_picture_1"))
+      )
+    )
   )
 }
 
@@ -22,6 +31,7 @@ mod_100_search_isbn_server <- function(id) {
     ns <- session$ns
 
     mod_110_find_isbn_server("110_find_isbn_1")
+    mod_120_add_picture_server("120_add_picture_1")
   })
 }
 

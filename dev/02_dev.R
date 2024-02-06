@@ -22,6 +22,7 @@ attachment::att_amend_desc()
 ## Create a module infrastructure in R/
 golem::add_module(name = "100_search_isbn", with_test = TRUE) # Name of the module
 golem::add_module(name = "110_find_isbn", with_test = TRUE) # Name of the module
+golem::add_module(name = "120_add_picture", with_test = TRUE) # Name of the module
 golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
