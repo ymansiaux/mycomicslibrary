@@ -37,13 +37,6 @@ mod_120_add_picture_ui <- function(id) {
                       accept = "image/*"
                     ),
                     actionButton(
-                      inputId = ns("take_picture_from_webcam"),
-                      label = "Prendre une photo depuis la webcam"
-                    ),
-                    take_picture_from_webcam_ui(
-                      id = ns("div_take_picture_from_webcam")
-                    ),
-                    actionButton(
                       inputId = ns("detect_isbn_from_picture"),
                       label = "Détecter l'ISBN"
                     ),
@@ -68,44 +61,55 @@ mod_120_add_picture_ui <- function(id) {
 mod_120_add_picture_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
-    #  la partie gestion d'image doit être faite dans un autre module
-    observeEvent(input$take_picture_from_webcam, {
-      #  mettre un toggle à la place
-      golem::invoke_js(
-        "show",
-        paste0("#", ns("div_take_picture_from_webcam"))
-      )
 
-      golem::invoke_js(
-        "takewebcampicture",
-        message = list(photo_id = "webcam_photo")
-      )
-    })
+    r_local <- reactiveValues(
+      uploaded_img = NULL
+    )
 
     observeEvent(input$pause, {
       browser()
     })
 
-    observeEvent(input$upload_picture, {
-      req(input$upload_picture)
+    observeEvent(input$upload_picture$datapath, {
+      req(input$upload_picture$datapath)
+
+      img_name <- tempfile(fileext = ".jpg")
+
       file.copy(
         from = input$upload_picture$datapath,
         to = file.path(
-          app_sys("app/www/"),
-          "uploaded_picture.jpg"
+          app_sys("app/www/img_tmp"),
+          basename(img_name)
         ),
         overwrite = TRUE
       )
-      r_local$uploaded_img <- "www/uploaded_picture.jpg"
+
+      r_local$uploaded_img <- file.path(
+        "www",
+        "img_tmp",
+        basename(img_name)
+      )
+
+      session$userData$uploaded_img <- c(
+        session$userData$uploaded_img,
+        r_local$uploaded_img
+      )
     })
 
     observeEvent(input$detect_isbn_from_picture, {
       req(r_local$uploaded_img)
       golem::invoke_js(
         "quagga",
-        message = list(src = r_local$uploaded_img)
+        message = list(
+          src = r_local$uploaded_img,
+          id = ns("detected_barcode_quagga")
+        )
       )
     })
+
+    observe(
+      print(input$detected_barcode_quagga)
+    )
 
 
     observeEvent(input$detected_barcode_quagga, {

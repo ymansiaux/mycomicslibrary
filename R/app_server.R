@@ -5,11 +5,20 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  on.exit({
-    if (file.exists(app_sys("app/www/uploaded_picture.jpg"))) {
-      file.remove(app_sys(
-        "app/www/uploaded_picture.jpg"
-      ))
+  session$onSessionEnded(function() {
+    if (length(session$userData$uploaded_img) > 0) {
+      sapply(
+        session$userData$uploaded_img,
+        function(x) {
+          if (file.exists(
+            file.path(app_sys("app"), x)
+          )) {
+            file.remove(
+              file.path(app_sys("app"), x)
+            )
+          }
+        }
+      )
     }
   })
 

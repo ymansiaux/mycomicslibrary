@@ -12,10 +12,10 @@ $(document).ready(function () {
     }, function (result) {
       if (result.codeResult) {
         console.log("result", result.codeResult.code);
-        Shiny.setInputValue("detected_barcode_quagga", result.codeResult.code);
+        Shiny.setInputValue(arg.id, result.codeResult.code);
       } else {
         console.log("not detected");
-        Shiny.setInputValue("detected_barcode_quagga", "0");
+        Shiny.setInputValue(arg.id, "0");
       }
     });
   });
