@@ -107,14 +107,20 @@ mod_120_add_picture_server <- function(id) {
       )
     })
 
-    observe(
+    observe({
       print(input$detected_barcode_quagga)
-    )
+      print(input$add_detected_isbn_to_collection)
+    })
 
 
     observeEvent(input$detected_barcode_quagga, {
       req(input$detected_barcode_quagga)
-      # Faire un template de modal qui affiche le résultat, et permet si on veut de mettre à jour l'ISBN
+
+      browser()
+
+      shiny_alert_isbn_detected_on_img(
+        input$detected_barcode_quagga
+      )
     })
   })
 }

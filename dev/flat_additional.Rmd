@@ -1,0 +1,109 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# shiny_alert_isbn_detected_on_img
+    
+```{r function-shiny_alert_isbn_detected_on_img}
+#' @noRd
+#' @param detected_isbn_value The detected ISBN value
+#' @importFrom shinyalert shinyalert
+#' @importFrom shiny tags tagAppendChild
+#' @rdname fct_mod_120
+shiny_alert_isbn_detected_on_img <- function(detected_isbn_value) {
+  #  voir gestion des ns
+  shinyalert(
+    html = TRUE,
+    title = "ISBN détecté !",
+    type = "success",
+    showCancelButton = FALSE,
+    showConfirmButton = FALSE,
+    text = tagList(
+      tags$div(
+        style = "
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;",
+        tags$h5(
+          sprintf("ISBN détecté : %s", detected_isbn_value)
+        ),
+        tags$span(
+          tags$button(
+            id = "validate_detected_isbn",
+            class = "btn btn-success",
+            "Ajouter l'ISBN détecté au menu de recherche",
+            onclick =
+            ## cette partie là ne marche pas : histoire de ns ?
+              sprintf(
+                "Shiny.setInputValue('add_detected_isbn_to_collection', %s)",
+                detected_isbn_value
+              )
+          ),
+          tags$button(
+            id = "leave_modal",
+            style = "background-color: #d9534f; border-color: #d43f3a;",
+            "Abandonner"
+          )
+        )
+      )
+    )
+  )
+}
+```
+  
+```{r example-shiny_alert_isbn_detected_on_img}
+shiny_alert_isbn_detected_on_img()
+```
+  
+```{r tests-shiny_alert_isbn_detected_on_img}
+test_that("shiny_alert_isbn_detected_on_img works", {
+  expect_true(inherits(shiny_alert_isbn_detected_on_img, "function"))
+})
+```
+  
+
+# shiny_alert_isbn_not_detected_on_img
+    
+```{r function-shiny_alert_isbn_not_detected_on_img}
+#' @noRd
+#' @rdname fct_mod_120
+#' @importFrom shinyalert shinyalert
+#' @importFrom shiny tags
+shiny_alert_isbn_not_detected_on_img <- function() {
+
+}
+```
+  
+```{r example-shiny_alert_isbn_not_detected_on_img}
+shiny_alert_isbn_not_detected_on_img()
+```
+  
+```{r tests-shiny_alert_isbn_not_detected_on_img}
+test_that("shiny_alert_isbn_not_detected_on_img works", {
+  expect_true(inherits(shiny_alert_isbn_not_detected_on_img, "function"))
+})
+```
+  
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_additional.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

@@ -23,6 +23,7 @@ Imports:
     purrr,
     RSQLite,
     shiny (>= 1.7.5.1),
+    shinyalert,
     tidyjson,
     tidyselect
 Suggests: 
