@@ -35,6 +35,15 @@ mod_110_find_isbn_ui <- function(id) {
                       inputId = ns("isbn"),
                       label = "ISBN",
                       placeholder = "ISBN (10 ou 13 chiffres)"
+                    ),
+                    div(
+                      style = "
+                       padding: 10px;
+                       padding-top: 0px;
+                       font-size: .75rem;
+                       color: #FF0000BB;",
+                      id = ns("error_isbn_length"),
+                      "L'ISBN doit contenir 10 ou 13 chiffres"
                     )
                   ),
                   div(
@@ -99,8 +108,10 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(r_local$isbn_is_valid, {
         if (r_local$isbn_is_valid) {
           golem::invoke_js("reable", paste0("#", ns("search")))
+          golem::invoke_js("hide", paste0("#", ns("error_isbn_length")))
         } else {
           golem::invoke_js("disable", paste0("#", ns("search")))
+          golem::invoke_js("show", paste0("#", ns("error_isbn_length")))
         }
       })
 
