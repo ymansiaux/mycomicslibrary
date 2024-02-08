@@ -27,7 +27,7 @@ app_ui <- function(request) {
       title = "My App",
       nav_panel(
         title = "One",
-        p("First page content.")
+        mod_100_search_isbn_ui("100_search_isbn_1")
       ),
       nav_panel(title = "Two", p("Second page content.")),
       nav_panel("Three", p("Third page content.")),

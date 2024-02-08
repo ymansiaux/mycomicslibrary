@@ -1,3 +1,16 @@
+flat_additional.Rmd:
+  path: dev/flat_additional.Rmd
+  state: active
+  R: R/fct_mod_120.R
+  tests: tests/testthat/test-fct_mod_120.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_additional.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_database.Rmd:
   path: dev/flat_database.Rmd
   state: active
@@ -11,6 +24,19 @@ flat_database.Rmd:
     check: false
     document: true
     overwrite: ask
+flat_mod120.Rmd:
+  path: dev/flat_mod120.Rmd
+  state: active
+  R: R/fct_mod_120.R
+  tests: tests/testthat/test-fct_mod_120.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_mod120.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_open_library.Rmd:
   path: dev/flat_open_library.Rmd
   state: active
@@ -19,6 +45,19 @@ flat_open_library.Rmd:
   vignettes: []
   inflate:
     flat_file: dev/flat_open_library.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
+flat_webcam_utils.Rmd:
+  path: dev/flat_webcam_utils.Rmd
+  state: active
+  R: R/fct_webcam_utils.R
+  tests: tests/testthat/test-fct_webcam_utils.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_webcam_utils.Rmd
     vignette_name: .na
     open_vignette: true
     check: false

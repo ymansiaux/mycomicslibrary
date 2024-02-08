@@ -20,7 +20,9 @@ attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/
-golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
+golem::add_module(name = "100_search_isbn", with_test = TRUE) # Name of the module
+golem::add_module(name = "110_find_isbn", with_test = TRUE) # Name of the module
+golem::add_module(name = "120_add_picture", with_test = TRUE) # Name of the module
 golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
@@ -32,7 +34,9 @@ golem::add_utils("helpers", with_test = TRUE)
 ## Creates .js and .css files at inst/app/www
 golem::add_js_file("script")
 golem::add_js_handler("quaggajs")
-golem::add_css_file("custom")
+golem::add_js_handler("quaggajs_webcam")
+golem::add_js_handler("wait_for_button_to_be_available")
+golem::add_css_file("photo")
 golem::add_sass_file("custom")
 
 ## Add internal datasets ----
