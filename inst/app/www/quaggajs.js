@@ -13,9 +13,11 @@ $(document).ready(function () {
       if (result.codeResult) {
         console.log("result", result.codeResult.code);
         Shiny.setInputValue(arg.id, result.codeResult.code);
+        Shiny.setInputValue(arg.quagga_has_finished, Math.random());
       } else {
         console.log("not detected");
         Shiny.setInputValue(arg.id, "No barcode detected");
+        Shiny.setInputValue(arg.quagga_has_finished, Math.random());
       }
     });
   });

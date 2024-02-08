@@ -19,30 +19,23 @@ pkgload::load_all(export_all = FALSE)
 ```{r function-shiny_alert_isbn_detected_on_img}
 #' @noRd
 #' @param detected_isbn_value The detected ISBN value
-#' @param ns The namespace
+#' @param validate_button_id The id of the validate button
+#' @param cancel_button_id The id of the cancel button
 #' @importFrom shinyalert shinyalert
 #' @importFrom shiny tags tagAppendChild
 #' @rdname fct_mod_120
 shiny_alert_isbn_detected_on_img <- function(
   detected_isbn_value,
-  ns
+  validate_button_id,
+  cancel_button_id
 ) {
   #  voir gestion des ns
   shinyalert(
     html = TRUE,
     title = "ISBN détecté !",
     type = "success",
-    showCancelButton = TRUE,
-    confirmButtonText = "Ajouter l'ISBN au champ de texte",
-    cancelButtonText = "Abandonner",
-    callbackJS = sprintf(
-      "function(x) {
-        //if (x !== false) {
-               Shiny.setInputValue('%s', x, {priority: 'event'});
-               //}
-               }",
-      ns("add_detected_isbn_to_textInput")
-    ),
+    showCancelButton = FALSE,
+    showConfirmButton = FALSE,
     text = tagList(
       tags$div(
         style = "
@@ -52,6 +45,19 @@ shiny_alert_isbn_detected_on_img <- function(
           justify-content: center;",
         tags$h5(
           sprintf("ISBN détecté : %s", detected_isbn_value)
+        ),
+        tags$span(
+          tags$button(
+            id = validate_button_id,
+            class = "btn btn-success",
+            "Ajouter l'ISBN détecté au menu de recherche",
+          ),
+          tags$button(
+            id = cancel_button_id,
+            class = "btn btn-danger",
+            style = "background-color: #d9534f; border-color: #d43f3a;",
+            "Abandonner"
+          )
         )
       )
     )

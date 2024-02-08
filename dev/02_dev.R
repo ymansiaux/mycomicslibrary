@@ -35,6 +35,7 @@ golem::add_utils("helpers", with_test = TRUE)
 golem::add_js_file("script")
 golem::add_js_handler("quaggajs")
 golem::add_js_handler("quaggajs_webcam")
+golem::add_js_handler("wait_for_button_to_be_available")
 golem::add_css_file("photo")
 golem::add_sass_file("custom")
 
