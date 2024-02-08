@@ -107,20 +107,22 @@ mod_120_add_picture_server <- function(id) {
       )
     })
 
-    observe({
-      print(input$detected_barcode_quagga)
-      print(input$add_detected_isbn_to_collection)
+    observeEvent(input$add_detected_isbn_to_textInput, {
+      print(input$add_detected_isbn_to_textInput)
     })
 
 
     observeEvent(input$detected_barcode_quagga, {
       req(input$detected_barcode_quagga)
 
-      browser()
-
-      shiny_alert_isbn_detected_on_img(
-        input$detected_barcode_quagga
-      )
+      if (input$detected_barcode_quagga == "No barcode detected") {
+        shiny_alert_no_barcode_detected_on_img(ns = ns)
+      } else {
+        shiny_alert_isbn_detected_on_img(
+          input$detected_barcode_quagga,
+          ns = ns
+        )
+      }
     })
   })
 }

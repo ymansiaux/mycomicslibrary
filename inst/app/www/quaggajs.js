@@ -15,7 +15,7 @@ $(document).ready(function () {
         Shiny.setInputValue(arg.id, result.codeResult.code);
       } else {
         console.log("not detected");
-        Shiny.setInputValue(arg.id, "0");
+        Shiny.setInputValue(arg.id, "No barcode detected");
       }
     });
   });

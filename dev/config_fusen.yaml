@@ -24,6 +24,19 @@ flat_database.Rmd:
     check: false
     document: true
     overwrite: ask
+flat_mod120.Rmd:
+  path: dev/flat_mod120.Rmd
+  state: active
+  R: R/fct_mod_120.R
+  tests: tests/testthat/test-fct_mod_120.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_mod120.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_open_library.Rmd:
   path: dev/flat_open_library.Rmd
   state: active
