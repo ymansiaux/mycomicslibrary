@@ -34,7 +34,8 @@ mod_110_find_isbn_ui <- function(id) {
                     textInput(
                       inputId = ns("isbn"),
                       label = "ISBN",
-                      placeholder = "ISBN (10 ou 13 chiffres)"
+                      placeholder = "ISBN (10 ou 13 chiffres)",
+                      value = "9782365772013"
                     ),
                     div(
                       style = "
@@ -61,6 +62,25 @@ mod_110_find_isbn_ui <- function(id) {
                     )
                   )
                 )
+              ),
+              column(
+                width = 6,
+                div(
+                  style = "
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-around;
+                  height: 250px;
+                  border-left: grey dotted;
+                  padding-left: 1em;
+                  ",
+                  div(
+                    actionButton(
+                      inputId = ns("show_api_call_result"),
+                      label = "Pas de résultat à afficher pour le moment"
+                    ) |> shiny::tagAppendAttributes("disabled" = "disabled")
+                  )
+                )
               )
             )
           )
@@ -81,7 +101,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
 
       r_local <- reactiveValues(
         isbn_is_valid = FALSE,
-        uploaded_img = NULL
+        api_call_status = NULL
       )
 
       observeEvent(
@@ -122,6 +142,54 @@ mod_110_find_isbn_server <- function(id, r_global) {
             session = session,
             inputId = "isbn",
             value = r_global$detected_barcode_quagga
+          )
+        }
+      })
+
+      observeEvent(input$search, {
+        req(input$isbn)
+        req(r_local$isbn_is_valid)
+
+        api_res <- call_open_library_api(
+          isbn_number = input$isbn
+        )
+
+        if (inherits(api_res, "try-error")) {
+          r_local$api_call_status <- "error"
+        } else if (nrow(api_res) == 0) {
+          r_local$api_call_status <- "warning"
+        } else {
+          r_local$api_call_status <- "success"
+        }
+        print(r_local$api_call_status)
+      })
+
+      observeEvent(r_local$api_call_status, {
+        req(r_local$api_call_status)
+
+        if (r_local$api_call_status == "error") {
+          golem::invoke_js("disable", paste0("#", ns("show_api_call_result")))
+          updateActionButton(
+            session = session,
+            inputId = "show_api_call_result",
+            label = "Erreur lors de l'appel à l'API",
+            icon = icon("exclamation-triangle")
+          )
+        } else if (r_local$api_call_status == "warning") {
+          golem::invoke_js("disable", paste0("#", ns("show_api_call_result")))
+          updateActionButton(
+            session = session,
+            inputId = "show_api_call_result",
+            label = "Aucun résultat à afficher",
+            icon = icon("exclamation-triangle")
+          )
+        } else {
+          golem::invoke_js("reable", paste0("#", ns("show_api_call_result")))
+          updateActionButton(
+            session = session,
+            inputId = "show_api_call_result",
+            label = "Afficher le résultat de l'appel à l'API",
+            icon = icon("check")
           )
         }
       })
