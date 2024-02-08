@@ -26,12 +26,12 @@ mod_100_search_isbn_ui <- function(id) {
 #' 100_search_isbn Server Functions
 #'
 #' @noRd
-mod_100_search_isbn_server <- function(id) {
+mod_100_search_isbn_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    mod_110_find_isbn_server("110_find_isbn_1")
-    mod_120_add_picture_server("120_add_picture_1")
+    mod_110_find_isbn_server("110_find_isbn_1", r_global)
+    mod_120_add_picture_server("120_add_picture_1", r_global)
   })
 }
 

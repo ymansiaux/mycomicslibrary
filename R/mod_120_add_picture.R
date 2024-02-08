@@ -34,6 +34,8 @@ mod_120_add_picture_ui <- function(id) {
                     fileInput(
                       inputId = ns("upload_picture"),
                       label = "Uploader une photo",
+                      buttonLabel = "Choisir une photo",
+                      placeholder = "Aucune photo sélectionnée",
                       accept = "image/*"
                     ),
                     actionButton(
@@ -58,7 +60,7 @@ mod_120_add_picture_ui <- function(id) {
 #' 120_add_picture Server Functions
 #'
 #' @noRd
-mod_120_add_picture_server <- function(id) {
+mod_120_add_picture_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -110,41 +112,44 @@ mod_120_add_picture_server <- function(id) {
 
     observeEvent(
       input$do_i_keep_the_isbn,
+      ignoreInit = TRUE,
       {
-        print(input$do_i_keep_the_isbn)
+        r_global$do_i_keep_the_isbn <- as.logical(input$do_i_keep_the_isbn)
+        r_global$detected_barcode_quagga <- input$detected_barcode_quagga
       }
     )
 
     observeEvent(input$quagga_has_finished, {
       req(input$detected_barcode_quagga)
 
-      golem::invoke_js(
-        "waitForButtons",
-        message = list(
-          buttonToWaitFor1 = ns("validate_detected_isbn"),
-          buttonToWaitFor2 = ns("leave_modal"),
-          shinyinput = ns("do_i_keep_the_isbn")
+      if (input$detected_barcode_quagga == "No barcode detected") {
+        golem::invoke_js(
+          "waitForButtons",
+          message = list(
+            buttonToWaitFor1 = ns("leave_modal_error"),
+            buttonToWaitFor2 = ns("fake_button"),
+            shinyinput = ns("do_i_keep_the_isbn")
+          )
         )
-      )
+        shiny_alert_isbn_not_detected_on_img(
+          cancel_button_id = ns("leave_modal_error")
+        )
+      } else {
+        golem::invoke_js(
+          "waitForButtons",
+          message = list(
+            buttonToWaitFor1 = ns("leave_modal"),
+            buttonToWaitFor2 = ns("validate_detected_isbn"),
+            shinyinput = ns("do_i_keep_the_isbn")
+          )
+        )
 
-      shiny_alert_isbn_detected_on_img(
-        input$detected_barcode_quagga,
-        validate_button_id = ns("validate_detected_isbn"),
-        cancel_button_id = ns("leave_modal")
-      )
-
-
-
-      # if (input$detected_barcode_quagga == "No barcode detected") {
-      #   shiny_alert_no_barcode_detected_on_img(ns = ns)
-      # } else {
-      # shiny_alert_isbn_detected_on_img(
-      #   input$detected_barcode_quagga,
-      #   validate_button_id = ns("validate_detected_isbn"),
-      #   shinyinput_to_be_set = ns("do_i_keep_the_isbn"),
-      #   ns = ns
-      # )
-      # }
+        shiny_alert_isbn_detected_on_img(
+          input$detected_barcode_quagga,
+          validate_button_id = ns("validate_detected_isbn"),
+          cancel_button_id = ns("leave_modal")
+        )
+      }
     })
   })
 }

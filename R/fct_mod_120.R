@@ -14,7 +14,6 @@ shiny_alert_isbn_detected_on_img <- function(
   validate_button_id,
   cancel_button_id
 ) {
-  #  voir gestion des ns
   shinyalert(
     html = TRUE,
     title = "ISBN détecté !",
@@ -50,11 +49,38 @@ shiny_alert_isbn_detected_on_img <- function(
 }
 
 #' @noRd
-#' @rdname fct_mod_120
+#' @param cancel_button_id The id of the cancel button
 #' @importFrom shinyalert shinyalert
-#' @importFrom shiny tags
+#' @importFrom shiny tags tagAppendChild
+#' @rdname fct_mod_120
 #' @examples
 #' shiny_alert_isbn_not_detected_on_img()
-shiny_alert_isbn_not_detected_on_img <- function() {
-
+shiny_alert_isbn_not_detected_on_img <- function(cancel_button_id) {
+  shinyalert(
+    html = TRUE,
+    title = "ISBN non détecté !",
+    type = "error",
+    showCancelButton = FALSE,
+    showConfirmButton = FALSE,
+    text = tagList(
+      tags$div(
+        style = "
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;",
+        tags$h5(
+          "Aucun ISBN n'a été détecté, réessayez ou entrez l'ISBN manuellement."
+        ),
+        tags$span(
+          tags$button(
+            id = cancel_button_id,
+            class = "btn btn-danger",
+            style = "background-color: #d9534f; border-color: #d43f3a;",
+            "Abandonner"
+          )
+        )
+      )
+    )
+  )
 }

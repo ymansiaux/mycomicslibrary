@@ -64,7 +64,7 @@ mod_110_find_isbn_ui <- function(id) {
 #' 110_find_isbn Server Functions
 #'
 #' @noRd
-mod_110_find_isbn_server <- function(id) {
+mod_110_find_isbn_server <- function(id, r_global) {
   moduleServer(
     id,
     function(input, output, session) {
@@ -101,6 +101,17 @@ mod_110_find_isbn_server <- function(id) {
           golem::invoke_js("reable", paste0("#", ns("search")))
         } else {
           golem::invoke_js("disable", paste0("#", ns("search")))
+        }
+      })
+
+      observeEvent(r_global$do_i_keep_the_isbn, {
+        req(r_global$do_i_keep_the_isbn)
+        if (r_global$do_i_keep_the_isbn) {
+          updateTextInput(
+            session = session,
+            inputId = "isbn",
+            value = r_global$detected_barcode_quagga
+          )
         }
       })
     }
