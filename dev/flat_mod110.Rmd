@@ -1,0 +1,115 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# shiny_alert_api_result
+    
+```{r function-shiny_alert_api_result}
+#' @noRd
+#' @param book a cleaned book object
+#' @param book_cover book cover
+#' @param add_library_button_id id for the add to library button
+#' @param add_wishlist_button_id id for the add to wishlist button
+#' @importFrom shinyalert shinyalert
+#' @importFrom shiny tags tagAppendChild
+#' @rdname fct_mod_110
+shiny_alert_api_result <- function(
+  book,
+  book_cover,
+  add_library_button_id,
+  add_wishlist_button_id
+) {
+  shinyalert(
+    html = TRUE,
+    title = "Livre identifié",
+    type = "info",
+    showCancelButton = FALSE,
+    showConfirmButton = FALSE,
+    text = tagList(
+      tags$div(
+        tags$div(
+          style = "
+          display: flex;
+          flex-direction: column;
+          ",
+          tags$div(
+            tags$ul(
+              style = "text-align: left; list-style-type: none;",
+              tags$li(
+                sprintf("Titre : %s", book$title)
+              ),
+              tags$li(
+                sprintf("Auteur(s) : %s", book$author)
+              ),
+              tags$li(
+                sprintf("Date de publication : %s", book$publish_date)
+              ),
+              tags$li(
+                sprintf("Nombre de pages : %s", book$number_of_pages)
+              ),
+              tags$li(
+                sprintf("Editeur : %s", book$publisher)
+              )
+            )
+          ),
+          tags$div(
+            tags$img(
+              src = book_cover,
+              style = "width: 30%; height: auto;"
+            )
+          )
+        ),
+        tags$span(
+          tags$button(
+            id = add_library_button_id,
+            class = "btn btn-success",
+            icon = icon("plus"),
+            "Ajouter le livre à ma bibliothèque",
+          ),
+          tags$button(
+            id = add_wishlist_button_id,
+            class = "btn btn-info",
+            icon = icon("heart"),
+            style = "background-color: #d9534f; border-color: #d43f3a;",
+            "Ajouter à ma liste d'envies"
+          )
+        )
+      )
+    )
+  )
+}
+```
+  
+```{r example-shiny_alert_api_result}
+shiny_alert_api_result()
+```
+  
+```{r tests-shiny_alert_api_result}
+test_that("shiny_alert_api_result works", {
+  expect_true(inherits(shiny_alert_api_result, "function"))
+})
+```
+  
+  
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_mod110.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

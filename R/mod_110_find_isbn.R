@@ -82,6 +82,7 @@ mod_110_find_isbn_ui <- function(id) {
                   style = "
                   display: flex;
                   flex-direction: column;
+                  align-items: center;
                   justify-content: space-around;
                   align-items: center;
                   height: 300px;
@@ -115,7 +116,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
 
       r_local <- reactiveValues(
         isbn_is_valid = FALSE,
-        api_call_status = NULL
+        api_call_status = NULL,
+        api_res = NULL
       )
 
       # observeEvent(input$add_barcode_picture, {
@@ -179,7 +181,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           r_local$api_call_status <- "success"
         }
-        print(r_local$api_call_status)
+
+        r_local$api_res <- api_res
       })
 
       observeEvent(r_local$api_call_status, {
@@ -206,10 +209,32 @@ mod_110_find_isbn_server <- function(id, r_global) {
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
-            label = "Afficher le résultat de l'appel à l'API",
+            label = "Afficher le résultat",
             icon = icon("check")
           )
         }
+      })
+
+      observeEvent(input$show_api_call_result, {
+        req(r_local$api_res)
+
+        browser()
+
+        cleaned_res <- clean_open_library_result(book_tibble = r_local$api_res)
+        book_cover <- try(
+          get_cover(
+            isbn = input$isbn,
+            cover_size = "M"
+          ),
+          silent = TRUE
+        )
+
+        shiny_alert_api_result(
+          book = cleaned_res,
+          book_cover = book_cover,
+          add_library_button_id = ns("add_to_library"),
+          add_wishlist_button_id = ns("add_to_wishlist")
+        )
       })
     }
   )
