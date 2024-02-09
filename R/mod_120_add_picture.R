@@ -12,7 +12,7 @@ mod_120_add_picture_ui <- function(id) {
   tagList(
     fluidRow(
       column(
-        width = 12,
+        width = 10,
         card(
           card_header(
             class = "bg-dark",

@@ -28,14 +28,18 @@ mod_110_find_isbn_ui <- function(id) {
                   display: flex;
                   flex-direction: column;
                   justify-content: space-around;
-                  height: 250px;
+                  height: 300px;
                   ",
                   div(
-                    textInput(
-                      inputId = ns("isbn"),
-                      label = "ISBN",
-                      placeholder = "ISBN (10 ou 13 chiffres)",
-                      value = "9782365772013"
+                    h4("Recherche par ISBN"),
+                    div(
+                      style = "padding-top:0.5em;",
+                      textInput(
+                        inputId = ns("isbn"),
+                        label = "ISBN",
+                        placeholder = "ISBN (10 ou 13 chiffres)",
+                        value = "9782365772013"
+                      )
                     ),
                     div(
                       style = "
@@ -56,6 +60,15 @@ mod_110_find_isbn_ui <- function(id) {
                   ),
                   div(
                     actionButton(
+                      inputId = ns("add_barcode_picture"),
+                      label = "Importer une photo de code-barres",
+                      icon = icon("camera"),
+                      onclick = "window.location.href = '#detectisbn';"
+                    )
+                  ),
+                  div(
+                    style = "padding-top: 1em;",
+                    actionButton(
                       inputId = ns("search"),
                       label = "Rechercher le livre",
                       icon = icon("search")
@@ -70,7 +83,8 @@ mod_110_find_isbn_ui <- function(id) {
                   display: flex;
                   flex-direction: column;
                   justify-content: space-around;
-                  height: 250px;
+                  align-items: center;
+                  height: 300px;
                   border-left: grey dotted;
                   padding-left: 1em;
                   ",
@@ -103,6 +117,10 @@ mod_110_find_isbn_server <- function(id, r_global) {
         isbn_is_valid = FALSE,
         api_call_status = NULL
       )
+
+      # observeEvent(input$add_barcode_picture, {
+      #   r_global$add_picture_div_must_be_visible <- TRUE
+      # })
 
       observeEvent(
         input$isbn,

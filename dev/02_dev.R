@@ -38,6 +38,7 @@ golem::add_js_handler("quaggajs_webcam")
 golem::add_js_handler("wait_for_button_to_be_available")
 golem::add_css_file("photo")
 golem::add_sass_file("custom")
+golem::add_html_template("template")
 
 ## Add internal datasets ----
 ## If you have data in your package
