@@ -13,8 +13,9 @@
 #' @examples
 #' call_open_library_api(isbn_number = "2365772013")
 call_open_library_api <- function(
-    root_api = "https://openlibrary.org/api/books",
-    isbn_number) {
+  root_api = "https://openlibrary.org/api/books",
+  isbn_number
+) {
   if (isFALSE(as.character(isbn_number))) {
     stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
@@ -38,7 +39,6 @@ call_open_library_api <- function(
 #' @param book_tibble a tibble with the result of the API call
 #' @return a tibble with the cleaned result of the API call
 #' @importFrom janitor clean_names
-#' @importFrom tidyjson as_data_frame
 #' @importFrom dplyr select mutate
 #' @importFrom tidyselect everything
 #' @importFrom purrr map map_chr
@@ -54,7 +54,7 @@ clean_open_library_result <- function(book_tibble) {
     clean_names()
 
   df_part <- book_tibble_cleaned_names |>
-    tidyjson::as_data_frame() |>
+    as.data.frame() |>
     select(
       info_url,
       thumbnail_url,

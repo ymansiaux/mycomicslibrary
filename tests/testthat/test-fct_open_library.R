@@ -141,7 +141,7 @@ test_that("clean_open_library_result works", {
         NA,
         -1L
       ),
-      class = c("tbl_df", "tbl", "data.frame")
+      class = "data.frame"
     )
   )
 })
