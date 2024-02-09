@@ -2,11 +2,13 @@
 
 export(call_open_library_api)
 export(clean_open_library_result)
+export(export_img_from_dataurl)
 export(get_cover)
 export(give_me_one_random_isbn)
 export(run_app)
 import(bslib)
 import(shiny)
+importFrom(base64enc,base64decode)
 importFrom(bslib,card)
 importFrom(bslib,card_body)
 importFrom(bslib,card_header)

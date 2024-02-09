@@ -24,7 +24,7 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     bootstrapLib(theme = bslib::bs_theme(version = 5)),
     htmlTemplate(
-      app_sys("app/www/template.html"),
+      app_sys("app/www/templates_html/template.html"),
       module1 = mod_100_search_isbn_ui("100_search_isbn_1"),
       module2 = mod_200_add_picture_ui("120_add_picture_1")
     )

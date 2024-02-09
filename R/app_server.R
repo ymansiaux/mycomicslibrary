@@ -26,4 +26,15 @@ app_server <- function(input, output, session) {
 
   mod_100_search_isbn_server("100_search_isbn_1", r_global)
   mod_200_add_picture_server("120_add_picture_1", r_global)
+
+  observeEvent(input$base64url, {
+    browser()
+
+    toto <- gsub(
+      pattern = "data:image/jpeg;base64,",
+      replacement = "",
+      x = input$base64url
+      # x = substr(input$base64url, 1, 30)
+    )
+  })
 }

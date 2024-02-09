@@ -223,7 +223,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         cleaned_res <- clean_open_library_result(book_tibble = r_local$api_res)
         book_cover <- try(
           get_cover(
-            isbn = input$isbn,
+            isbn_number = input$isbn,
             cover_size = "M"
           ),
           silent = TRUE
