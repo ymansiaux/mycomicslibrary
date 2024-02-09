@@ -25,7 +25,8 @@ app_ui <- function(request) {
     bootstrapLib(theme = bslib::bs_theme(version = 5)),
     htmlTemplate(
       app_sys("app/www/template.html"),
-      module1 = mod_100_search_isbn_ui("100_search_isbn_1")
+      module1 = mod_100_search_isbn_ui("100_search_isbn_1"),
+      module2 = mod_120_add_picture_ui("120_add_picture_1")
     )
     # Your application UI logic
     # page_navbar(

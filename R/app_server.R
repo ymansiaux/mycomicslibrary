@@ -25,4 +25,5 @@ app_server <- function(input, output, session) {
   r_global <- reactiveValues()
 
   mod_100_search_isbn_server("100_search_isbn_1", r_global)
+  mod_120_add_picture_server("120_add_picture_1", r_global)
 }

@@ -62,7 +62,8 @@ mod_110_find_isbn_ui <- function(id) {
                     actionButton(
                       inputId = ns("add_barcode_picture"),
                       label = "Importer une photo de code-barres",
-                      icon = icon("camera")
+                      icon = icon("camera"),
+                      onclick = "window.location.href = '#detectisbn';"
                     )
                   ),
                   div(
@@ -116,6 +117,10 @@ mod_110_find_isbn_server <- function(id, r_global) {
         isbn_is_valid = FALSE,
         api_call_status = NULL
       )
+
+      # observeEvent(input$add_barcode_picture, {
+      #   r_global$add_picture_div_must_be_visible <- TRUE
+      # })
 
       observeEvent(
         input$isbn,
