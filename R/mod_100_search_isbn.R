@@ -12,13 +12,13 @@ mod_100_search_isbn_ui <- function(id) {
   tagList(
     fluidRow(
       column(
-        width = 6,
+        width = 10,
         mod_110_find_isbn_ui(ns("110_find_isbn_1"))
-      ),
-      column(
-        width = 6,
-        mod_120_add_picture_ui(ns("120_add_picture_1"))
-      )
+      ) # ,
+      # column(
+      #   width = 6,
+      #   mod_120_add_picture_ui(ns("120_add_picture_1"))
+      # )
     )
   )
 }
