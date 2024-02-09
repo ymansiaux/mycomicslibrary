@@ -69,6 +69,7 @@ mod_110_find_isbn_ui <- function(id) {
                   style = "
                   display: flex;
                   flex-direction: column;
+                  align-items: center;
                   justify-content: space-around;
                   height: 250px;
                   border-left: grey dotted;
@@ -101,7 +102,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
 
       r_local <- reactiveValues(
         isbn_is_valid = FALSE,
-        api_call_status = NULL
+        api_call_status = NULL,
+        api_res = NULL
       )
 
       observeEvent(
@@ -161,7 +163,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           r_local$api_call_status <- "success"
         }
-        print(r_local$api_call_status)
+
+        r_local$api_res <- api_res
       })
 
       observeEvent(r_local$api_call_status, {
@@ -192,6 +195,20 @@ mod_110_find_isbn_server <- function(id, r_global) {
             icon = icon("check")
           )
         }
+      })
+
+      observeEvent(input$show_api_call_result, {
+        req(r_local$api_res)
+
+        browser()
+
+        cleaned_res <- clean_open_library_result(book_tibble = r_local$api_res)
+
+        shiny_alert_api_result(
+          book = cleaned_res,
+          add_library_button_id = ns("add_to_library"),
+          add_wishlist_button_id = ns("add_to_wishlist")
+        )
       })
     }
   )
