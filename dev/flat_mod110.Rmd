@@ -18,14 +18,16 @@ pkgload::load_all(export_all = FALSE)
     
 ```{r function-shiny_alert_api_result}
 #' @noRd
-#' @param detected_isbn_value The detected ISBN value
-#' @param validate_button_id The id of the validate button
-#' @param cancel_button_id The id of the cancel button
+#' @param book a cleaned book object
+#' @param book_cover book cover
+#' @param add_library_button_id id for the add to library button
+#' @param add_wishlist_button_id id for the add to wishlist button
 #' @importFrom shinyalert shinyalert
 #' @importFrom shiny tags tagAppendChild
 #' @rdname fct_mod_110
 shiny_alert_api_result <- function(
   book,
+  book_cover,
   add_library_button_id,
   add_wishlist_button_id
 ) {
@@ -40,9 +42,8 @@ shiny_alert_api_result <- function(
         tags$div(
           style = "
           display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;",
+          flex-direction: column;
+          ",
           tags$div(
             tags$ul(
               style = "text-align: left; list-style-type: none;",
@@ -65,8 +66,8 @@ shiny_alert_api_result <- function(
           ),
           tags$div(
             tags$img(
-              src = book$thumbnail_url,
-              style = "width: 200px; height: 300px;"
+              src = book_cover,
+              style = "width: 30%; height: auto;"
             )
           )
         ),
