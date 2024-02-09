@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_120_add_picture_ui <- function(id) {
+mod_200_add_picture_ui <- function(id) {
   ns <- NS(id)
   tagList(
     fluidRow(
@@ -60,7 +60,7 @@ mod_120_add_picture_ui <- function(id) {
 #' 120_add_picture Server Functions
 #'
 #' @noRd
-mod_120_add_picture_server <- function(id, r_global) {
+mod_200_add_picture_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -155,7 +155,7 @@ mod_120_add_picture_server <- function(id, r_global) {
 }
 
 ## To be copied in the UI
-# mod_120_add_picture_ui("120_add_picture_1")
+# mod_200_add_picture_ui("120_add_picture_1")
 
 ## To be copied in the server
-# mod_120_add_picture_server("120_add_picture_1")
+# mod_200_add_picture_server("120_add_picture_1")

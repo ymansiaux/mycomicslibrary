@@ -24,14 +24,14 @@ flat_mod110.Rmd:
     check: false
     document: true
     overwrite: ask
-flat_mod120.Rmd:
-  path: dev/flat_mod120.Rmd
+flat_mod200.Rmd:
+  path: dev/flat_mod200.Rmd
   state: active
-  R: R/fct_mod_120.R
-  tests: tests/testthat/test-fct_mod_120.R
+  R: R/fct_mod_200.R
+  tests: tests/testthat/test-fct_mod_200.R
   vignettes: []
   inflate:
-    flat_file: dev/flat_mod120.Rmd
+    flat_file: dev/flat_mod200.Rmd
     vignette_name: .na
     open_vignette: true
     check: false

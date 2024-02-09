@@ -22,7 +22,7 @@ mod_100_search_isbn_ui <- function(id) {
     #   fluidRow(
     #     column(
     #       width = 10,
-    #       mod_120_add_picture_ui(ns("120_add_picture_1"))
+    #       mod_200_add_picture_ui(ns("120_add_picture_1"))
     #     )
     #   )
     # )
@@ -37,7 +37,7 @@ mod_100_search_isbn_server <- function(id, r_global) {
     ns <- session$ns
 
     mod_110_find_isbn_server("110_find_isbn_1", r_global)
-    mod_120_add_picture_server("120_add_picture_1", r_global)
+    mod_200_add_picture_server("120_add_picture_1", r_global)
 
     # observeEvent(r_global$add_picture_div_must_be_visible, {
     #   golem::invoke_js("show", paste0("#", ns("add_picture_div_must_be_visible")))
