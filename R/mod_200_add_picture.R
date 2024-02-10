@@ -49,6 +49,11 @@ mod_200_add_picture_ui <- function(id) {
                   )
                 )
               )
+            ),
+            fluidRow(
+              htmlTemplate(
+                app_sys("app/www/templates_html/template_webcam.html")
+              )
             )
           )
         )

@@ -15,11 +15,6 @@ mod_100_search_isbn_ui <- function(id) {
         width = 10,
         mod_110_find_isbn_ui(ns("110_find_isbn_1"))
       )
-    ),
-    fluidRow(
-      htmlTemplate(
-        app_sys("app/www/templates_html/template_webcam.html")
-      )
     )
   )
 }
