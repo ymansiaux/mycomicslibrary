@@ -29,14 +29,14 @@ mod_200_add_picture_ui <- function(id) {
                   display: flex;
                   flex-direction: column;
                   justify-content: space-around;
-                  height: 250px;
+                  //height: 250px;
                   ",
                   div(
                     style = "
                   display: flex;
                   flex-direction: row;
                   justify-content: space-between;
-                  height: 250px;
+                  //height: 250px;
                   ",
                     div(
                       fileInput(
@@ -74,6 +74,13 @@ mod_200_add_picture_ui <- function(id) {
                     )
                   ),
                   div(
+                    style = "
+                            align-items: center;
+                            text-align: center;
+                            border-top: black dotted;
+                            padding-top: 1em;
+                            ",
+                    uiOutput(ns("current_image")),
                     actionButton(
                       inputId = ns("detect_isbn_from_picture"),
                       label = "Détecter l'ISBN"
@@ -119,6 +126,14 @@ mod_200_add_picture_server <- function(id, r_global) {
       }
     )
 
+    output$current_image <- renderUI({
+      req(r_local$last_picture)
+      tags$img(
+        src = r_local$last_picture,
+        style = "max-width: 25%;"
+      )
+    })
+
     observeEvent(input$upload_picture$datapath, {
       req(input$upload_picture$datapath)
 
@@ -147,11 +162,12 @@ mod_200_add_picture_server <- function(id, r_global) {
     })
 
     observeEvent(input$detect_isbn_from_picture, {
-      req(r_local$uploaded_img)
+      browser()
+      req(r_local$last_picture)
       golem::invoke_js(
         "quagga",
         message = list(
-          src = r_local$uploaded_img,
+          src = r_local$last_picture,
           id = ns("detected_barcode_quagga"),
           quagga_has_finished = ns("quagga_has_finished")
         )
