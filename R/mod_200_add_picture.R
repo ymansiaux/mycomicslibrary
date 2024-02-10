@@ -52,7 +52,25 @@ mod_200_add_picture_ui <- function(id) {
             ),
             fluidRow(
               htmlTemplate(
-                app_sys("app/www/templates_html/template_webcam.html")
+                app_sys("app/www/templates_html/template_webcam.html"),
+                button1 = tagList(
+                  actionButton(
+                    inputId = "webcam-start-camera",
+                    label = "Démarrer la caméra"
+                  )
+                ),
+                button2 = tagList(
+                  actionButton(
+                    inputId = "webcam-click-photo",
+                    label = "Prendre une photo"
+                  )
+                ),
+                button3 = tagList(
+                  actionButton(
+                    inputId = "webcam-stop-camera",
+                    label = "Arrêter la caméra"
+                  )
+                ),
               )
             )
           )
