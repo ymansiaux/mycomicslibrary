@@ -30,11 +30,19 @@ app_server <- function(input, output, session) {
   observeEvent(input$base64url, {
     browser()
 
-    toto <- gsub(
-      pattern = "data:image/jpeg;base64,",
-      replacement = "",
-      x = input$base64url
-      # x = substr(input$base64url, 1, 30)
+    img_name <- file.path(
+      app_sys("app/www/img_tmp"),
+      basename(tempfile(fileext = ".jpg"))
+    )
+
+    export_img_from_dataurl(
+      dataurl = input$base64url,
+      output_img = img_name
+    )
+
+    session$userData$uploaded_img <- c(
+      session$userData$uploaded_img,
+      img_name
     )
   })
 }
