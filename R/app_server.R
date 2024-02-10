@@ -49,5 +49,6 @@ app_server <- function(input, output, session) {
         basename(img_name)
       )
     )
+    r_global$new_picture_taken <- Sys.time()
   })
 }

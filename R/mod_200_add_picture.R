@@ -70,12 +70,23 @@ mod_200_add_picture_server <- function(id, r_global) {
     ns <- session$ns
 
     r_local <- reactiveValues(
-      uploaded_img = NULL
+      uploaded_img = NULL,
+      last_picture = NULL
     )
 
     observeEvent(input$pause, {
       browser()
     })
+
+    observeEvent(
+      r_global$new_picture_taken,
+      {
+        req(r_global$new_picture_taken)
+        r_local$last_picture <- session$userData$uploaded_img[length(
+          session$userData$uploaded_img
+        )]
+      }
+    )
 
     observeEvent(input$upload_picture$datapath, {
       req(input$upload_picture$datapath)
@@ -101,6 +112,7 @@ mod_200_add_picture_server <- function(id, r_global) {
         session$userData$uploaded_img,
         r_local$uploaded_img
       )
+      r_global$new_picture_taken <- Sys.time()
     })
 
     observeEvent(input$detect_isbn_from_picture, {
