@@ -3,18 +3,32 @@ display: flex;
 flex-direction: column;
 ">
     <div>
+        <p>Prendre une photo</p>
+    </div>
+    <div style="padding-top: 0.25em;">
         {{button1}}
     </div>
-    <div>
-        <video id="webcam-video" width="320" height="240" autoplay></video>
-    </div>
-    <div>
-        {{button2}}
-    </div>
-    <div>
-        {{button3}}
+    <div id="to_be_hidden_when_camera_is_off" style="display: none;">
+
+        <div>
+            <video id="webcam-video" width="320" height="240" autoplay></video>
+        </div>
+        <div style="padding-top: 1em;">
+            {{button2}}
+        </div>
+        <div style="padding-top: 1em;">
+            {{button3}}
+        </div>
     </div>
     <div>
         <canvas id="webcam-canvas" width="320" height="240"></canvas>
     </div>
 </div>
+<script>
+    function hidecameraelements() {
+        $("#to_be_hidden_when_camera_is_off").hide();
+    }
+    function showcameraelements() {
+        $("#to_be_hidden_when_camera_is_off").show();
+    }
+</script>
