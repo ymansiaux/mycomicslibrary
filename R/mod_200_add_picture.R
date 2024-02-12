@@ -161,6 +161,7 @@ mod_200_add_picture_server <- function(id, r_global) {
 
     observeEvent(input$detect_isbn_from_picture, {
       req(r_local$last_picture)
+      # browser()
       golem::invoke_js(
         "quagga",
         message = list(
