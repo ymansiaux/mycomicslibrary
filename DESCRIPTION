@@ -10,6 +10,7 @@ BugReports: https://github.com/ymansiaux/mycomicslibrary/issues
 Depends: 
     R (>= 2.10)
 Imports: 
+    base64enc,
     bslib,
     cli,
     config (>= 0.3.2),

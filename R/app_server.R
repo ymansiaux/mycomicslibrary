@@ -26,4 +26,29 @@ app_server <- function(input, output, session) {
 
   mod_100_search_isbn_server("100_search_isbn_1", r_global)
   mod_200_add_picture_server("120_add_picture_1", r_global)
+
+  #  Webcam related operations are kept at the root level
+  #  Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
+  observeEvent(input$base64url, {
+    img_name <- file.path(
+      app_sys("app/www/img_tmp"),
+      basename(tempfile(fileext = ".jpg"))
+    )
+
+    export_img_from_dataurl(
+      dataurl = input$base64url,
+      output_img = img_name
+    )
+
+
+    session$userData$uploaded_img <- c(
+      session$userData$uploaded_img,
+      file.path(
+        "www",
+        "img_tmp",
+        basename(img_name)
+      )
+    )
+    r_global$new_picture_taken <- Sys.time()
+  })
 }

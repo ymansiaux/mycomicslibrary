@@ -21,23 +21,64 @@ mod_200_add_picture_ui <- function(id) {
           card_body(
             fluidRow(
               column(
-                width = 6,
+                width = 12,
+                h4("Détecter un ISBN à partir d'une photo"),
                 div(
                   style = "
+                  padding-top: 1em;
                   display: flex;
                   flex-direction: column;
                   justify-content: space-around;
-                  height: 250px;
                   ",
                   div(
-                    h3("Détecter un ISBN à partir d'une photo"),
-                    fileInput(
-                      inputId = ns("upload_picture"),
-                      label = "Uploader une photo",
-                      buttonLabel = "Choisir une photo",
-                      placeholder = "Aucune photo sélectionnée",
-                      accept = "image/*"
+                    style = "
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  ",
+                    div(
+                      fileInput(
+                        inputId = ns("upload_picture"),
+                        label = "Uploader une photo",
+                        buttonLabel = "Choisir une photo",
+                        placeholder = "Aucune photo sélectionnée",
+                        accept = "image/*"
+                      )
                     ),
+                    div(
+                      htmlTemplate(
+                        app_sys("app/www/templates_html/template_webcam.html"),
+                        button1 = tagList(
+                          actionButton(
+                            inputId = "webcam-start-camera",
+                            label = "Démarrer la caméra",
+                            onclick = "showcameraelements()"
+                          )
+                        ),
+                        button2 = tagList(
+                          actionButton(
+                            inputId = "webcam-click-photo",
+                            label = "Prendre une photo"
+                          )
+                        ),
+                        button3 = tagList(
+                          actionButton(
+                            inputId = "webcam-stop-camera",
+                            label = "Arrêter la caméra",
+                            onclick = "hidecameraelements()"
+                          )
+                        ),
+                      )
+                    )
+                  ),
+                  div(
+                    style = "
+                            align-items: center;
+                            text-align: center;
+                            border-top: black dotted;
+                            padding-top: 1em;
+                            ",
+                    uiOutput(ns("current_image")),
                     actionButton(
                       inputId = ns("detect_isbn_from_picture"),
                       label = "Détecter l'ISBN"
@@ -65,11 +106,30 @@ mod_200_add_picture_server <- function(id, r_global) {
     ns <- session$ns
 
     r_local <- reactiveValues(
-      uploaded_img = NULL
+      uploaded_img = NULL,
+      last_picture = NULL
     )
 
     observeEvent(input$pause, {
       browser()
+    })
+
+    observeEvent(
+      r_global$new_picture_taken,
+      {
+        req(r_global$new_picture_taken)
+        r_local$last_picture <- session$userData$uploaded_img[length(
+          session$userData$uploaded_img
+        )]
+      }
+    )
+
+    output$current_image <- renderUI({
+      req(r_local$last_picture)
+      tags$img(
+        src = r_local$last_picture,
+        style = "max-width: 25%;"
+      )
     })
 
     observeEvent(input$upload_picture$datapath, {
@@ -96,14 +156,16 @@ mod_200_add_picture_server <- function(id, r_global) {
         session$userData$uploaded_img,
         r_local$uploaded_img
       )
+      r_global$new_picture_taken <- Sys.time()
     })
 
     observeEvent(input$detect_isbn_from_picture, {
-      req(r_local$uploaded_img)
+      req(r_local$last_picture)
+      # browser()
       golem::invoke_js(
         "quagga",
         message = list(
-          src = r_local$uploaded_img,
+          src = r_local$last_picture,
           id = ns("detected_barcode_quagga"),
           quagga_has_finished = ns("quagga_has_finished")
         )

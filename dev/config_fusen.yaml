@@ -54,3 +54,20 @@ flat_open_library.Rmd:
     check: false
     document: true
     overwrite: ask
+flat_webcam.Rmd:
+  path: dev/flat_webcam.Rmd
+  state: active
+  R:
+  - R/fct_webcam.R
+  - R/export_img_from_dataurl.R
+  tests:
+  - tests/testthat/test-fct_webcam.R
+  - tests/testthat/test-export_img_from_dataurl.R
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_webcam.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
