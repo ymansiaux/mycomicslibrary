@@ -25,18 +25,16 @@ mod_200_add_picture_ui <- function(id) {
                 h4("Détecter un ISBN à partir d'une photo"),
                 div(
                   style = "
-                  padding-top: 2em;
+                  padding-top: 1em;
                   display: flex;
                   flex-direction: column;
                   justify-content: space-around;
-                  //height: 250px;
                   ",
                   div(
                     style = "
                   display: flex;
                   flex-direction: row;
                   justify-content: space-between;
-                  //height: 250px;
                   ",
                     div(
                       fileInput(
@@ -162,7 +160,6 @@ mod_200_add_picture_server <- function(id, r_global) {
     })
 
     observeEvent(input$detect_isbn_from_picture, {
-      browser()
       req(r_local$last_picture)
       golem::invoke_js(
         "quagga",
