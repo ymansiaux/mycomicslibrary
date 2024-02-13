@@ -106,7 +106,7 @@ mod_110_find_isbn_ui <- function(id) {
 }
 
 #' 110_find_isbn Server Functions
-#'
+#' @importFrom dplyr filter
 #' @noRd
 mod_110_find_isbn_server <- function(id, r_global) {
   moduleServer(
@@ -268,24 +268,54 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           to_add$possede <- 0
         }
-        append_comics_db(
-          ISBN = to_add$ISBN,
-          titre = to_add$titre,
-          possede = to_add$possede,
-          date_publication = to_add$date_publication,
-          nb_pages = to_add$nb_pages,
-          editeur = to_add$editeur,
-          note = to_add$note,
-          type_publication = to_add$type_publication,
-          statut = to_add$statut,
-          lien_cover = to_add$lien_cover
-        )
+
+        is_the_book_already_in_db <- read_comics_db() |>
+          filter(ISBN == to_add$ISBN) |>
+          nrow()
+        is_the_book_already_in_db <- is_the_book_already_in_db > 0
+
+        if (isTRUE(is_the_book_already_in_db)) {
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "error",
+              msg = "Ce livre est déjà dans la base de données."
+            )
+          )
+        } else {
+          append_res <- append_comics_db(
+            ISBN = to_add$ISBN,
+            titre = to_add$titre,
+            possede = to_add$possede,
+            date_publication = to_add$date_publication,
+            nb_pages = to_add$nb_pages,
+            editeur = to_add$editeur,
+            note = to_add$note,
+            type_publication = to_add$type_publication,
+            statut = to_add$statut,
+            lien_cover = to_add$lien_cover
+          )
+          if (append_res == 1) {
+            golem::invoke_js(
+              "call_sweetalert2",
+              message = list(
+                type = "success",
+                msg = "Le livre a été ajouté avec succès"
+              )
+            )
+          } else {
+            golem::invoke_js(
+              "call_sweetalert2",
+              message = list(
+                type = "error",
+                msg = "Le livre n'a pu être ajouté à la base de données"
+              )
+            )
+          }
+        }
+
         print(read_comics_db())
       })
-
-      # observeEvent(input$do_i_add_to_wishlist, {
-      #   print(glue::glue("Add to wishlist {input$do_i_add_to_wishlist}"))
-      # })
     }
   )
 }
