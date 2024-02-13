@@ -12,6 +12,15 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 The goal of mycomicslibrary is to …
 
+Lien vers le template html utilisé :
+
+<https://startbootstrap.com/>
+<https://startbootstrap.com/template/scrolling-nav>
+
+Lien vers le code pour gérer la webcam :
+
+<https://usefulangle.com/post/352/javascript-capture-image-from-camera>
+
 ## Installation
 
 You can install the development version of mycomicslibrary from
