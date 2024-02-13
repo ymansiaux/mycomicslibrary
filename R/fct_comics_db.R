@@ -50,19 +50,20 @@ get_most_recent_entry_per_doc <- function(db) {
 #'     {
 #'       init_comics_db()
 #'       read_comics_db()
-#'       append_feedback_db(
+#'       append_comics_db(
 #'         ISBN = "1234567890",
 #'         titre = "BOBI",
 #'         possede = 1,
 #'         date_publication = "2020-01-01",
 #'         nb_pages = 154,
+#'         editeur = "truc",
 #'         note = 5,
 #'         type_publication = "comics",
 #'         statut = "Lu",
 #'         lien_cover = "https://mycover.com"
 #'       )
 #'       read_comics_db()
-#'       delete_feedback_db()
+#'       delete_comics_db()
 #'       unlink("BOBI.sqlite")
 #'     }
 #'   )
@@ -85,6 +86,7 @@ init_comics_db <- function() {
         titre = "TEXT",
         date_publication = "TEXT",
         nb_pages = "INTEGER",
+        editeur = "TEXT",
         note = "INTEGER",
         type_publication = "TEXT",
         statut = "TEXT",
@@ -109,12 +111,13 @@ read_comics_db <- function() {
 }
 #' @rdname fct_comics_db
 
-append_feedback_db <- function(
+append_comics_db <- function(
   ISBN,
   titre,
   possede,
   date_publication,
   nb_pages,
+  editeur,
   note,
   type_publication,
   statut,
@@ -129,6 +132,7 @@ append_feedback_db <- function(
       possede,
       date_publication,
       nb_pages,
+      editeur,
       note,
       type_publication,
       statut,
@@ -156,6 +160,7 @@ append_feedback_db <- function(
       possede = possede,
       date_publication = date_publication,
       nb_pages = nb_pages,
+      editeur = editeur,
       note = note,
       type_publication = type_publication,
       statut = statut,
@@ -166,7 +171,7 @@ append_feedback_db <- function(
 }
 #' @rdname fct_comics_db
 
-delete_feedback_db <- function() {
+delete_comics_db <- function() {
   con <- connect_to_comics_db()
   on.exit({
     DBI::dbDisconnect(con)
