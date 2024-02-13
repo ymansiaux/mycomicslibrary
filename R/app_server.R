@@ -24,8 +24,27 @@ app_server <- function(input, output, session) {
 
   r_global <- reactiveValues()
 
-  mod_100_search_isbn_server("100_search_isbn_1", r_global)
-  mod_200_add_picture_server("120_add_picture_1", r_global)
+  # Init comics db
+  observeEvent(TRUE, once = TRUE, {
+    unlink(get_database_path())
+    r_global$comics_db <- init_comics_db()
+    print(r_global$comics_db)
+  })
+
+
+
+  observeEvent(r_global$comics_db, {
+    req(r_global$comics_db)
+    golem::invoke_js(
+      "call_sweetalert2",
+      message = list(
+        type = "autoclose",
+        msg = "Connexion à la base de données réussie"
+      )
+    )
+    mod_100_search_isbn_server("100_search_isbn_1", r_global)
+    mod_200_add_picture_server("120_add_picture_1", r_global)
+  })
 
   #  Webcam related operations are kept at the root level
   #  Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)

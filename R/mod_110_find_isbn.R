@@ -106,7 +106,7 @@ mod_110_find_isbn_ui <- function(id) {
 }
 
 #' 110_find_isbn Server Functions
-#'
+#' @importFrom dplyr filter
 #' @noRd
 mod_110_find_isbn_server <- function(id, r_global) {
   moduleServer(
@@ -117,12 +117,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
       r_local <- reactiveValues(
         isbn_is_valid = FALSE,
         api_call_status = NULL,
-        api_res = NULL
+        api_res = NULL,
+        cleaned_res = NULL
       )
-
-      # observeEvent(input$add_barcode_picture, {
-      #   r_global$add_picture_div_must_be_visible <- TRUE
-      # })
 
       observeEvent(
         input$isbn,
@@ -218,7 +215,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$show_api_call_result, {
         req(r_local$api_res)
 
-        cleaned_res <- clean_open_library_result(book_tibble = r_local$api_res)
+        r_local$cleaned_res <- clean_open_library_result(
+          book_tibble = r_local$api_res
+        )
         book_cover <- try(
           get_cover(
             isbn_number = input$isbn,
@@ -227,13 +226,95 @@ mod_110_find_isbn_server <- function(id, r_global) {
           silent = TRUE
         )
 
+        golem::invoke_js(
+          "waitForButtons",
+          message = list(
+            buttonToWaitFor1 = ns("add_to_wishlist"),
+            buttonToWaitFor2 = ns("add_to_library"),
+            shinyinput = ns("do_i_add_to_library"),
+            triggerid = ns("trigger")
+          )
+        )
+
+
         shiny_alert_api_result(
-          book = cleaned_res,
+          book = r_local$cleaned_res,
           book_cover = book_cover,
           add_library_button_id = ns("add_to_library"),
           add_wishlist_button_id = ns("add_to_wishlist"),
           cancel_button_id = ns("leave_modal")
         )
+      })
+
+      observeEvent(input$trigger, {
+        req(r_local$cleaned_res)
+
+        to_add <- list(
+          ISBN = r_local$cleaned_res$isbn_13,
+          titre = r_local$cleaned_res$title,
+          date_publication = r_local$cleaned_res$publish_date,
+          nb_pages = r_local$cleaned_res$number_of_pages,
+          editeur = r_local$cleaned_res$publisher,
+          note = "",
+          type_publication = "",
+          statut = "",
+          lien_cover = get_cover(
+            isbn_number = r_local$cleaned_res$isbn_13
+          )
+        )
+
+        if (input$do_i_add_to_library) {
+          to_add$possede <- 1
+        } else {
+          to_add$possede <- 0
+        }
+
+        is_the_book_already_in_db <- read_comics_db() |>
+          filter(ISBN == to_add$ISBN) |>
+          nrow()
+        is_the_book_already_in_db <- is_the_book_already_in_db > 0
+
+        if (isTRUE(is_the_book_already_in_db)) {
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "error",
+              msg = "Ce livre est déjà dans la base de données."
+            )
+          )
+        } else {
+          append_res <- append_comics_db(
+            ISBN = to_add$ISBN,
+            titre = to_add$titre,
+            possede = to_add$possede,
+            date_publication = to_add$date_publication,
+            nb_pages = to_add$nb_pages,
+            editeur = to_add$editeur,
+            note = to_add$note,
+            type_publication = to_add$type_publication,
+            statut = to_add$statut,
+            lien_cover = to_add$lien_cover
+          )
+          if (append_res == 1) {
+            golem::invoke_js(
+              "call_sweetalert2",
+              message = list(
+                type = "success",
+                msg = "Le livre a été ajouté avec succès"
+              )
+            )
+          } else {
+            golem::invoke_js(
+              "call_sweetalert2",
+              message = list(
+                type = "error",
+                msg = "Le livre n'a pu être ajouté à la base de données"
+              )
+            )
+          }
+        }
+
+        print(read_comics_db())
       })
     }
   )

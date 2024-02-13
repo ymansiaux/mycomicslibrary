@@ -22,6 +22,7 @@ pkgload::load_all(export_all = FALSE)
 #' @param book_cover book cover
 #' @param add_library_button_id id for the add to library button
 #' @param add_wishlist_button_id id for the add to wishlist button
+#' @param cancel_button_id id for the cancel button
 #' @importFrom shinyalert shinyalert
 #' @importFrom shiny tags tagAppendChild
 #' @rdname fct_mod_110

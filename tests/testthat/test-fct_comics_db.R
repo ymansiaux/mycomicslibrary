@@ -29,12 +29,13 @@ test_that("init/read/append works", {
         )
 
         expect_equal(
-          append_feedback_db(
+          append_comics_db(
             ISBN = "1234567890",
             titre = "BOBI",
             possede = 1,
             date_publication = "2020-01-01",
             nb_pages = 154,
+            editeur = "truc",
             note = 5,
             type_publication = "comics",
             statut = "Lu",
@@ -71,6 +72,11 @@ test_that("init/read/append works", {
         )
 
         expect_equal(
+          db$editeur,
+          "truc"
+        )
+
+        expect_equal(
           db$note,
           5
         )
@@ -102,12 +108,13 @@ test_that("get_most_recent_entry_per_doc works", {
         init_comics_db()
 
         # Document 1
-        append_feedback_db(
+        append_comics_db(
           ISBN = "1234567890",
           titre = "BOBI",
           possede = 0,
           date_publication = "2020-01-01",
           nb_pages = 154,
+          editeur = "truc",
           note = 5,
           type_publication = "comics",
           statut = "Non-lu",
@@ -131,12 +138,13 @@ test_that("get_most_recent_entry_per_doc works", {
           0
         )
 
-        append_feedback_db(
+        append_comics_db(
           ISBN = "1234567890",
           titre = "BOBI",
           possede = 1,
           date_publication = "2020-01-01",
           nb_pages = 154,
+          editeur = "truc",
           note = 5,
           type_publication = "comics",
           statut = "Non-lu",
@@ -161,12 +169,13 @@ test_that("get_most_recent_entry_per_doc works", {
           1
         )
 
-        append_feedback_db(
+        append_comics_db(
           ISBN = "1234567890",
           titre = "BOBI",
           possede = 1,
           date_publication = "2020-01-01",
           nb_pages = 154,
+          editeur = "truc",
           note = 5,
           type_publication = "comics",
           statut = "Lu",
@@ -192,12 +201,13 @@ test_that("get_most_recent_entry_per_doc works", {
         )
 
         # Document 2
-        append_feedback_db(
+        append_comics_db(
           ISBN = "9786543210",
           titre = "BOBI2",
           possede = 1,
           date_publication = "2020-01-01",
           nb_pages = 154,
+          editeur = "truc",
           note = 5,
           type_publication = "comics",
           statut = "Non-lu",
@@ -221,12 +231,13 @@ test_that("get_most_recent_entry_per_doc works", {
           1
         )
 
-        append_feedback_db(
+        append_comics_db(
           ISBN = "9786543210",
           titre = "BOBI2",
           possede = 1,
           date_publication = "2020-01-01",
           nb_pages = 154,
+          editeur = "truc",
           note = 5,
           type_publication = "comics",
           statut = "Lu",

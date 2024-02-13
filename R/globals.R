@@ -8,5 +8,6 @@ globalVariables(unique(c(
   "title",
   "id_document",
   "datetime",
-  "decode_my_photo"
+  "decode_my_photo",
+  "ISBN"
 )))
