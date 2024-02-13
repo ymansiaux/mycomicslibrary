@@ -180,7 +180,8 @@ mod_200_add_picture_server <- function(id, r_global) {
           message = list(
             buttonToWaitFor1 = ns("leave_modal_error"),
             buttonToWaitFor2 = ns("fake_button"),
-            shinyinput = ns("do_i_keep_the_isbn")
+            shinyinput = ns("do_i_keep_the_isbn"),
+            triggerid = ns("trigger")
           )
         )
         shiny_alert_isbn_not_detected_on_img(
@@ -192,7 +193,8 @@ mod_200_add_picture_server <- function(id, r_global) {
           message = list(
             buttonToWaitFor1 = ns("leave_modal"),
             buttonToWaitFor2 = ns("validate_detected_isbn"),
-            shinyinput = ns("do_i_keep_the_isbn")
+            shinyinput = ns("do_i_keep_the_isbn"),
+            triggerid = ns("trigger")
           )
         )
 
@@ -206,46 +208,12 @@ mod_200_add_picture_server <- function(id, r_global) {
 
 
     observeEvent(
-      input$do_i_keep_the_isbn,
-      ignoreInit = TRUE,
+      input$trigger,
       {
         r_global$do_i_keep_the_isbn <- as.logical(input$do_i_keep_the_isbn)
         r_global$detected_barcode_quagga <- r_local$detected_barcode
       }
     )
-
-    # observeEvent(input$quagga_has_finished, {
-    #   req(r_local$detected_barcode)
-
-    #   if (input$detected_barcode_quagga == "No barcode detected") {
-    #     golem::invoke_js(
-    #       "waitForButtons",
-    #       message = list(
-    #         buttonToWaitFor1 = ns("leave_modal_error"),
-    #         buttonToWaitFor2 = ns("fake_button"),
-    #         shinyinput = ns("do_i_keep_the_isbn")
-    #       )
-    #     )
-    #     shiny_alert_isbn_not_detected_on_img(
-    #       cancel_button_id = ns("leave_modal_error")
-    #     )
-    #   } else {
-    #     golem::invoke_js(
-    #       "waitForButtons",
-    #       message = list(
-    #         buttonToWaitFor1 = ns("leave_modal"),
-    #         buttonToWaitFor2 = ns("validate_detected_isbn"),
-    #         shinyinput = ns("do_i_keep_the_isbn")
-    #       )
-    #     )
-
-    #     shiny_alert_isbn_detected_on_img(
-    #       input$detected_barcode_quagga,
-    #       validate_button_id = ns("validate_detected_isbn"),
-    #       cancel_button_id = ns("leave_modal")
-    #     )
-    #   }
-    # })
   })
 }
 

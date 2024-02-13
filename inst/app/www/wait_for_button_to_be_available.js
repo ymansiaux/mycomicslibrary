@@ -12,10 +12,14 @@ Shiny.addCustomMessageHandler('waitForButtons', function (arg) {
 
   var setInputValueAfterClick = function (button1, button2) {
     $(document).on('click', button1, () => {
-      Shiny.setInputValue(arg.shinyinput, "FALSE", { priority: "event" })
+      // Shiny.setInputValue(arg.shinyinput, "FALSE", { priority: "event" })
+      Shiny.setInputValue(arg.shinyinput, "FALSE");
+      Shiny.setInputValue(arg.triggerid, Math.random());
     })
     $(document).on('click', button2, () => {
-      Shiny.setInputValue(arg.shinyinput, "TRUE", { priority: "event" })
+      //Shiny.setInputValue(arg.shinyinput, "TRUE", { priority: "event" })
+      Shiny.setInputValue(arg.shinyinput, "TRUE");
+      Shiny.setInputValue(arg.triggerid, Math.random());
     })
   }
 

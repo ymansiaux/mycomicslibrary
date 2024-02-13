@@ -120,10 +120,6 @@ mod_110_find_isbn_server <- function(id, r_global) {
         api_res = NULL
       )
 
-      # observeEvent(input$add_barcode_picture, {
-      #   r_global$add_picture_div_must_be_visible <- TRUE
-      # })
-
       observeEvent(
         input$isbn,
         {
@@ -227,6 +223,17 @@ mod_110_find_isbn_server <- function(id, r_global) {
           silent = TRUE
         )
 
+        golem::invoke_js(
+          "waitForButtons",
+          message = list(
+            buttonToWaitFor1 = ns("add_to_wishlist"),
+            buttonToWaitFor2 = ns("add_to_library"),
+            shinyinput = ns("do_i_add_to_library"),
+            triggerid = ns("trigger")
+          )
+        )
+
+
         shiny_alert_api_result(
           book = cleaned_res,
           book_cover = book_cover,
@@ -235,6 +242,18 @@ mod_110_find_isbn_server <- function(id, r_global) {
           cancel_button_id = ns("leave_modal")
         )
       })
+
+      observeEvent(input$trigger, {
+        if (input$do_i_add_to_library) {
+          print("je veux ajouter à la bibliothèque")
+        } else {
+          print("je ne veux pas ajouter à la bibliothèque")
+        }
+      })
+
+      # observeEvent(input$do_i_add_to_wishlist, {
+      #   print(glue::glue("Add to wishlist {input$do_i_add_to_wishlist}"))
+      # })
     }
   )
 }
