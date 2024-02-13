@@ -218,8 +218,6 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$show_api_call_result, {
         req(r_local$api_res)
 
-        browser()
-
         cleaned_res <- clean_open_library_result(book_tibble = r_local$api_res)
         book_cover <- try(
           get_cover(
@@ -233,7 +231,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
           book = cleaned_res,
           book_cover = book_cover,
           add_library_button_id = ns("add_to_library"),
-          add_wishlist_button_id = ns("add_to_wishlist")
+          add_wishlist_button_id = ns("add_to_wishlist"),
+          cancel_button_id = ns("leave_modal")
         )
       })
     }

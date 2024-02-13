@@ -14,7 +14,8 @@ shiny_alert_api_result <- function(
   book,
   book_cover,
   add_library_button_id,
-  add_wishlist_button_id
+  add_wishlist_button_id,
+  cancel_button_id
 ) {
   shinyalert(
     html = TRUE,
@@ -60,15 +61,25 @@ shiny_alert_api_result <- function(
           tags$button(
             id = add_library_button_id,
             class = "btn btn-success",
-            icon = icon("plus"),
-            "Ajouter le livre à ma bibliothèque",
+            tags$span(
+              tags$i(class = "fa fa-plus-circle"),
+              "Ajouter le livre à ma bibliothèque"
+            )
           ),
           tags$button(
             id = add_wishlist_button_id,
             class = "btn btn-info",
-            icon = icon("heart"),
+            style = "background-color: #469A96; border-color: #356F6D;",
+            tags$span(
+              tags$i(class = "fa fa-heart"),
+              "Ajouter à ma liste d'envies"
+            )
+          ),
+          tags$button(
+            id = cancel_button_id,
+            class = "btn btn-danger",
             style = "background-color: #d9534f; border-color: #d43f3a;",
-            "Ajouter à ma liste d'envies"
+            "Abandonner"
           )
         )
       )
