@@ -28,23 +28,6 @@ app_ui <- function(request) {
       module1 = mod_100_search_isbn_ui("100_search_isbn_1"),
       module2 = mod_200_add_picture_ui("120_add_picture_1")
     )
-    # Your application UI logic
-    # page_navbar(
-    #   title = "My App",
-    #   nav_panel(
-    #     title = "One",
-    #     mod_100_search_isbn_ui("100_search_isbn_1")
-    #   ),
-    #   nav_panel(title = "Two", p("Second page content.")),
-    #   nav_panel("Three", p("Third page content.")),
-    #   nav_spacer(),
-    #   nav_menu(
-    #     title = "Links",
-    #     align = "right",
-    #     nav_item(link_shiny),
-    #     nav_item(link_posit)
-    #   )
-    # )
   )
 }
 

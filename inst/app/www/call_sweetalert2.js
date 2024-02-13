@@ -16,5 +16,31 @@ $(document).ready(function () {
         text: arg.msg
       });
     }
+
+    if (arg.type == "autoclose") {
+      let timerInterval;
+      Swal.fire({
+        title: arg.msg,
+        html: "",
+        timer: 2000,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+          const timer = Swal.getPopup().querySelector("b");
+          timerInterval = setInterval(() => {
+            timer.textContent = `${Swal.getTimerLeft()}`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      }).then((result) => {
+        /* Read more about handling dismissals below */
+        if (result.dismiss === Swal.DismissReason.timer) {
+          console.log("I was closed by the timer");
+        }
+
+      });
+    }
   })
 });
