@@ -22,6 +22,7 @@ Imports:
     httr2,
     janitor,
     purrr,
+    reticulate,
     RSQLite,
     shiny (>= 1.7.5.1),
     shinyalert,

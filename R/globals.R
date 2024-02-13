@@ -7,5 +7,6 @@ globalVariables(unique(c(
   "thumbnail_url",
   "title",
   "id_document",
-  "datetime"
+  "datetime",
+  "decode_my_photo"
 )))

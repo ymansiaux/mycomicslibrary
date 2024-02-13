@@ -10,7 +10,7 @@ $(document).ready(function () {
     }, function (result) {
       if (!result) {
         console.log("Error");
-        Shiny.setInputValue(arg.id, "No barcode detected");
+        Shiny.setInputValue(arg.id, "");
         Shiny.setInputValue(arg.quagga_has_finished, Math.random());
         return;
       }
@@ -20,9 +20,19 @@ $(document).ready(function () {
         Shiny.setInputValue(arg.quagga_has_finished, Math.random());
       } else {
         console.log("not detected");
-        Shiny.setInputValue(arg.id, "No barcode detected");
+        Shiny.setInputValue(arg.id, "");
         Shiny.setInputValue(arg.quagga_has_finished, Math.random());
       }
     });
   });
 });
+
+// r_call : 
+// golem::invoke_js(
+//   "quagga",
+//   message = list(
+//     src = r_local$last_picture,
+//     id = ns("detected_barcode_quagga"),
+//     quagga_has_finished = ns("quagga_has_finished")
+//   )
+// )
