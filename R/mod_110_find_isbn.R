@@ -117,7 +117,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
       r_local <- reactiveValues(
         isbn_is_valid = FALSE,
         api_call_status = NULL,
-        api_res = NULL
+        api_res = NULL,
+        cleaned_res = NULL
       )
 
       observeEvent(
@@ -214,7 +215,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$show_api_call_result, {
         req(r_local$api_res)
 
-        cleaned_res <- clean_open_library_result(book_tibble = r_local$api_res)
+        r_local$cleaned_res <- clean_open_library_result(
+          book_tibble = r_local$api_res
+        )
         book_cover <- try(
           get_cover(
             isbn_number = input$isbn,
@@ -235,7 +238,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
 
 
         shiny_alert_api_result(
-          book = cleaned_res,
+          book = r_local$cleaned_res,
           book_cover = book_cover,
           add_library_button_id = ns("add_to_library"),
           add_wishlist_button_id = ns("add_to_wishlist"),
@@ -244,11 +247,40 @@ mod_110_find_isbn_server <- function(id, r_global) {
       })
 
       observeEvent(input$trigger, {
+        req(r_local$cleaned_res)
+
+        to_add <- list(
+          ISBN = r_local$cleaned_res$isbn_13,
+          titre = r_local$cleaned_res$title,
+          date_publication = r_local$cleaned_res$publish_date,
+          nb_pages = r_local$cleaned_res$number_of_pages,
+          editeur = r_local$cleaned_res$publisher,
+          note = "",
+          type_publication = "",
+          statut = "",
+          lien_cover = get_cover(
+            isbn_number = r_local$cleaned_res$isbn_13
+          )
+        )
+
         if (input$do_i_add_to_library) {
-          print("je veux ajouter à la bibliothèque")
+          to_add$possede <- 1
         } else {
-          print("je ne veux pas ajouter à la bibliothèque")
+          to_add$possede <- 0
         }
+        append_comics_db(
+          ISBN = to_add$ISBN,
+          titre = to_add$titre,
+          possede = to_add$possede,
+          date_publication = to_add$date_publication,
+          nb_pages = to_add$nb_pages,
+          editeur = to_add$editeur,
+          note = to_add$note,
+          type_publication = to_add$type_publication,
+          statut = to_add$statut,
+          lien_cover = to_add$lien_cover
+        )
+        print(read_comics_db())
       })
 
       # observeEvent(input$do_i_add_to_wishlist, {
