@@ -9,11 +9,11 @@ $(document).ready(function () {
         }
       ],
       search: true,
-      data: arg.data
-      // data: Array(5).fill().map(x => [
-      //   "12",
-      //   "<h1> coucou </h1>"
-      // ])
+      data: arg.data,
+      pagination: {
+        limit: 5,
+        summary: false
+      }
     }).render(document.getElementById(arg.id));
   })
 });
