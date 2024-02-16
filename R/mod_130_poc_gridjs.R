@@ -12,8 +12,8 @@ mod_130_poc_gridjs_ui <- function(id) {
   tagList(
     tags$div(
       class = "col",
-      h3("Top Ten Homme"),
-      tags$div(id = ns("top_ten_homme"))
+      h3("Ma collection"),
+      tags$div(id = ns("ma_collection"))
     )
   )
 }
@@ -38,9 +38,9 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
       # browser()
 
       golem::invoke_js(
-        "build_gridpochtml2",
+        "build_ma_collection",
         list(
-          id = ns("top_ten_homme"),
+          id = ns("ma_collection"),
           columns = names(db),
           data = do.call(cbind, lapply(db, as.character))
         )
