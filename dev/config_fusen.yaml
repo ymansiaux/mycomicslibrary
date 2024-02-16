@@ -27,8 +27,10 @@ flat_mod110.Rmd:
 flat_mod130.Rmd:
   path: dev/flat_mod130.Rmd
   state: active
-  R: R/fct_mod_130.R
-  tests: []
+  R:
+  - R/make_stars_rating_div.R
+  - R/fct_mod_130.R
+  tests: tests/testthat/test-make_stars_rating_div.R
   vignettes: []
   inflate:
     flat_file: dev/flat_mod130.Rmd

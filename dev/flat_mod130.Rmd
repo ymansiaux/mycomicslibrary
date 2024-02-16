@@ -58,6 +58,16 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       as.character()
   })
 
+  selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
+    selectInput(
+      inputId = ns(paste0("note", i)),
+      label = NULL,
+      choices = c("Comics", "BD", "Roman graphique", "Autre"),
+      selected = db$note[i]
+    ) |>
+      as.character()
+  })
+
   validate_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
       '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Enregistrer</button>',
@@ -87,6 +97,62 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
 
   db
 }
+```
+  
+
+# make_stars_rating_div
+    
+```{r function-make_stars_rating_div}
+#' Make stars rating div
+#'
+#' @return a div with stars
+#' @importFrom htmltools tags
+#' @export
+make_stars_rating_div <- function(note, max_note = 5) {
+  stars_full <- stars_empty <- list()
+  if (note != 0) {
+    stars_full <- lapply(1:note, function(x) {
+      tags$span(class = "fa fa-star checked")
+    })
+  }
+
+  if (note != max_note) {
+    stars_empty <- lapply(1:(max_note - note), function(x) {
+      tags$span(class = "fa fa-star")
+    })
+  }
+
+  tagList(
+    c(stars_full, stars_empty)
+  )
+}
+```
+  
+```{r example-make_stars_rating_div}
+make_stars_rating_div(note = 1)
+```
+  
+```{r tests-make_stars_rating_div}
+test_that("make_stars_rating_div works", {
+  expect_true(inherits(make_stars_rating_div(note = 0), "shiny.tag.list"))
+
+  stars <- make_stars_rating_div(note = 0) |> as.character()
+
+
+  expect_true(
+    length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 0
+  )
+
+  stars <- make_stars_rating_div(note = 1) |> as.character()
+  expect_true(
+    length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 1
+  )
+
+  stars <- make_stars_rating_div(note = 5) |> as.character()
+  expect_true(
+    length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 5
+  )
+})
 ```
   
 
