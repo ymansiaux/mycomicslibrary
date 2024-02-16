@@ -30,7 +30,7 @@ app_server <- function(input, output, session) {
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
-    unlink(get_database_path())
+    # unlink(get_database_path())
     r_global$comics_db <- init_comics_db()
     print(r_global$comics_db)
   })
@@ -48,7 +48,7 @@ app_server <- function(input, output, session) {
     # )
     mod_100_search_isbn_server("100_search_isbn_1", r_global)
     mod_200_add_picture_server("120_add_picture_1", r_global)
-    mod_130_poc_gridjs_server("130_poc_gridjs_1")
+    mod_130_poc_gridjs_server("130_poc_gridjs_1", r_global)
   })
 
   #  Webcam related operations are kept at the root level

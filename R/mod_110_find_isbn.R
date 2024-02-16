@@ -303,6 +303,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
                 msg = "Le livre a été ajouté avec succès"
               )
             )
+
+            r_global$comics_db <- read_comics_db()
           } else {
             golem::invoke_js(
               "call_sweetalert2",

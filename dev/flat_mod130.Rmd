@@ -1,0 +1,63 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+
+# prepare_comics_db_to_see_collection
+    
+```{r function-prepare_comics_db_to_see_collection}
+#' Prepare comics database to see collection
+#' @return a comics database with only the columns needed to see the collection
+#' @rdname fct_mod_130
+#' @importFrom dplyr select mutate
+#' @export
+prepare_comics_db_to_see_collection <- function(comics_db) {
+  db <- comics_db |>
+    select(
+      titre,
+      date_publication,
+      nb_pages,
+      editeur,
+      possede,
+      note,
+      type_publication,
+      statut,
+      lien_cover,
+      ISBN
+    ) |>
+    mutate(
+      lien_cover = paste0(
+        "<a href='",
+        lien_cover,
+        "' target=\"_blank\">",
+        "Couverture",
+        "</a>"
+      )
+    )
+}
+```
+  
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_mod130.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+
