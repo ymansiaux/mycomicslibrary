@@ -43,7 +43,7 @@ $(document).ready(function () {
         "statut",
         {
           name: 'lien_cover',
-          formatter: (cell) => gridjs.html(`${cell}`)
+          formatter: (cell) => gridjs.html(`<a target="_blank" href='${cell}'>Couverture</a>`)
         },
         "ISBN"
       ],
