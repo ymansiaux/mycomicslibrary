@@ -45,6 +45,12 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
       )
     })
 
+    observeEvent(input$button_clicked, {
+      # browser()
+      print("tu as cliqué sur le button")
+      print(input$button_clicked_id)
+    })
+
 
     # observe({
     #   iris2 <- iris[1:10, "Species"] |>

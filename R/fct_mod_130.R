@@ -19,13 +19,30 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       lien_cover,
       ISBN
     )
-  validate_buttons <- sapply(1:nrow(db), function(i) {
+
+  validate_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
       '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Enregistrer</button>',
       ns(paste0("button", i)),
-      glue::glue("alert('Button {i}!')")
+      sprintf(
+        "Shiny.setInputValue(
+        '%s',
+        '%s',
+        {priority : 'event'}
+      );
+      Shiny.setInputValue(
+        '%s',
+        Math.random(),
+        {priority : 'event'}
+      );",
+        ns("button_clicked_id"),
+        ns(paste0("button", i)),
+        ns("button_clicked")
+      )
     )
   })
+
+  # implémenter des selectInput pour les statuts
 
   db$validate <- validate_buttons
 
