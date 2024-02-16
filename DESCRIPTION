@@ -19,6 +19,7 @@ Imports:
     dplyr,
     glue,
     golem (>= 0.4.1),
+    htmltools,
     httr2,
     janitor,
     purrr,

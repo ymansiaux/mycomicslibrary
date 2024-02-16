@@ -2,12 +2,22 @@
 % Please edit documentation in R/make_stars_rating_div.R
 \name{make_stars_rating_div}
 \alias{make_stars_rating_div}
-\title{Title}
+\title{Make stars rating div}
 \usage{
-make_stars_rating_div(note, max_note = 5)
+make_stars_rating_div(id = "id", note, max_note = 5)
+}
+\arguments{
+\item{id}{the id of the div}
+
+\item{note}{a note between 0 and max_note}
+
+\item{max_note}{the maximum note}
+}
+\value{
+a div with stars
 }
 \description{
-Description
+Make stars rating div
 }
 \examples{
 make_stars_rating_div(note = 1)

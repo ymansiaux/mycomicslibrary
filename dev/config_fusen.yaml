@@ -28,9 +28,12 @@ flat_mod130.Rmd:
   path: dev/flat_mod130.Rmd
   state: active
   R:
+  - R/extract_nstars_from_selectinput.R
   - R/make_stars_rating_div.R
   - R/fct_mod_130.R
-  tests: tests/testthat/test-make_stars_rating_div.R
+  tests:
+  - tests/testthat/test-make_stars_rating_div.R
+  - tests/testthat/test-extract_nstars_from_selectinput.R
   vignettes: []
   inflate:
     flat_file: dev/flat_mod130.Rmd
