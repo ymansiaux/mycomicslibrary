@@ -38,61 +38,15 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       statut,
       lien_cover,
       ISBN
+    ) |>
+    mutate(
+      note = make_stars_rating_div(note = note) |> as.character()
     )
 
-  selectinput_statut <- sapply(seq_len(nrow(db)), function(i) {
-    selectInput(
-      inputId = ns(paste0("statut", i)),
-      label = NULL,
-      choices = c("A lire", "En cours", "Lu"),
-      selected = db$statut[i]
-    ) |>
-      as.character()
-  })
-
-  selectinput_typepublication <- sapply(seq_len(nrow(db)), function(i) {
-    selectInput(
-      inputId = ns(paste0("type_publication", i)),
-      label = NULL,
-      choices = c("Comics", "BD", "Roman graphique", "Autre"),
-      selected = db$type_publication[i]
-    ) |>
-      as.character()
-  })
-
-  selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
-    make_stars_rating_div(note = 4) |> as.character()
-    # selectizeInput(
-    #   inputId = ns(paste0("note", i)),
-    #   label = NULL,
-    #   choices = c(
-    #     "0" = make_stars_rating_div(note = 0),
-    #     "1" = make_stars_rating_div(note = 1),
-    #     "2" = make_stars_rating_div(note = 2),
-    #     "3" = make_stars_rating_div(note = 3),
-    #     "4" = make_stars_rating_div(note = 4),
-    #     "5" = make_stars_rating_div(note = 5)
-    #   ),
-    #   options = list(
-    #     render = I(
-    #       '{
-    #     item: function(item, escape) {
-    #       return "<div>" + item.value + "</div>";
-    #       },
-    #     option: function(item, escape) {
-    #       return "<div>" + item.value + "</div>";
-    #       }
-    #     }'
-    #     )
-    #   )
-    # ) |>
-    #   as.character()
-  })
-
-  validate_buttons <- sapply(seq_len(nrow(db)), function(i) {
+  modify_properties_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
-      '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Enregistrer</button>',
-      ns(paste0("button", i)),
+      '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Modifier</button>',
+      ns(paste0("modify_book_button", i)),
       sprintf(
         "Shiny.setInputValue(
         '%s',
@@ -104,20 +58,94 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
         Math.random(),
         {priority : 'event'}
       );",
-        ns("button_clicked_id"),
-        ns(paste0("button", i)),
-        ns("button_clicked")
+        ns("modify_button_clicked_id"),
+        ns(paste0("modify_book_button", i)),
+        ns("modify_button_clicked")
+      )
+    )
+  })
+
+  delete_book_buttons <- sapply(seq_len(nrow(db)), function(i) {
+    sprintf(
+      '<button type="button" class="btn btn-danger" id="%s" onclick="%s">Supprimer</button>',
+      ns(paste0("delete_book_button", i)),
+      sprintf(
+        "Shiny.setInputValue(
+        '%s',
+        '%s',
+        {priority : 'event'}
+      );
+      Shiny.setInputValue(
+        '%s',
+        Math.random(),
+        {priority : 'event'}
+      );",
+        ns("delete_button_clicked_id"),
+        ns(paste0("delete_book_button", i)),
+        ns("delete_button_clicked")
       )
     )
   })
 
   # implémenter des selectInput pour les statuts
-  db$statut <- selectinput_statut
-  db$type_publication <- selectinput_typepublication
-  db$validate <- validate_buttons
-  db$note <- selectinput_note
+  # db$statut <- selectinput_statut
+  # db$type_publication <- selectinput_typepublication
+  # db$validate <- validate_buttons
+  # db$note <- selectinput_note
+
+  db$modify_properties_buttons <- modify_properties_buttons
+  db$delete_book_buttons <- delete_book_buttons
 
   db
+
+  # selectinput_statut <- sapply(seq_len(nrow(db)), function(i) {
+  # selectInput(
+  #   inputId = ns(paste0("statut", i)),
+  #   label = NULL,
+  #   choices = c("A lire", "En cours", "Lu"),
+  #   selected = db$statut[i]
+  # ) |>
+  #   as.character()
+  # })
+
+  # selectinput_typepublication <- sapply(seq_len(nrow(db)), function(i) {
+  # selectInput(
+  #   inputId = ns(paste0("type_publication", i)),
+  #   label = NULL,
+  #   choices = c("Comics", "BD", "Roman graphique", "Autre"),
+  #   selected = db$type_publication[i]
+  # ) |>
+  #   as.character()
+  # })
+
+  # selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
+  #   make_stars_rating_div(note = db$note[i]) |> as.character()
+  # selectizeInput(
+  #   inputId = ns(paste0("note", i)),
+  #   label = NULL,
+  #   choices = c(
+  #     "0" = make_stars_rating_div(note = 0),
+  #     "1" = make_stars_rating_div(note = 1),
+  #     "2" = make_stars_rating_div(note = 2),
+  #     "3" = make_stars_rating_div(note = 3),
+  #     "4" = make_stars_rating_div(note = 4),
+  #     "5" = make_stars_rating_div(note = 5)
+  #   ),
+  #   options = list(
+  #     render = I(
+  #       '{
+  #     item: function(item, escape) {
+  #       return "<div>" + item.value + "</div>";
+  #       },
+  #     option: function(item, escape) {
+  #       return "<div>" + item.value + "</div>";
+  #       }
+  #     }'
+  #     )
+  #   )
+  # ) |>
+  #   as.character()
+  # })
 }
 ```
   
@@ -137,6 +165,7 @@ make_stars_rating_div <- function(
   note,
   max_note = 5
 ) {
+  if (note == "") note <- 0
   stars_full <- stars_empty <- list()
   if (note != 0) {
     stars_full <- lapply(1:note, function(x) {

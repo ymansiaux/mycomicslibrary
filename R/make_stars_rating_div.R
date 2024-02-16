@@ -14,6 +14,7 @@ make_stars_rating_div <- function(
   note,
   max_note = 5
 ) {
+  if (note == "") note <- 0
   stars_full <- stars_empty <- list()
   if (note != 0) {
     stars_full <- lapply(1:note, function(x) {
