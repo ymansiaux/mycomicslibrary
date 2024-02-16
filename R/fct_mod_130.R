@@ -4,6 +4,7 @@
 #' @return a comics database with only the columns needed to see the collection
 #' @rdname fct_mod_130
 #' @importFrom dplyr select mutate
+#' @importFrom shiny selectInput
 #' @export
 prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   db <- comics_db |>
@@ -12,13 +13,32 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       date_publication,
       nb_pages,
       editeur,
-      possede,
       note,
       type_publication,
       statut,
       lien_cover,
       ISBN
     )
+
+  selectinput_statut <- sapply(seq_len(nrow(db)), function(i) {
+    selectInput(
+      inputId = ns(paste0("statut", i)),
+      label = NULL,
+      choices = c("A lire", "En cours", "Lu"),
+      selected = db$statut[i]
+    ) |>
+      as.character()
+  })
+
+  selectinput_typepublication <- sapply(seq_len(nrow(db)), function(i) {
+    selectInput(
+      inputId = ns(paste0("type_publication", i)),
+      label = NULL,
+      choices = c("Comics", "BD", "Roman graphique", "Autre"),
+      selected = db$type_publication[i]
+    ) |>
+      as.character()
+  })
 
   validate_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
@@ -43,7 +63,8 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   })
 
   # implémenter des selectInput pour les statuts
-
+  db$statut <- selectinput_statut
+  db$type_publication <- selectinput_typepublication
   db$validate <- validate_buttons
 
   db
