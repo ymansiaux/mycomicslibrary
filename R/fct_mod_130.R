@@ -18,14 +18,15 @@ prepare_comics_db_to_see_collection <- function(comics_db) {
       statut,
       lien_cover,
       ISBN
-    ) |>
-    mutate(
-      lien_cover = paste0(
-        "<a href='",
-        lien_cover,
-        "' target=\"_blank\">",
-        "Couverture",
-        "</a>"
-      )
-    )
+    ) #|>
+  # mutate(
+  #   lien_cover = paste0(
+  #     "<a href='",
+  #     lien_cover,
+  #     "' target=\"_blank\">",
+  #     "Couverture",
+  #     "</a>"
+  #   )
+  # )
+  # (cell) => gridjs.html(`${cell}`)
 }
