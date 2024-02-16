@@ -37,7 +37,10 @@ $(document).ready(function () {
         "date_publication",
         "nb_pages",
         "editeur",
-        "note",
+        {
+          name: 'note',
+          formatter: (cell) => gridjs.html(`${cell}`)
+        },
         {
           name: 'type_publication',
           formatter: (cell) => gridjs.html(`${cell}`)

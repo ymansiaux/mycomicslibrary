@@ -11,6 +11,37 @@ mod_130_poc_gridjs_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
+      # selectInput(
+      #   inputId = ns("select"),
+      #   label = "Select",
+      #   choices = c(
+      #     NULL
+      #   )
+      # )
+      selectizeInput(
+        inputId = ns("select"),
+        label = "Select",
+        choices = c(
+          "0" = make_stars_rating_div(note = 0),
+          "1" = make_stars_rating_div(note = 1),
+          "2" = make_stars_rating_div(note = 2),
+          "3" = make_stars_rating_div(note = 3)
+        ),
+        options = list(
+          render = I(
+            '{
+        item: function(item, escape) {
+          return "<div>" + item.value + "</div>";
+          },
+        option: function(item, escape) {
+          return "<div>" + item.value + "</div>";
+          }
+        }'
+          )
+        )
+      )
+    ),
+    tags$div(
       class = "col",
       h3("Top Ten Homme"),
       tags$div(id = ns("top_ten_homme"))
@@ -24,6 +55,34 @@ mod_130_poc_gridjs_ui <- function(id) {
 mod_130_poc_gridjs_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
+
+    # updateSelectizeInput(
+    #   session,
+    #   inputId = "select",
+    #   choices = c(
+    #     "0" = make_stars_rating_div(note = 0),
+    #     "1" = make_stars_rating_div(note = 1),
+    #     "2" = make_stars_rating_div(note = 2),
+    #     "3" = make_stars_rating_div(note = 3)
+    #   ),
+    #   options = list(
+    #     render = I(
+    #       '{
+    #     item: function(item, escape) {
+    #       return "<div>" + item.value + "</div>";
+    #       },
+    #     option: function(item, escape) {
+    #       return "<div>" + item.value + "</div>";
+    #       }
+    #     }'
+    #     )
+    #   ),
+    #   server = FALSE
+    # )
+
+    observeEvent(input$select, {
+      print(input$select)
+    })
 
     observeEvent(r_global$comics_db, {
       # browser()
@@ -50,33 +109,6 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
       print("tu as cliqué sur le button")
       print(input$button_clicked_id)
     })
-
-
-    # observe({
-    #   iris2 <- iris[1:10, "Species"] |>
-    #     as.data.frame()
-
-    #   iris2$ht <- sapply(1:nrow(iris2), function(i) {
-    #     sprintf(
-    #       '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Primary</button>',
-    #       paste0("button", i),
-    #       glue::glue("alert('Button {i}!')")
-    #     )
-    #   })
-
-    #   colnames(iris2) <- c("Species", "ht")
-
-    #   golem::invoke_js(
-    #     "build_grid",
-    #     list(
-    #       id = ns("top_ten_homme"),
-    #       # columns = names(iris),
-    #       columns = names(iris2),
-    #       # data = apply(iris, 2, as.character)
-    #       data = apply(iris2, 2, as.character)
-    #     )
-    #   )
-    # })
   })
 }
 

@@ -19,6 +19,8 @@ pkgload::load_all(export_all = FALSE)
     
 ```{r function-prepare_comics_db_to_see_collection}
 #' Prepare comics database to see collection
+#' @param comics_db a comics database
+#' @param ns the namespace
 #' @return a comics database with only the columns needed to see the collection
 #' @rdname fct_mod_130
 #' @importFrom dplyr select mutate
@@ -59,13 +61,32 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   })
 
   selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
-    selectInput(
-      inputId = ns(paste0("note", i)),
-      label = NULL,
-      choices = c("Comics", "BD", "Roman graphique", "Autre"),
-      selected = db$note[i]
-    ) |>
-      as.character()
+    make_stars_rating_div(note = 4) |> as.character()
+    # selectizeInput(
+    #   inputId = ns(paste0("note", i)),
+    #   label = NULL,
+    #   choices = c(
+    #     "0" = make_stars_rating_div(note = 0),
+    #     "1" = make_stars_rating_div(note = 1),
+    #     "2" = make_stars_rating_div(note = 2),
+    #     "3" = make_stars_rating_div(note = 3),
+    #     "4" = make_stars_rating_div(note = 4),
+    #     "5" = make_stars_rating_div(note = 5)
+    #   ),
+    #   options = list(
+    #     render = I(
+    #       '{
+    #     item: function(item, escape) {
+    #       return "<div>" + item.value + "</div>";
+    #       },
+    #     option: function(item, escape) {
+    #       return "<div>" + item.value + "</div>";
+    #       }
+    #     }'
+    #     )
+    #   )
+    # ) |>
+    #   as.character()
   })
 
   validate_buttons <- sapply(seq_len(nrow(db)), function(i) {
@@ -94,6 +115,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   db$statut <- selectinput_statut
   db$type_publication <- selectinput_typepublication
   db$validate <- validate_buttons
+  db$note <- selectinput_note
 
   db
 }
@@ -104,11 +126,17 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
     
 ```{r function-make_stars_rating_div}
 #' Make stars rating div
-#'
+#' @param id the id of the div
+#' @param note a note between 0 and max_note
+#' @param max_note the maximum note
 #' @return a div with stars
 #' @importFrom htmltools tags
 #' @export
-make_stars_rating_div <- function(note, max_note = 5) {
+make_stars_rating_div <- function(
+  id = "id",
+  note,
+  max_note = 5
+) {
   stars_full <- stars_empty <- list()
   if (note != 0) {
     stars_full <- lapply(1:note, function(x) {
@@ -124,7 +152,7 @@ make_stars_rating_div <- function(note, max_note = 5) {
 
   tagList(
     c(stars_full, stars_empty)
-  )
+  ) |> as.character()
 }
 ```
   
@@ -134,10 +162,7 @@ make_stars_rating_div(note = 1)
   
 ```{r tests-make_stars_rating_div}
 test_that("make_stars_rating_div works", {
-  expect_true(inherits(make_stars_rating_div(note = 0), "shiny.tag.list"))
-
-  stars <- make_stars_rating_div(note = 0) |> as.character()
-
+  stars <- make_stars_rating_div(note = 0)
 
   expect_true(
     length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 0
@@ -151,6 +176,63 @@ test_that("make_stars_rating_div works", {
   stars <- make_stars_rating_div(note = 5) |> as.character()
   expect_true(
     length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 5
+  )
+})
+```
+  
+# extract_nstars_from_selectinput
+    
+```{r function-extract_nstars_from_selectinput}
+#' Extract n stars from selectinput
+#'
+#' @return the number of stars checked
+#'
+#' @export
+extract_nstars_from_selectinput <- function(selectinput_result) {
+  length(
+    regmatches(
+      x = selectinput_result,
+      m = gregexpr(
+        "checked",
+        selectinput_result
+      )
+    )[[1]]
+  )
+}
+```
+  
+```{r example-extract_nstars_from_selectinput}
+extract_nstars_from_selectinput()
+```
+  
+```{r tests-extract_nstars_from_selectinput}
+test_that("extract_nstars_from_selectinput works", {
+  zero_star <- "<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(zero_star),
+    0
+  )
+
+  one_star <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(one_star),
+    1
+  )
+
+  two_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(two_stars),
+    2
+  )
+
+  three_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(three_stars),
+    3
   )
 })
 ```
