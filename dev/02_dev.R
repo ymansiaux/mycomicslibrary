@@ -23,7 +23,7 @@ attachment::att_amend_desc()
 golem::add_module(name = "100_search_isbn", with_test = TRUE) # Name of the module
 golem::add_module(name = "110_find_isbn", with_test = TRUE) # Name of the module
 golem::add_module(name = "120_add_picture", with_test = TRUE) # Name of the module
-golem::add_module(name = "name_of_module2", with_test = TRUE) # Name of the module
+golem::add_module(name = "130_poc_gridjs", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -38,6 +38,11 @@ golem::add_js_handler("quaggajs_webcam")
 golem::add_js_handler("wait_for_button_to_be_available")
 golem::use_external_js_file("https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js", name = "sweetalert2")
 golem::use_external_css_file("https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css", name = "sweetalert2")
+golem::use_external_js_file(
+  "https://unpkg.com/gridjs/dist/gridjs.umd.js"
+)
+golem::add_js_handler("gridjs")
+
 golem::add_js_handler("call_sweetalert2")
 golem::add_css_file("photo")
 golem::add_sass_file("custom")
