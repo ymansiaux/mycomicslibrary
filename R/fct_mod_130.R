@@ -6,6 +6,7 @@
 #' @return a comics database with only the columns needed to see the collection
 #' @rdname fct_mod_130
 #' @importFrom dplyr select mutate
+#' @importFrom purrr map_chr
 #' @importFrom shiny selectInput
 #' @export
 prepare_comics_db_to_see_collection <- function(comics_db, ns) {
@@ -22,7 +23,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       ISBN
     ) |>
     mutate(
-      note = make_stars_rating_div(note = note) |> as.character()
+      note = map_chr(note, make_stars_rating_div)
     )
 
   modify_properties_buttons <- sapply(seq_len(nrow(db)), function(i) {

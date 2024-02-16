@@ -4,11 +4,9 @@
 \alias{make_stars_rating_div}
 \title{Make stars rating div}
 \usage{
-make_stars_rating_div(id = "id", note, max_note = 5)
+make_stars_rating_div(note, max_note = 5)
 }
 \arguments{
-\item{id}{the id of the div}
-
 \item{note}{a note between 0 and max_note}
 
 \item{max_note}{the maximum note}

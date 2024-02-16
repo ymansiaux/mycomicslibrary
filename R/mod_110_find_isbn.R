@@ -255,9 +255,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
           date_publication = r_local$cleaned_res$publish_date,
           nb_pages = r_local$cleaned_res$number_of_pages,
           editeur = r_local$cleaned_res$publisher,
-          note = "",
-          type_publication = "",
-          statut = "",
+          note = 1,
+          type_publication = "A définir",
+          statut = "A définir",
           lien_cover = get_cover(
             isbn_number = r_local$cleaned_res$isbn_13
           )

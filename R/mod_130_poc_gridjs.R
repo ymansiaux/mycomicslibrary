@@ -27,6 +27,7 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
 
     observeEvent(r_global$comics_db, {
+      req(nrow(r_global$comics_db) > 0)
       # browser()
 
       db <- r_global$comics_db |>
