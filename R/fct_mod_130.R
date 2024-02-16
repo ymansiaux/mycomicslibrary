@@ -40,6 +40,16 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       as.character()
   })
 
+  selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
+    selectInput(
+      inputId = ns(paste0("note", i)),
+      label = NULL,
+      choices = c("Comics", "BD", "Roman graphique", "Autre"),
+      selected = db$note[i]
+    ) |>
+      as.character()
+  })
+
   validate_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
       '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Enregistrer</button>',

@@ -44,7 +44,7 @@ golem::use_external_js_file(
 golem::add_js_handler("gridjs")
 
 golem::add_js_handler("call_sweetalert2")
-golem::add_css_file("photo")
+golem::add_css_file("ccsY")
 golem::add_sass_file("custom")
 golem::add_html_template("template")
 
