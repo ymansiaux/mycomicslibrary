@@ -37,10 +37,15 @@ $(document).ready(function () {
         "date_publication",
         "nb_pages",
         "editeur",
-        "possede",
         "note",
-        "type_publication",
-        "statut",
+        {
+          name: 'type_publication',
+          formatter: (cell) => gridjs.html(`${cell}`)
+        },
+        {
+          name: 'statut',
+          formatter: (cell) => gridjs.html(`${cell}`)
+        },
         {
           name: 'lien_cover',
           formatter: (cell) => gridjs.html(`<a target="_blank" href='${cell}'>Couverture</a>`)
