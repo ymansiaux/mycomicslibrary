@@ -26,7 +26,8 @@ app_ui <- function(request) {
     htmlTemplate(
       app_sys("app/www/templates_html/template.html"),
       module1 = mod_100_search_isbn_ui("100_search_isbn_1"),
-      module2 = mod_200_add_picture_ui("120_add_picture_1")
+      module2 = mod_200_add_picture_ui("120_add_picture_1"),
+      module3 = mod_130_poc_gridjs_ui("130_poc_gridjs_1")
     )
   )
 }
