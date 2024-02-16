@@ -26,12 +26,21 @@ mod_130_poc_gridjs_server <- function(id) {
     ns <- session$ns
 
     observe({
+      iris2 <- iris[1:10, "Species"] |>
+        as.data.frame()
+
+      iris2$ht <- as.character('<button type="button" class="btn btn-primary">Primary</button>')
+
+      colnames(iris2) <- c("Species", "ht")
+      apply(iris2, 2, as.character)
       golem::invoke_js(
         "build_grid",
         list(
           id = ns("top_ten_homme"),
-          columns = names(iris),
-          data = apply(iris, 2, as.character)
+          # columns = names(iris),
+          columns = names(iris2),
+          # data = apply(iris, 2, as.character)
+          data = apply(iris2, 2, as.character)
         )
       )
     })
