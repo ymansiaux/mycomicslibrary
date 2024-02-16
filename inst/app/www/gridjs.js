@@ -1,59 +1,58 @@
 $(document).ready(function () {
-  Shiny.addCustomMessageHandler('build_grid', function (arg) {
-    new gridjs.Grid({
-      columns: arg.columns,
-      search: true,
-      data: arg.data,
-      pagination: {
-        limit: 5,
-        summary: false
-      }
-    }).render(document.getElementById(arg.id));
-  })
 
-  Shiny.addCustomMessageHandler('build_gridpochtml', function (arg) {
-    new gridjs.Grid({
-      columns: [
-        "Species",
-        {
-          name: 'ht',
-          formatter: (cell) => gridjs.html(`${cell}`)
-        }
-      ],
-      search: true,
-      data: arg.data,
-      pagination: {
-        limit: 5,
-        summary: false
-      }
-    }).render(document.getElementById(arg.id));
-  })
-  // });
-
-  Shiny.addCustomMessageHandler('build_gridpochtml2', function (arg) {
+  Shiny.addCustomMessageHandler('build_ma_collection', function (arg) {
     new gridjs.Grid({
       columns: [
         "titre",
-        "date_publication",
-        "nb_pages",
+        {
+          name: 'publication',
+          attributes: {
+            'data-field': 'date_publication'
+          }
+        },
+        {
+          name: 'nb pages',
+          attributes: {
+            'data-field': 'nb_pages'
+          }
+        },
         "editeur",
         {
           name: 'note',
           formatter: (cell) => gridjs.html(`${cell}`)
         },
-        "type_publication",
-        "statut",
         {
-          name: 'lien_cover',
-          formatter: (cell) => gridjs.html(`<a target="_blank" href='${cell}'>Couverture</a>`)
+          name: 'format',
+          attributes: {
+            'data-field': 'type_publication'
+          }
+        },
+        {
+          name: 'etat',
+          attributes: {
+            'data-field': 'statut'
+          }
+        },
+        {
+          name: 'couverture',
+          attributes: {
+            'data-field': 'lien_cover'
+          },
+          formatter: (cell) => gridjs.html(`<a target="_blank" href='${cell}'>Clic</a>`)
         },
         "ISBN",
         {
-          name: 'modify_properties_buttons',
+          name: 'Modifier',
+          attributes: {
+            'data-field': 'modify_properties_buttons'
+          },
           formatter: (cell) => gridjs.html(`${cell}`)
         },
         {
-          name: 'delete_book_buttons',
+          name: 'Supprimer',
+          attributes: {
+            'data-field': 'delete_book_buttons'
+          },
           formatter: (cell) => gridjs.html(`${cell}`)
         }
       ],
