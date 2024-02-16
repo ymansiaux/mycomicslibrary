@@ -29,10 +29,11 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
       # browser()
 
       db <- prepare_comics_db_to_see_collection(
-        r_global$comics_db
+        r_global$comics_db,
+        ns = ns
       )
 
-      browser()
+      # browser()
 
       golem::invoke_js(
         "build_gridpochtml2",

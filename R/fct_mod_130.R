@@ -5,7 +5,7 @@
 #' @rdname fct_mod_130
 #' @importFrom dplyr select mutate
 #' @export
-prepare_comics_db_to_see_collection <- function(comics_db) {
+prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   db <- comics_db |>
     select(
       titre,
@@ -18,15 +18,16 @@ prepare_comics_db_to_see_collection <- function(comics_db) {
       statut,
       lien_cover,
       ISBN
-    ) #|>
-  # mutate(
-  #   lien_cover = paste0(
-  #     "<a href='",
-  #     lien_cover,
-  #     "' target=\"_blank\">",
-  #     "Couverture",
-  #     "</a>"
-  #   )
-  # )
-  # (cell) => gridjs.html(`${cell}`)
+    )
+  validate_buttons <- sapply(1:nrow(db), function(i) {
+    sprintf(
+      '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Enregistrer</button>',
+      ns(paste0("button", i)),
+      glue::glue("alert('Button {i}!')")
+    )
+  })
+
+  db$validate <- validate_buttons
+
+  db
 }

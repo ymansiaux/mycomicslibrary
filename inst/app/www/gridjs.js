@@ -45,7 +45,11 @@ $(document).ready(function () {
           name: 'lien_cover',
           formatter: (cell) => gridjs.html(`<a target="_blank" href='${cell}'>Couverture</a>`)
         },
-        "ISBN"
+        "ISBN",
+        {
+          name: 'validate',
+          formatter: (cell) => gridjs.html(`${cell}`)
+        }
       ],
       search: true,
       data: arg.data,

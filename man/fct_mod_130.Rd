@@ -4,7 +4,7 @@
 \alias{prepare_comics_db_to_see_collection}
 \title{Prepare comics database to see collection}
 \usage{
-prepare_comics_db_to_see_collection(comics_db)
+prepare_comics_db_to_see_collection(comics_db, ns)
 }
 \value{
 a comics database with only the columns needed to see the collection
