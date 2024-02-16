@@ -41,21 +41,19 @@ $(document).ready(function () {
           name: 'note',
           formatter: (cell) => gridjs.html(`${cell}`)
         },
-        {
-          name: 'type_publication',
-          formatter: (cell) => gridjs.html(`${cell}`)
-        },
-        {
-          name: 'statut',
-          formatter: (cell) => gridjs.html(`${cell}`)
-        },
+        "type_publication",
+        "statut",
         {
           name: 'lien_cover',
           formatter: (cell) => gridjs.html(`<a target="_blank" href='${cell}'>Couverture</a>`)
         },
         "ISBN",
         {
-          name: 'validate',
+          name: 'modify_properties_buttons',
+          formatter: (cell) => gridjs.html(`${cell}`)
+        },
+        {
+          name: 'delete_book_buttons',
           formatter: (cell) => gridjs.html(`${cell}`)
         }
       ],
