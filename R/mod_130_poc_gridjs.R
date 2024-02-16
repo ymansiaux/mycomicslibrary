@@ -29,10 +29,16 @@ mod_130_poc_gridjs_server <- function(id) {
       iris2 <- iris[1:10, "Species"] |>
         as.data.frame()
 
-      iris2$ht <- as.character('<button type="button" class="btn btn-primary">Primary</button>')
+      iris2$ht <- sapply(1:nrow(iris2), function(i) {
+        sprintf(
+          '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Primary</button>',
+          paste0("button", i),
+          glue::glue("alert('Button {i}!')")
+        )
+      })
 
       colnames(iris2) <- c("Species", "ht")
-      apply(iris2, 2, as.character)
+
       golem::invoke_js(
         "build_grid",
         list(
