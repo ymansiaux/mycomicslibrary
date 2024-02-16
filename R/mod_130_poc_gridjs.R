@@ -21,35 +21,55 @@ mod_130_poc_gridjs_ui <- function(id) {
 #' 130_poc_gridjs Server Functions
 #'
 #' @noRd
-mod_130_poc_gridjs_server <- function(id) {
+mod_130_poc_gridjs_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    observe({
-      iris2 <- iris[1:10, "Species"] |>
-        as.data.frame()
+    observeEvent(r_global$comics_db, {
+      # browser()
 
-      iris2$ht <- sapply(1:nrow(iris2), function(i) {
-        sprintf(
-          '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Primary</button>',
-          paste0("button", i),
-          glue::glue("alert('Button {i}!')")
-        )
-      })
+      db <- prepare_comics_db_to_see_collection(
+        r_global$comics_db
+      )
 
-      colnames(iris2) <- c("Species", "ht")
+      browser()
 
       golem::invoke_js(
-        "build_grid",
+        "build_gridpochtml2",
         list(
           id = ns("top_ten_homme"),
-          # columns = names(iris),
-          columns = names(iris2),
-          # data = apply(iris, 2, as.character)
-          data = apply(iris2, 2, as.character)
+          columns = names(db),
+          data = do.call(cbind, lapply(db, as.character))
         )
       )
     })
+
+
+    # observe({
+    #   iris2 <- iris[1:10, "Species"] |>
+    #     as.data.frame()
+
+    #   iris2$ht <- sapply(1:nrow(iris2), function(i) {
+    #     sprintf(
+    #       '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Primary</button>',
+    #       paste0("button", i),
+    #       glue::glue("alert('Button {i}!')")
+    #     )
+    #   })
+
+    #   colnames(iris2) <- c("Species", "ht")
+
+    #   golem::invoke_js(
+    #     "build_grid",
+    #     list(
+    #       id = ns("top_ten_homme"),
+    #       # columns = names(iris),
+    #       columns = names(iris2),
+    #       # data = apply(iris, 2, as.character)
+    #       data = apply(iris2, 2, as.character)
+    #     )
+    #   )
+    # })
   })
 }
 
