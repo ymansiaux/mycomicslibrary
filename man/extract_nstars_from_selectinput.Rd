@@ -6,12 +6,12 @@
 \usage{
 extract_nstars_from_selectinput(selectinput_result)
 }
+\arguments{
+\item{selectinput_result}{the result of a selectinput}
+}
 \value{
 the number of stars checked
 }
 \description{
 Extract n stars from selectinput
-}
-\examples{
-extract_nstars_from_selectinput()
 }

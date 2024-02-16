@@ -24,6 +24,7 @@ pkgload::load_all(export_all = FALSE)
 #' @return a comics database with only the columns needed to see the collection
 #' @rdname fct_mod_130
 #' @importFrom dplyr select mutate
+#' @importFrom purrr map_chr
 #' @importFrom shiny selectInput
 #' @export
 prepare_comics_db_to_see_collection <- function(comics_db, ns) {
@@ -40,7 +41,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       ISBN
     ) |>
     mutate(
-      note = make_stars_rating_div(note = note) |> as.character()
+      note = map_chr(note, make_stars_rating_div)
     )
 
   modify_properties_buttons <- sapply(seq_len(nrow(db)), function(i) {
@@ -154,18 +155,15 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
     
 ```{r function-make_stars_rating_div}
 #' Make stars rating div
-#' @param id the id of the div
 #' @param note a note between 0 and max_note
 #' @param max_note the maximum note
 #' @return a div with stars
 #' @importFrom htmltools tags
 #' @export
 make_stars_rating_div <- function(
-  id = "id",
   note,
   max_note = 5
 ) {
-  if (note == "") note <- 0
   stars_full <- stars_empty <- list()
   if (note != 0) {
     stars_full <- lapply(1:note, function(x) {
@@ -213,7 +211,7 @@ test_that("make_stars_rating_div works", {
     
 ```{r function-extract_nstars_from_selectinput}
 #' Extract n stars from selectinput
-#'
+#' @param selectinput_result the result of a selectinput
 #' @return the number of stars checked
 #'
 #' @export
@@ -228,10 +226,6 @@ extract_nstars_from_selectinput <- function(selectinput_result) {
     )[[1]]
   )
 }
-```
-  
-```{r example-extract_nstars_from_selectinput}
-extract_nstars_from_selectinput()
 ```
   
 ```{r tests-extract_nstars_from_selectinput}
