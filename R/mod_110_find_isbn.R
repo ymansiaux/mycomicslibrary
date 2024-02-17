@@ -158,7 +158,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
           updateTextInput(
             session = session,
             inputId = "isbn",
-            value = r_global$detected_barcode_quagga
+            value = r_global$detected_barcode
           )
         }
       })

@@ -42,5 +42,30 @@ $(document).ready(function () {
 
       });
     }
-  })
+  });
+
+
+  Shiny.addCustomMessageHandler('modal_result_detect_isbn', function (arg) {
+
+    Swal.fire({
+      title: arg.msg,
+      icon: "success",
+      html: `Vous pouvez ajouter cet ISBN au menu de recherche`,
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: "Ajouter l'ISBN",
+      cancelButtonText: `Quitter`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("ISBN ajouté !", "", "success");
+        Shiny.setInputValue(arg.id, result.isConfirmed);
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
+      }
+    });
+
+
+  });
+
 });
