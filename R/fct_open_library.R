@@ -40,7 +40,7 @@ call_open_library_api <- function(
 #' @return a tibble with the cleaned result of the API call
 #' @importFrom janitor clean_names
 #' @importFrom dplyr select mutate
-#' @importFrom tidyselect everything
+#' @importFrom tidyselect everything any_of
 #' @importFrom purrr map map_chr
 #' @export
 #' @rdname fct_open_library
@@ -56,11 +56,15 @@ clean_open_library_result <- function(book_tibble) {
   df_part <- book_tibble_cleaned_names |>
     as.data.frame() |>
     select(
-      info_url,
-      thumbnail_url,
-      details_title,
-      details_publish_date,
-      details_number_of_pages,
+      any_of(
+        c(
+          "info_url",
+          "thumbnail_url",
+          "details_title",
+          "details_publish_date",
+          "details_number_of_pages"
+        )
+      )
     )
 
   json <- book_tibble_cleaned_names$json

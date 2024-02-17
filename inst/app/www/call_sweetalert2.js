@@ -59,9 +59,47 @@ $(document).ready(function () {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         Swal.fire("ISBN ajouté !", "", "success");
-        Shiny.setInputValue(arg.id, result.isConfirmed);
+        Shiny.setInputValue(arg.id, result.isConfirmed, {
+          priority: "event"
+        });
+      } else {
+        Swal.fire("Résultat non conservé", "", "info");
+      }
+    });
+
+
+  });
+
+
+
+  Shiny.addCustomMessageHandler('modal_api_search_result', function (arg) {
+
+    Swal.fire({
+      title: "Livre identifié",
+      icon: "success",
+      html: arg.html,
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Ajouter le livre à ma bibliothèque",
+      denyButtonText: `Ajouter à ma liste d'envies`,
+      cancelButtonText: `Quitter`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Livre ajouté à la bibliothèque !", "", "success");
+        Shiny.setInputValue(arg.id_ajout_bibliotheque, true, {
+          priority: "event"
+        });
       } else if (result.isDenied) {
-        Swal.fire("Changes are not saved", "", "info");
+        Swal.fire("Livre ajouté à la liste d'envies !", "", "success");
+        Shiny.setInputValue(arg.id_ajout_bibliotheque, false, {
+          priority: "event"
+        });
+      } else {
+        Swal.fire("Livre non enregistré", "", "info");
+        Shiny.setInputValue(arg.id_ajout_bibliotheque, "", {
+          priority: "event"
+        });
       }
     });
 

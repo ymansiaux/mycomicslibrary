@@ -49,6 +49,7 @@ test_that("clean_data_url works", {
 #' @param output_img A string with the path to the output image
 #' @return write an img in inst/
 #' @importFrom base64enc base64decode
+#' @rdname fct_webcam
 #' @export
 export_img_from_dataurl <- function(
   dataurl,

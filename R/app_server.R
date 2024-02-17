@@ -30,7 +30,7 @@ app_server <- function(input, output, session) {
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
-    unlink(get_database_path())
+    # unlink(get_database_path())
     r_global$comics_db <- init_comics_db()
     print(r_global$comics_db)
   })

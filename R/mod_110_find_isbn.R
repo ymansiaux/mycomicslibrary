@@ -225,28 +225,20 @@ mod_110_find_isbn_server <- function(id, r_global) {
           ),
           silent = TRUE
         )
-
         golem::invoke_js(
-          "waitForButtons",
+          "modal_api_search_result",
           message = list(
-            buttonToWaitFor1 = ns("add_to_wishlist"),
-            buttonToWaitFor2 = ns("add_to_library"),
-            shinyinput = ns("do_i_add_to_library"),
-            triggerid = ns("trigger")
+            id_ajout_bibliotheque = ns("do_i_add_to_library"),
+            html = create_html_for_modal_api_search_result(
+              book = r_local$cleaned_res,
+              book_cover = book_cover
+            ) |> as.character()
           )
-        )
-
-
-        shiny_alert_api_result(
-          book = r_local$cleaned_res,
-          book_cover = book_cover,
-          add_library_button_id = ns("add_to_library"),
-          add_wishlist_button_id = ns("add_to_wishlist"),
-          cancel_button_id = ns("leave_modal")
         )
       })
 
-      observeEvent(input$trigger, {
+      observeEvent(input$do_i_add_to_library, {
+        req(input$do_i_add_to_library)
         req(r_local$cleaned_res)
 
         to_add <- list(
@@ -270,6 +262,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         }
 
         is_the_book_already_in_db <- read_comics_db() |>
+          get_most_recent_entry_per_doc() |>
           filter(ISBN == to_add$ISBN) |>
           nrow()
         is_the_book_already_in_db <- is_the_book_already_in_db > 0
