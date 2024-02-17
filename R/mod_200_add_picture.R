@@ -82,10 +82,6 @@ mod_200_add_picture_ui <- function(id) {
                     actionButton(
                       inputId = ns("detect_isbn_from_picture"),
                       label = "Détecter l'ISBN"
-                    ),
-                    actionButton(
-                      inputId = ns("pause"),
-                      label = "Pause"
                     )
                   )
                 )
@@ -110,10 +106,6 @@ mod_200_add_picture_server <- function(id, r_global) {
       last_picture = NULL,
       detected_barcode = NULL
     )
-
-    observeEvent(input$pause, {
-      browser()
-    })
 
     observeEvent(
       r_global$new_picture_taken,
@@ -169,49 +161,39 @@ mod_200_add_picture_server <- function(id, r_global) {
       )
 
       if (length(detected_barcode_python) == 0) {
-        r_local$detected_barcode <- NULL
+        r_local$detected_barcode <- "none"
       } else {
         r_local$detected_barcode <- detected_barcode_python[1]
       }
+      r_local$trigger <- Sys.time()
+    })
 
-      if (!isTruthy(r_local$detected_barcode)) {
+    observeEvent(r_local$trigger, {
+      req(r_local$detected_barcode)
+      if (r_local$detected_barcode == "none") {
         golem::invoke_js(
-          "waitForButtons",
+          "call_sweetalert2",
           message = list(
-            buttonToWaitFor1 = ns("leave_modal_error"),
-            buttonToWaitFor2 = ns("fake_button"),
-            shinyinput = ns("do_i_keep_the_isbn"),
-            triggerid = ns("trigger")
+            type = "error",
+            msg = "Aucun ISBN détecté"
           )
-        )
-        shiny_alert_isbn_not_detected_on_img(
-          cancel_button_id = ns("leave_modal_error")
         )
       } else {
         golem::invoke_js(
-          "waitForButtons",
+          "modal_result_detect_isbn",
           message = list(
-            buttonToWaitFor1 = ns("leave_modal"),
-            buttonToWaitFor2 = ns("validate_detected_isbn"),
-            shinyinput = ns("do_i_keep_the_isbn"),
-            triggerid = ns("trigger")
+            msg = paste0("ISBN détecté: ", r_local$detected_barcode),
+            id = ns("do_i_keep_the_isbn")
           )
-        )
-
-        shiny_alert_isbn_detected_on_img(
-          r_local$detected_barcode,
-          validate_button_id = ns("validate_detected_isbn"),
-          cancel_button_id = ns("leave_modal")
         )
       }
     })
 
-
     observeEvent(
-      input$trigger,
+      input$do_i_keep_the_isbn,
       {
         r_global$do_i_keep_the_isbn <- as.logical(input$do_i_keep_the_isbn)
-        r_global$detected_barcode_quagga <- r_local$detected_barcode
+        r_global$detected_barcode <- r_local$detected_barcode
       }
     )
   })

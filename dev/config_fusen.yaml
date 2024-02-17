@@ -14,24 +14,11 @@ flat_database.Rmd:
 flat_mod110.Rmd:
   path: dev/flat_mod110.Rmd
   state: active
-  R: R/fct_mod_110.R
-  tests: tests/testthat/test-fct_mod_110.R
+  R: R/create_html_for_modal_api_search_result.R
+  tests: tests/testthat/test-create_html_for_modal_api_search_result.R
   vignettes: []
   inflate:
     flat_file: dev/flat_mod110.Rmd
-    vignette_name: .na
-    open_vignette: true
-    check: false
-    document: true
-    overwrite: ask
-flat_mod200.Rmd:
-  path: dev/flat_mod200.Rmd
-  state: active
-  R: R/fct_mod_200.R
-  tests: tests/testthat/test-fct_mod_200.R
-  vignettes: []
-  inflate:
-    flat_file: dev/flat_mod200.Rmd
     vignette_name: .na
     open_vignette: true
     check: false
