@@ -159,6 +159,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
 #' @param max_note the maximum note
 #' @return a div with stars
 #' @importFrom htmltools tags
+#' @rdname fct_mod_130
 #' @export
 make_stars_rating_div <- function(
   note,
@@ -213,7 +214,7 @@ test_that("make_stars_rating_div works", {
 #' Extract n stars from selectinput
 #' @param selectinput_result the result of a selectinput
 #' @return the number of stars checked
-#'
+#' @rdname fct_mod_130
 #' @export
 extract_nstars_from_selectinput <- function(selectinput_result) {
   length(

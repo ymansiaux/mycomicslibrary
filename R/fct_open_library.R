@@ -132,6 +132,25 @@ get_publishers <- function(json) {
   get_nested_field(json, "publishers")
 }
 
+#' Get the cover of a book from Open Library
+#' @param root_api the base URL of the API
+#' @param isbn_number the ISBN 10 number or the ISBN 13 number of the book
+#' @param cover_size the size of the cover
+#' @return a URL to the cover of the book
+#' @importFrom glue glue
+#' @rdname fct_open_library
+#' @export
+#' @examples
+#' get_cover(isbn_number = "9782365772013")
+get_cover <- function(
+  root_api = "http://covers.openlibrary.org/b/isbn",
+  isbn_number,
+  cover_size = "M"
+) {
+  match.arg(cover_size, c("S", "M", "L"))
+  glue("{root_api}/{isbn_number}-{cover_size}.jpg")
+}
+
 #' Return a random ISBN from mycomicslibrary::isbn_sample
 #' @return a random ISBN
 #' @rdname fct_open_library
