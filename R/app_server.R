@@ -30,15 +30,17 @@ app_server <- function(input, output, session) {
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
-    # unlink(get_database_path())
-    r_global$comics_db <- init_comics_db()
-    print(r_global$comics_db)
+    unlink(get_database_path())
+    init_db <- try(
+      init_comics_db()
+    )
+    r_global$comics_db_init <- !inherits(init_db, "try-error")
   })
 
 
 
-  observeEvent(r_global$comics_db, {
-    req(r_global$comics_db)
+  observeEvent(r_global$comics_db_init, {
+    req(r_global$comics_db_init)
     # golem::invoke_js(
     #   "call_sweetalert2",
     #   message = list(
@@ -46,9 +48,12 @@ app_server <- function(input, output, session) {
     #     msg = "Connexion à la base de données réussie"
     #   )
     # )
-    mod_100_search_isbn_server("100_search_isbn_1", r_global)
-    mod_200_add_picture_server("120_add_picture_1", r_global)
-    mod_130_poc_gridjs_server("130_poc_gridjs_1", r_global)
+    if (isTRUE(r_global$comics_db_init)) {
+      r_global$comics_db <- read_comics_db()
+      mod_100_search_isbn_server("100_search_isbn_1", r_global)
+      mod_200_add_picture_server("120_add_picture_1", r_global)
+      mod_130_poc_gridjs_server("130_poc_gridjs_1", r_global)
+    }
   })
 
   #  Webcam related operations are kept at the root level
@@ -76,3 +81,4 @@ app_server <- function(input, output, session) {
     r_global$new_picture_taken <- Sys.time()
   })
 }
+# 9782917371329

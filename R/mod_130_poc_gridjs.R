@@ -25,7 +25,6 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-
     observeEvent(r_global$comics_db, {
       req(nrow(r_global$comics_db) > 0)
       # browser()
@@ -36,7 +35,7 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
           ns = ns
         )
       # il faut garder la dernière entrée
-      # browser()
+
 
       golem::invoke_js(
         "build_ma_collection",

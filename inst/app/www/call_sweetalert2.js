@@ -86,12 +86,12 @@ $(document).ready(function () {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Livre ajouté à la bibliothèque !", "", "success");
+        Swal.fire("Le livre va être ajouté à la bibliothèque !", "", "info");
         Shiny.setInputValue(arg.id_ajout_bibliotheque, true, {
           priority: "event"
         });
       } else if (result.isDenied) {
-        Swal.fire("Livre ajouté à la liste d'envies !", "", "success");
+        Swal.fire("Le livre va être ajouté à la liste d'envies !", "", "info");
         Shiny.setInputValue(arg.id_ajout_bibliotheque, false, {
           priority: "event"
         });
