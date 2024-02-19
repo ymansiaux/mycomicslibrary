@@ -9,5 +9,13 @@ globalVariables(unique(c(
   "id_document",
   "datetime",
   "decode_my_photo",
-  "ISBN"
+  "ISBN",
+  "titre",
+  "date_publication",
+  "nb_pages",
+  "editeur",
+  "note",
+  "type_publication",
+  "statut",
+  "lien_cover"
 )))

@@ -146,6 +146,18 @@ test_that("clean_open_library_result works", {
   )
 })
 
+test_that("get_cover works", {
+  expect_equal(
+    get_cover(isbn_number = "9782365772013"),
+    "http://covers.openlibrary.org/b/isbn/9782365772013-M.jpg"
+  )
+
+  expect_equal(
+    get_cover(isbn_number = "9782365772013", cover_size = "S"),
+    "http://covers.openlibrary.org/b/isbn/9782365772013-S.jpg"
+  )
+})
+
 test_that("give_me_one_random_isbn works", {
   isbn_number <- give_me_one_random_isbn()
 

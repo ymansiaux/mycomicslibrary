@@ -1,0 +1,275 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+
+# prepare_comics_db_to_see_collection
+    
+```{r function-prepare_comics_db_to_see_collection}
+#' Prepare comics database to see collection
+#' @param comics_db a comics database
+#' @param ns the namespace
+#' @return a comics database with only the columns needed to see the collection
+#' @rdname fct_mod_130
+#' @importFrom dplyr select mutate
+#' @importFrom purrr map_chr
+#' @importFrom shiny selectInput
+#' @export
+prepare_comics_db_to_see_collection <- function(comics_db, ns) {
+  db <- comics_db |>
+    select(
+      titre,
+      date_publication,
+      nb_pages,
+      editeur,
+      note,
+      type_publication,
+      statut,
+      lien_cover,
+      ISBN
+    ) |>
+    mutate(
+      note = map_chr(note, make_stars_rating_div)
+    )
+
+  modify_properties_buttons <- sapply(seq_len(nrow(db)), function(i) {
+    sprintf(
+      '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Modifier</button>',
+      ns(paste0("modify_book_button", i)),
+      sprintf(
+        "Shiny.setInputValue(
+        '%s',
+        '%s',
+        {priority : 'event'}
+      );
+      Shiny.setInputValue(
+        '%s',
+        Math.random(),
+        {priority : 'event'}
+      );",
+        ns("modify_button_clicked_id"),
+        ns(paste0("modify_book_button", i)),
+        ns("modify_button_clicked")
+      )
+    )
+  })
+
+  delete_book_buttons <- sapply(seq_len(nrow(db)), function(i) {
+    sprintf(
+      '<button type="button" class="btn btn-danger" id="%s" onclick="%s">Supprimer</button>',
+      ns(paste0("delete_book_button", i)),
+      sprintf(
+        "Shiny.setInputValue(
+        '%s',
+        '%s',
+        {priority : 'event'}
+      );
+      Shiny.setInputValue(
+        '%s',
+        Math.random(),
+        {priority : 'event'}
+      );",
+        ns("delete_button_clicked_id"),
+        ns(paste0("delete_book_button", i)),
+        ns("delete_button_clicked")
+      )
+    )
+  })
+
+  # implémenter des selectInput pour les statuts
+  # db$statut <- selectinput_statut
+  # db$type_publication <- selectinput_typepublication
+  # db$validate <- validate_buttons
+  # db$note <- selectinput_note
+
+  db$modify_properties_buttons <- modify_properties_buttons
+  db$delete_book_buttons <- delete_book_buttons
+
+  db
+
+  # selectinput_statut <- sapply(seq_len(nrow(db)), function(i) {
+  # selectInput(
+  #   inputId = ns(paste0("statut", i)),
+  #   label = NULL,
+  #   choices = c("A lire", "En cours", "Lu"),
+  #   selected = db$statut[i]
+  # ) |>
+  #   as.character()
+  # })
+
+  # selectinput_typepublication <- sapply(seq_len(nrow(db)), function(i) {
+  # selectInput(
+  #   inputId = ns(paste0("type_publication", i)),
+  #   label = NULL,
+  #   choices = c("Comics", "BD", "Roman graphique", "Autre"),
+  #   selected = db$type_publication[i]
+  # ) |>
+  #   as.character()
+  # })
+
+  # selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
+  #   make_stars_rating_div(note = db$note[i]) |> as.character()
+  # selectizeInput(
+  #   inputId = ns(paste0("note", i)),
+  #   label = NULL,
+  #   choices = c(
+  #     "0" = make_stars_rating_div(note = 0),
+  #     "1" = make_stars_rating_div(note = 1),
+  #     "2" = make_stars_rating_div(note = 2),
+  #     "3" = make_stars_rating_div(note = 3),
+  #     "4" = make_stars_rating_div(note = 4),
+  #     "5" = make_stars_rating_div(note = 5)
+  #   ),
+  #   options = list(
+  #     render = I(
+  #       '{
+  #     item: function(item, escape) {
+  #       return "<div>" + item.value + "</div>";
+  #       },
+  #     option: function(item, escape) {
+  #       return "<div>" + item.value + "</div>";
+  #       }
+  #     }'
+  #     )
+  #   )
+  # ) |>
+  #   as.character()
+  # })
+}
+```
+  
+
+# make_stars_rating_div
+    
+```{r function-make_stars_rating_div}
+#' Make stars rating div
+#' @param note a note between 0 and max_note
+#' @param max_note the maximum note
+#' @return a div with stars
+#' @importFrom htmltools tags
+#' @rdname fct_mod_130
+#' @export
+make_stars_rating_div <- function(
+  note,
+  max_note = 5
+) {
+  stars_full <- stars_empty <- list()
+  if (note != 0) {
+    stars_full <- lapply(1:note, function(x) {
+      tags$span(class = "fa fa-star checked")
+    })
+  }
+
+  if (note != max_note) {
+    stars_empty <- lapply(1:(max_note - note), function(x) {
+      tags$span(class = "fa fa-star")
+    })
+  }
+
+  tagList(
+    c(stars_full, stars_empty)
+  ) |> as.character()
+}
+```
+  
+```{r example-make_stars_rating_div}
+make_stars_rating_div(note = 1)
+```
+  
+```{r tests-make_stars_rating_div}
+test_that("make_stars_rating_div works", {
+  stars <- make_stars_rating_div(note = 0)
+
+  expect_true(
+    length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 0
+  )
+
+  stars <- make_stars_rating_div(note = 1) |> as.character()
+  expect_true(
+    length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 1
+  )
+
+  stars <- make_stars_rating_div(note = 5) |> as.character()
+  expect_true(
+    length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 5
+  )
+})
+```
+  
+# extract_nstars_from_selectinput
+    
+```{r function-extract_nstars_from_selectinput}
+#' Extract n stars from selectinput
+#' @param selectinput_result the result of a selectinput
+#' @return the number of stars checked
+#' @rdname fct_mod_130
+#' @export
+extract_nstars_from_selectinput <- function(selectinput_result) {
+  length(
+    regmatches(
+      x = selectinput_result,
+      m = gregexpr(
+        "checked",
+        selectinput_result
+      )
+    )[[1]]
+  )
+}
+```
+  
+```{r tests-extract_nstars_from_selectinput}
+test_that("extract_nstars_from_selectinput works", {
+  zero_star <- "<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(zero_star),
+    0
+  )
+
+  one_star <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(one_star),
+    1
+  )
+
+  two_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(two_stars),
+    2
+  )
+
+  three_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
+
+  expect_equal(
+    extract_nstars_from_selectinput(three_stars),
+    3
+  )
+})
+```
+  
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_mod130.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

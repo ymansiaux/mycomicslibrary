@@ -337,6 +337,7 @@ test_that("clean_open_library_result works", {
 #' @param cover_size the size of the cover
 #' @return a URL to the cover of the book
 #' @importFrom glue glue
+#' @rdname fct_open_library
 #' @export
 get_cover <- function(
   root_api = "http://covers.openlibrary.org/b/isbn",
