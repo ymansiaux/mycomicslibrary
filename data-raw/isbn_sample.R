@@ -1,19 +1,5 @@
-## code to prepare `isbn_sample` dataset goes here
-#  source : https://nudger.fr/opendata
-#  https://www.data.gouv.fr/fr/datasets/base-de-codes-barres-noms-et-categories-produits/#/resources
-library(data.table)
-library(magrittr)
-
-#  Fichier supprimé car gigantesque
-big_db <- fread("data-raw/open4goods-full-gtin-dataset.csv", nrows = 5000000)
-isbn_sample <- big_db[gtinType == "ISBN_13"]
-isbn_sample <- rbind(
-  isbn_sample[grepl(pattern = "BD", x = isbn_sample$categories)],
-  isbn_sample[grepl(pattern = "BANDE DESSINEE", x = isbn_sample$categories)]
-) |>
-  unique()
-
-isbn_sample <- isbn_sample[["code"]]
+isbn_sample <- readLines("data-raw/isbn.txt") |>
+  gsub(pattern = "-", replacement = "")
 
 usethis::use_data(isbn_sample, overwrite = TRUE)
 checkhelper::use_data_doc("isbn_sample")

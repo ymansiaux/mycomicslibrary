@@ -1,9 +1,9 @@
 #' isbn_sample
 #'
-#' Description.
+#' A sample of isbn
 #'
-#' @format A data frame with  rows and  variables:
+#' @format A vector of 50 isbn from my personal collection.
 #' \describe{
 #' }
-#' @source https://nudger.fr/opendata
+#' @source Source
 "isbn_sample"

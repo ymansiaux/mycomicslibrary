@@ -5,17 +5,17 @@
 \alias{isbn_sample}
 \title{isbn_sample}
 \format{
-A data frame with  rows and  variables:
+A vector of 50 isbn from my personal collection.
 \describe{
 }
 }
 \source{
-https://nudger.fr/opendata
+Source
 }
 \usage{
 isbn_sample
 }
 \description{
-Description.
+A sample of isbn
 }
 \keyword{datasets}
