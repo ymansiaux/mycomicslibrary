@@ -301,9 +301,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
 
         is_the_book_already_in_db <- read_comics_db() |>
           get_most_recent_entry_per_doc() |>
-          filter(ISBN == to_add$ISBN) |>
-          nrow()
-        is_the_book_already_in_db <- is_the_book_already_in_db > 0
+          filter(ISBN == to_add$ISBN)
+
+        is_the_book_already_in_db <- nrow(is_the_book_already_in_db) > 0 & is_the_book_already_in_db$possede != -1
 
         if (isTRUE(is_the_book_already_in_db)) {
           golem::invoke_js(
