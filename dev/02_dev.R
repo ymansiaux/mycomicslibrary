@@ -43,7 +43,12 @@ golem::use_external_js_file(
 )
 golem::add_js_handler("gridjs")
 
+golem::use_external_js_file(
+  "https://cdn.jsdelivr.net/npm/chart.js"
+)
+
 golem::add_js_handler("call_sweetalert2")
+golem::add_js_handler("call_chartjs")
 golem::add_css_file("ccsY")
 golem::add_sass_file("custom")
 golem::add_html_template("template")
