@@ -1,2 +1,3 @@
-inst/db/comics_db.sqlite
+*.sqlite
 inst/db/comics_db_copy.sqlite
+inst/db/comics_db.sqlite

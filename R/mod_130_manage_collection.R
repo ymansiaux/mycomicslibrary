@@ -149,9 +149,14 @@ mod_130_manage_collection_server <- function(id, r_global) {
 
     observeEvent(input$delete_button_clicked, {
       golem::invoke_js(
-        "modal_delete_book_in_collection",
+        "modal_2_choices",
         message = list(
-          id_valider_suppression = ns("do_i_delete_the_book_in_collection")
+          id_resultat_modal = ns("do_i_delete_the_book_in_collection"),
+          title = "Êtes-vous sûr de vouloir supprimer ce livre ?",
+          text = "Vous ne pourrez pas revenir en arrière !",
+          icon = "warning",
+          confirmButtonText = "Oui, supprimer !",
+          cancelButtonText = "Non, annuler"
         )
       )
     })

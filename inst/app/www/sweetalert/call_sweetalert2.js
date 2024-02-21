@@ -124,24 +124,28 @@ $(document).ready(function () {
     });
   });
 
-  Shiny.addCustomMessageHandler('modal_delete_book_in_collection', function (arg) {
+
+
+  Shiny.addCustomMessageHandler('modal_2_choices', function (arg) {
     Swal.fire({
-      title: "Êtes-vous sûr de vouloir supprimer ce livre ?",
-      text: "Vous ne pourrez pas revenir en arrière !",
-      icon: "warning",
+      title: arg.title,
+      text: arg.text,
+      icon: arg.icon,
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Oui, supprimer !",
-      cancelButtonText: "Annuler"
+      confirmButtonText: arg.confirmButtonText,
+      cancelButtonText: arg.cancelButtonText
     }).then((result) => {
       if (result.isConfirmed) {
-        Shiny.setInputValue(arg.id_valider_suppression, result.isConfirmed, {
+        Shiny.setInputValue(arg.id_resultat_modal, result.isConfirmed, {
           priority: "event"
         });
       }
     });
   });
+
+
 
 
 
