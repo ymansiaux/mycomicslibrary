@@ -3,19 +3,28 @@ $(document).ready(function () {
     const ctx = document.getElementById(arg.id);
 
     new Chart(ctx, {
-      type: 'bar',
+      type: 'doughnut',
       data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: arg.labels,
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
+          label: arg.label,
+          data: arg.data,
           borderWidth: 1
         }]
       },
       options: {
         scales: {
+          x: {
+            display: false,
+            grid: {
+              display: false,
+            }
+          },
           y: {
-            beginAtZero: true
+            display: false,
+            grid: {
+              display: false
+            }
           }
         }
       }
