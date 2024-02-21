@@ -55,7 +55,6 @@ mod_500_chartjs_server <- function(id, r_global) {
     observeEvent(r_local$var_to_use, {
       req(nrow(r_local$current_db) > 0)
       req(r_local$var_to_use)
-      browser()
       golem::invoke_js(
         "call_chartjs",
         message = list(
