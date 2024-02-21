@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  Shiny.addCustomMessageHandler('build_ma_collection', function (arg) {
+  Shiny.addCustomMessageHandler('build_my_collection', function (arg) {
     new gridjs.Grid({
       columns: [
         "titre",

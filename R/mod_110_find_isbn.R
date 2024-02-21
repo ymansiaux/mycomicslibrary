@@ -178,11 +178,11 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           r_local$api_call_status <- "success"
         }
-
+        r_local$trigger_api_call_status <- Sys.time()
         r_local$api_res <- api_res
       })
 
-      observeEvent(r_local$api_call_status, {
+      observeEvent(r_local$trigger_api_call_status, {
         req(r_local$api_call_status)
 
         if (r_local$api_call_status == "error") {
