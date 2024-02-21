@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_130_manage_collection_ui <- function(id) {
+mod_300_manage_collection_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
@@ -20,7 +20,7 @@ mod_130_manage_collection_ui <- function(id) {
 #' 130_poc_gridjs Server Functions
 #' @importFrom dplyr filter
 #' @noRd
-mod_130_manage_collection_server <- function(id, r_global) {
+mod_300_manage_collection_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -205,7 +205,7 @@ mod_130_manage_collection_server <- function(id, r_global) {
 }
 
 ## To be copied in the UI
-# mod_130_manage_collection_ui("130_poc_gridjs_1")
+# mod_300_manage_collection_ui("130_poc_gridjs_1")
 
 ## To be copied in the server
-# mod_130_manage_collection_server("130_poc_gridjs_1")
+# mod_300_manage_collection_server("130_poc_gridjs_1")

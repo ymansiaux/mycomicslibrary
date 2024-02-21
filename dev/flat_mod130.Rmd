@@ -22,7 +22,7 @@ pkgload::load_all(export_all = FALSE)
 #' @param comics_db a comics database
 #' @param ns the namespace
 #' @return a comics database with only the columns needed to see the collection
-#' @rdname fct_mod_130
+#' @rdname fct_mod_300
 #' @importFrom dplyr select mutate
 #' @importFrom purrr map_chr
 #' @importFrom shiny selectInput
@@ -108,6 +108,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
 #' @return a comics database with only the columns needed to see the wishlist
 #' @importFrom dplyr select
 #' @export
+#' @rdname fct_mod_300
 prepare_comics_db_to_see_wishlist <- function(comics_db, ns) {
   db <- comics_db |>
     select(
@@ -203,7 +204,7 @@ test_that("prepare_comics_db_to_see_wishlist works", {
 #' @param max_note the maximum note
 #' @return a div with stars
 #' @importFrom htmltools tags
-#' @rdname fct_mod_130
+#' @rdname fct_mod_300
 #' @export
 make_stars_rating_div <- function(
   note,
@@ -263,6 +264,7 @@ test_that("make_stars_rating_div works", {
 #' @param ns the namespace
 #' @importFrom shiny tags sliderInput textInput selectInput
 #' @export
+#' @rdname fct_mod_300
 create_html_for_modal_modify_book_in_collection <- function(
   current_book,
   ns

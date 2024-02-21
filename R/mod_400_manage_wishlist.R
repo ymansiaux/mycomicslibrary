@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_140_manage_wishlist_ui <- function(id) {
+mod_400_manage_wishlist_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
@@ -20,7 +20,7 @@ mod_140_manage_wishlist_ui <- function(id) {
 #' 140_manage_wishlist Server Functions
 #'
 #' @noRd
-mod_140_manage_wishlist_server <- function(id, r_global) {
+mod_400_manage_wishlist_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -187,7 +187,7 @@ mod_140_manage_wishlist_server <- function(id, r_global) {
 }
 
 ## To be copied in the UI
-# mod_140_manage_wishlist_ui("140_manage_wishlist_1")
+# mod_400_manage_wishlist_ui("140_manage_wishlist_1")
 
 ## To be copied in the server
-# mod_140_manage_wishlist_server("140_manage_wishlist_1")
+# mod_400_manage_wishlist_server("140_manage_wishlist_1")

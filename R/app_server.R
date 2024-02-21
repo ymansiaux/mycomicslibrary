@@ -53,8 +53,8 @@ app_server <- function(input, output, session) {
       print(r_global$comics_db)
       mod_100_search_isbn_server("100_search_isbn_1", r_global)
       mod_200_add_picture_server("120_add_picture_1", r_global)
-      mod_130_manage_collection_server("130_poc_gridjs_1", r_global)
-      mod_140_manage_wishlist_server("140_manage_wishlist_1", r_global)
+      mod_300_manage_collection_server("130_poc_gridjs_1", r_global)
+      mod_400_manage_wishlist_server("140_manage_wishlist_1", r_global)
     }
   })
 

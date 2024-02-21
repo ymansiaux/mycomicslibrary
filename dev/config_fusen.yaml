@@ -29,11 +29,11 @@ flat_mod130.Rmd:
   state: active
   R:
   - R/create_html_for_modal_modify_book_in_collection.R
-  - R/fct_mod_130.R
+  - R/fct_mod_300.R
   - R/prepare_comics_db_to_see_wishlist.R
   tests:
   - tests/testthat/test-prepare_comics_db_to_see_wishlist.R
-  - tests/testthat/test-fct_mod_130.R
+  - tests/testthat/test-fct_mod_300.R
   - tests/testthat/test-create_html_for_modal_modify_book_in_collection.R
   vignettes: []
   inflate:

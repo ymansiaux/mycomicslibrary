@@ -1,5 +1,5 @@
 testServer(
-  mod_130_manage_collection_server,
+  mod_300_manage_collection_server,
   # Add here your module params
   args = list(),
   {
@@ -28,10 +28,10 @@ testServer(
 )
 
 test_that("module ui works", {
-  ui <- mod_130_manage_collection_ui(id = "test")
+  ui <- mod_300_manage_collection_ui(id = "test")
   golem::expect_shinytaglist(ui)
   # Check that formals have not been removed
-  fmls <- formals(mod_130_manage_collection_ui)
+  fmls <- formals(mod_300_manage_collection_ui)
   for (i in c("id")) {
     expect_true(i %in% names(fmls))
   }
