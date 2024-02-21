@@ -103,7 +103,8 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
     
 ```{r function-prepare_comics_db_to_see_wishlist}
 #' prepare comics database to see wishlist
-#'
+#' @param comics_db a comics database
+#' @param ns the namespace
 #' @return a comics database with only the columns needed to see the wishlist
 #' @importFrom dplyr select
 #' @export
