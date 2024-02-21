@@ -1,5 +1,24 @@
-$( document ).ready(function() {
-  Shiny.addCustomMessageHandler('fun', function(arg) {
- 
+$(document).ready(function () {
+  Shiny.addCustomMessageHandler('call_chartjs', function (arg) {
+    const ctx = document.getElementById(arg.id);
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        datasets: [{
+          label: '# of Votes',
+          data: [12, 19, 3, 5, 2, 3],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   })
 });

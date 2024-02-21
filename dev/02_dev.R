@@ -22,8 +22,9 @@ attachment::att_amend_desc()
 ## Create a module infrastructure in R/
 golem::add_module(name = "100_search_isbn", with_test = TRUE) # Name of the module
 golem::add_module(name = "110_find_isbn", with_test = TRUE) # Name of the module
-golem::add_module(name = "130_manage_collection", with_test = TRUE) # Name of the module
-golem::add_module(name = "140_manage_wishlist", with_test = TRUE) # Name of the module
+golem::add_module(name = "300_manage_collection", with_test = TRUE) # Name of the module
+golem::add_module(name = "400_manage_wishlist", with_test = TRUE) # Name of the module
+golem::add_module(name = "500_chartjs", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
