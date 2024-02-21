@@ -93,7 +93,7 @@ mod_140_manage_wishlist_server <- function(id, r_global) {
       golem::invoke_js(
         "modal_2_choices",
         message = list(
-          id_resultat_modal = ns("do_i_delete_the_book_from_wishlist"),
+          id_resultat_modal = ns("do_i_delete_the_book_in_wishlist"),
           title = "Êtes-vous sûr de vouloir supprimer ce livre ?",
           text = "Vous ne pourrez pas revenir en arrière !",
           icon = "warning",
@@ -104,17 +104,85 @@ mod_140_manage_wishlist_server <- function(id, r_global) {
     })
 
     observeEvent(input$do_i_move_the_book_in_collection, {
-      print(input$do_i_move_the_book_in_collection)
+      r_local$current_book <- r_global$comics_db |>
+        dplyr::filter(id_document == input$document_to_add_to_collection_id) |>
+        get_most_recent_entry_per_doc()
+
+      append_res <- append_comics_db(
+        ISBN = r_local$current_book$ISBN,
+        auteur = r_local$current_book$auteur,
+        titre = r_local$current_book$titre,
+        possede = 1,
+        annee_publication = r_local$current_book$annee_publication,
+        nb_pages = r_local$current_book$nb_pages,
+        editeur = r_local$current_book$editeur,
+        note = r_local$current_book$note,
+        type_publication = r_local$current_book$type_publication,
+        statut = r_local$current_book$statut,
+        lien_cover = r_local$current_book$lien_cover
+      )
+
+      if (append_res == 1) {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "success",
+            msg = "Le livre a été déplacé avec succès"
+          )
+        )
+      } else {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "error",
+            msg = "Le livre n'a pu être déplacé"
+          )
+        )
+      }
+
+      r_global$comics_db <- read_comics_db()
     })
-    observeEvent(input$do_i_delete_the_book_from_wishlist, {
-      print(input$do_i_delete_the_book_from_wishlist)
+    observeEvent(input$do_i_delete_the_book_in_wishlist, {
+      req(input$do_i_delete_the_book_in_wishlist)
+
+      r_local$current_book <- r_global$comics_db |>
+        dplyr::filter(id_document == input$document_to_delete_id) |>
+        get_most_recent_entry_per_doc()
+
+      append_res <- append_comics_db(
+        ISBN = r_local$current_book$ISBN,
+        auteur = r_local$current_book$auteur,
+        titre = r_local$current_book$titre,
+        possede = -1,
+        annee_publication = r_local$current_book$annee_publication,
+        nb_pages = r_local$current_book$nb_pages,
+        editeur = r_local$current_book$editeur,
+        note = r_local$current_book$note,
+        type_publication = r_local$current_book$type_publication,
+        statut = r_local$current_book$statut,
+        lien_cover = r_local$current_book$lien_cover
+      )
+
+      if (append_res == 1) {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "success",
+            msg = "Le livre a été supprimé avec succès"
+          )
+        )
+      } else {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "error",
+            msg = "Le livre n'a pu être supprimé"
+          )
+        )
+      }
+
+      r_global$comics_db <- read_comics_db()
     })
-
-
-
-    # r_local$current_book <- r_global$comics_db |>
-    #   dplyr::filter(id_document == input$document_to_add_to_collection_id) |>
-    #   get_most_recent_entry_per_doc()
   })
 }
 
