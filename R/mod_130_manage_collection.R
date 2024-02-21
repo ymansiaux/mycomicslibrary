@@ -11,8 +11,7 @@ mod_130_manage_collection_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
-      class = "col",
-      h3("Ma collection"),
+      tags$h4(id = ns("nobook"), "Aucun livre dans la collection pour le moment", style = "display: none;"),
       tags$div(id = ns("my_collection"))
     )
   )
@@ -30,6 +29,23 @@ mod_130_manage_collection_server <- function(id, r_global) {
       current_book = NULL
     )
 
+    observeEvent(r_local$current_db, ignoreNULL = FALSE, {
+      if (
+        !isTruthy(r_local$current_db) ||
+          nrow(r_local$current_db) == 0
+      ) {
+        golem::invoke_js(
+          "showid",
+          ns("nobook")
+        )
+      } else {
+        golem::invoke_js(
+          "hideid",
+          ns("nobook")
+        )
+      }
+    })
+
     observeEvent(r_global$comics_db, {
       req(nrow(r_global$comics_db) > 0)
 
@@ -39,7 +55,6 @@ mod_130_manage_collection_server <- function(id, r_global) {
         prepare_comics_db_to_see_collection(
           ns = ns
         )
-      r_local$trigger_new_book_in_db <- Sys.time()
     })
 
     observeEvent(r_local$current_db, {

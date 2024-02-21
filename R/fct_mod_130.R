@@ -61,7 +61,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
 
   modify_properties_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
-      '<button type="button" class="btn btn-primary" id="%s" onclick="%s">Modifier</button>',
+      '<button type="button" class="btn btn-primary" id="%s" onclick="%s"><i class="fas fa-edit"></i></button>',
       ns(paste0("modify_book_button", i)),
       sprintf(
         "Shiny.setInputValue(
@@ -83,7 +83,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
 
   delete_book_buttons <- sapply(seq_len(nrow(db)), function(i) {
     sprintf(
-      '<button type="button" class="btn btn-danger" id="%s" onclick="%s">Supprimer</button>',
+      '<button type="button" class="btn btn-danger" id="%s" onclick="%s"><i class="fa fa-trash"></i></button>',
       ns(paste0("delete_book_button", i)),
       sprintf(
         "Shiny.setInputValue(

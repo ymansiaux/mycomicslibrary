@@ -69,7 +69,20 @@ $(document).ready(function () {
       data: arg.data,
       pagination: {
         limit: 5,
-        summary: false
+        summary: true
+      },
+      language: {
+        'search': {
+          'placeholder': '🔍 Rechercher...'
+        },
+        'pagination': {
+          'previous': 'Précédent',
+          'next': 'Suivant',
+          'showing': '😃 Affichage',
+          'to': 'à',
+          'of': 'parmi',
+          'results': () => 'résultats'
+        }
       },
       style: {
         table: {
@@ -82,6 +95,9 @@ $(document).ready(function () {
           'text-align': 'center'
         },
         td: {
+          'text-align': 'center',
+          color: '#000',
+          'border-bottom': '3px solid #ccc',
           'text-align': 'center'
         }
       }
