@@ -80,7 +80,8 @@ clean_open_library_result <- function(book_tibble) {
       author = author,
       isbn_10 = isbn_10,
       isbn_13 = isbn_13,
-      publisher = publisher
+      publisher = publisher,
+      details_publish_date = regmatches(details_publish_date, regexec("\\d{4,4}", details_publish_date))[[1]]
     )
 
   colnames(df_part) <- gsub("details_", "", colnames(df_part))

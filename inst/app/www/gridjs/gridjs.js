@@ -15,7 +15,7 @@ $(document).ready(function () {
         {
           name: 'publication',
           attributes: {
-            'data-field': 'date_publication'
+            'data-field': 'annee_publication'
           }
         },
         {

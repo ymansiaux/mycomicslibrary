@@ -62,7 +62,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
     select(
       id_document,
       titre,
-      date_publication,
+      annee_publication,
       nb_pages,
       editeur,
       note,

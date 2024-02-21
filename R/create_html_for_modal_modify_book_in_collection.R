@@ -23,6 +23,12 @@ create_html_for_modal_modify_book_in_collection <- function(
       tags$div(
         tags$ul(
           style = "text-align: left; list-style-type: none;",
+          dateInput(
+            inputId = ns("annee_publication"),
+            label = "Année de publication",
+            choices = 0:5,
+            selected = current_book$note
+          ),
           selectInput(
             inputId = ns("note"),
             label = "Note",

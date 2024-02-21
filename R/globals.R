@@ -11,7 +11,7 @@ globalVariables(unique(c(
   "decode_my_photo",
   "ISBN",
   "titre",
-  "date_publication",
+  "annee_publication",
   "nb_pages",
   "editeur",
   "note",

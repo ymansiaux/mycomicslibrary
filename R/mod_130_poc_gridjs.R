@@ -97,7 +97,7 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
         auteur = r_local$current_book$auteur,
         titre = r_local$current_book$titre,
         possede = r_local$current_book$possede,
-        date_publication = r_local$current_book$date_publication,
+        annee_publication = r_local$current_book$annee_publication,
         nb_pages = r_local$current_book$nb_pages,
         editeur = r_local$current_book$editeur,
         note = input$note,

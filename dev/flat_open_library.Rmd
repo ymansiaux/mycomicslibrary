@@ -238,7 +238,8 @@ clean_open_library_result <- function(book_tibble) {
       author = author,
       isbn_10 = isbn_10,
       isbn_13 = isbn_13,
-      publisher = publisher
+      publisher = publisher,
+      details_publish_date = regmatches(details_publish_date, regexec("\\d{4,4}", details_publish_date))[[1]]
     )
 
   colnames(df_part) <- gsub("details_", "", colnames(df_part))
@@ -312,7 +313,7 @@ test_that("clean_open_library_result works", {
         author = c(`ISBN:2365772013` = "Brian K. Vaughan, Fiona Staples"),
         info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
         thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
-        publish_date = "Mar 14, 2013",
+        publish_date = "2013",
         number_of_pages = 168,
         isbn_10 = c(`ISBN:2365772013` = "2365772013"),
         isbn_13 = c(`ISBN:2365772013` = "9782365772013"),

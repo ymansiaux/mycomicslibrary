@@ -34,7 +34,7 @@ test_that("init/read/append works", {
             auteur = "BILL",
             titre = "BOBI",
             possede = 1,
-            date_publication = "2020-01-01",
+            annee_publication = "2020-01-01",
             nb_pages = 154,
             editeur = "truc",
             note = 5,
@@ -68,7 +68,7 @@ test_that("init/read/append works", {
         )
 
         expect_equal(
-          db$date_publication,
+          db$annee_publication,
           "2020-01-01"
         )
 
@@ -119,7 +119,7 @@ test_that("get_most_recent_entry_per_doc works", {
           auteur = "BILL",
           titre = "BOBI",
           possede = 0,
-          date_publication = "2020-01-01",
+          annee_publication = "2020-01-01",
           nb_pages = 154,
           editeur = "truc",
           note = 5,
@@ -150,7 +150,7 @@ test_that("get_most_recent_entry_per_doc works", {
           auteur = "BILL",
           titre = "BOBI",
           possede = 1,
-          date_publication = "2020-01-01",
+          annee_publication = "2020-01-01",
           nb_pages = 154,
           editeur = "truc",
           note = 5,
@@ -182,7 +182,7 @@ test_that("get_most_recent_entry_per_doc works", {
           auteur = "BILL",
           titre = "BOBI",
           possede = 1,
-          date_publication = "2020-01-01",
+          annee_publication = "2020-01-01",
           nb_pages = 154,
           editeur = "truc",
           note = 5,
@@ -215,7 +215,7 @@ test_that("get_most_recent_entry_per_doc works", {
           auteur = "BILL",
           titre = "BOBI2",
           possede = 1,
-          date_publication = "2020-01-01",
+          annee_publication = "2020-01-01",
           nb_pages = 154,
           editeur = "truc",
           note = 5,
@@ -246,7 +246,7 @@ test_that("get_most_recent_entry_per_doc works", {
           auteur = "BILL",
           titre = "BOBI2",
           possede = 1,
-          date_publication = "2020-01-01",
+          annee_publication = "2020-01-01",
           nb_pages = 154,
           editeur = "truc",
           note = 5,
