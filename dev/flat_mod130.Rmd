@@ -89,66 +89,11 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
     )
   })
 
-  # implémenter des selectInput pour les statuts
-  # db$statut <- selectinput_statut
-  # db$type_publication <- selectinput_typepublication
-  # db$validate <- validate_buttons
-  # db$note <- selectinput_note
-
   db$modify_properties_buttons <- modify_properties_buttons
   db$delete_book_buttons <- delete_book_buttons
 
   db |>
     select(-id_document)
-
-  # selectinput_statut <- sapply(seq_len(nrow(db)), function(i) {
-  # selectInput(
-  #   inputId = ns(paste0("statut", i)),
-  #   label = NULL,
-  #   choices = c("A lire", "En cours", "Lu"),
-  #   selected = db$statut[i]
-  # ) |>
-  #   as.character()
-  # })
-
-  # selectinput_typepublication <- sapply(seq_len(nrow(db)), function(i) {
-  # selectInput(
-  #   inputId = ns(paste0("type_publication", i)),
-  #   label = NULL,
-  #   choices = c("Comics", "BD", "Roman graphique", "Autre"),
-  #   selected = db$type_publication[i]
-  # ) |>
-  #   as.character()
-  # })
-
-  # selectinput_note <- sapply(seq_len(nrow(db)), function(i) {
-  #   make_stars_rating_div(note = db$note[i]) |> as.character()
-  # selectizeInput(
-  #   inputId = ns(paste0("note", i)),
-  #   label = NULL,
-  #   choices = c(
-  #     "0" = make_stars_rating_div(note = 0),
-  #     "1" = make_stars_rating_div(note = 1),
-  #     "2" = make_stars_rating_div(note = 2),
-  #     "3" = make_stars_rating_div(note = 3),
-  #     "4" = make_stars_rating_div(note = 4),
-  #     "5" = make_stars_rating_div(note = 5)
-  #   ),
-  #   options = list(
-  #     render = I(
-  #       '{
-  #     item: function(item, escape) {
-  #       return "<div>" + item.value + "</div>";
-  #       },
-  #     option: function(item, escape) {
-  #       return "<div>" + item.value + "</div>";
-  #       }
-  #     }'
-  #     )
-  #   )
-  # ) |>
-  #   as.character()
-  # })
 }
 ```
   
@@ -210,69 +155,16 @@ test_that("make_stars_rating_div works", {
 })
 ```
   
-# extract_nstars_from_selectinput
-    
-```{r function-extract_nstars_from_selectinput}
-#' Extract n stars from selectinput
-#' @param selectinput_result the result of a selectinput
-#' @return the number of stars checked
-#' @rdname fct_mod_130
-#' @export
-extract_nstars_from_selectinput <- function(selectinput_result) {
-  length(
-    regmatches(
-      x = selectinput_result,
-      m = gregexpr(
-        "checked",
-        selectinput_result
-      )
-    )[[1]]
-  )
-}
-```
-  
-```{r tests-extract_nstars_from_selectinput}
-test_that("extract_nstars_from_selectinput works", {
-  zero_star <- "<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(zero_star),
-    0
-  )
-
-  one_star <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(one_star),
-    1
-  )
-
-  two_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(two_stars),
-    2
-  )
-
-  three_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(three_stars),
-    3
-  )
-})
-```
-  
 
 # create_html_for_modal_modify_book_in_collection
     
 ```{r function-create_html_for_modal_modify_book_in_collection}
-#' Title
+#' HTML for modal modify book in collection
 #'
-#' Description
-#'
-#' @return
-#'
+#' @return a div with the HTML for the modal to modify a book in the collection
+#' @param current_book the current book
+#' @param ns the namespace
+#' @importFrom shiny tags sliderInput textInput selectInput
 #' @export
 create_html_for_modal_modify_book_in_collection <- function(
   current_book,
@@ -335,11 +227,8 @@ create_html_for_modal_modify_book_in_collection <- function(
   )
 }
 ```
-  
-```{r example-create_html_for_modal_modify_book_in_collection}
-create_html_for_modal_modify_book_in_collection()
-```
-  
+ 
+ 
 ```{r tests-create_html_for_modal_modify_book_in_collection}
 test_that("create_html_for_modal_modify_book_in_collection works", {
   expect_true(inherits(create_html_for_modal_modify_book_in_collection, "function"))

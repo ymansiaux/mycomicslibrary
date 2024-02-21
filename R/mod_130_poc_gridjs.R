@@ -19,7 +19,7 @@ mod_130_poc_gridjs_ui <- function(id) {
 }
 
 #' 130_poc_gridjs Server Functions
-#'
+#' @importFrom dplyr filter
 #' @noRd
 mod_130_poc_gridjs_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
@@ -35,6 +35,7 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
       r_local$current_db <- r_global$comics_db |>
         get_most_recent_entry_per_doc() |>
+        filter(possede == 1) |>
         prepare_comics_db_to_see_collection(
           ns = ns
         )
@@ -43,7 +44,7 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
     observeEvent(r_local$current_db, {
       req(nrow(r_local$current_db) > 0)
-      print("tu as ajouté un nouveau livre")
+
       golem::invoke_js(
         "build_my_collection",
         list(
@@ -124,6 +125,56 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
           message = list(
             type = "error",
             msg = "Le livre n'a pu être modifié"
+          )
+        )
+      }
+
+      r_global$comics_db <- read_comics_db()
+    })
+
+    observeEvent(input$delete_button_clicked, {
+      golem::invoke_js(
+        "modal_delete_book_in_collection",
+        message = list(
+          id_valider_suppression = ns("do_i_delete_the_book_in_collection")
+        )
+      )
+    })
+    observeEvent(input$do_i_delete_the_book_in_collection, {
+      req(input$do_i_delete_the_book_in_collection)
+
+      r_local$current_book <- r_global$comics_db |>
+        dplyr::filter(id_document == input$document_to_delete_id) |>
+        get_most_recent_entry_per_doc()
+
+      append_res <- append_comics_db(
+        ISBN = r_local$current_book$ISBN,
+        auteur = r_local$current_book$auteur,
+        titre = r_local$current_book$titre,
+        possede = -1,
+        annee_publication = r_local$current_book$annee_publication,
+        nb_pages = r_local$current_book$nb_pages,
+        editeur = r_local$current_book$editeur,
+        note = r_local$current_book$note,
+        type_publication = r_local$current_book$type_publication,
+        statut = r_local$current_book$statut,
+        lien_cover = r_local$current_book$lien_cover
+      )
+
+      if (append_res == 1) {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "success",
+            msg = "Le livre a été supprimé avec succès"
+          )
+        )
+      } else {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "error",
+            msg = "Le livre n'a pu être supprimé"
           )
         )
       }

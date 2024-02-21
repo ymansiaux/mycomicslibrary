@@ -3,13 +3,18 @@
 %   R/create_html_for_modal_modify_book_in_collection.R
 \name{create_html_for_modal_modify_book_in_collection}
 \alias{create_html_for_modal_modify_book_in_collection}
-\title{Title}
+\title{HTML for modal modify book in collection}
 \usage{
 create_html_for_modal_modify_book_in_collection(current_book, ns)
 }
-\description{
-Description
+\arguments{
+\item{current_book}{the current book}
+
+\item{ns}{the namespace}
 }
-\examples{
-create_html_for_modal_modify_book_in_collection()
+\value{
+a div with the HTML for the modal to modify a book in the collection
+}
+\description{
+HTML for modal modify book in collection
 }
