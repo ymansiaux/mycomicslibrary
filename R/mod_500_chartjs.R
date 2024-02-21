@@ -55,6 +55,7 @@ mod_500_chartjs_server <- function(id, r_global) {
     observeEvent(r_local$var_to_use, {
       req(nrow(r_local$current_db) > 0)
       req(r_local$var_to_use)
+      browser()
       golem::invoke_js(
         "call_chartjs",
         message = list(
@@ -62,7 +63,8 @@ mod_500_chartjs_server <- function(id, r_global) {
           labels = r_local$current_db |>
             dplyr::count(.data[[r_local$var_to_use]]) |>
             dplyr::arrange(.data[[r_local$var_to_use]]) |>
-            dplyr::pull(.data[[r_local$var_to_use]]),
+            dplyr::pull(.data[[r_local$var_to_use]]) |>
+            stringi::stri_trans_general("latin-ascii"),
           label = "Nombre d'albums",
           data = r_local$current_db |>
             dplyr::count(.data[[r_local$var_to_use]]) |>
@@ -70,7 +72,7 @@ mod_500_chartjs_server <- function(id, r_global) {
             dplyr::pull(n)
         )
       )
-      # problème avec les accents dans A définir je pense
+      # problème avec les accents dans A définir je pense (et les espaces ?)
     })
   })
 }
