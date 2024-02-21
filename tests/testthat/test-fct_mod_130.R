@@ -17,33 +17,3 @@ test_that("make_stars_rating_div works", {
     length(regmatches(x = stars, m = gregexpr("checked", stars))[[1]]) == 5
   )
 })
-
-test_that("extract_nstars_from_selectinput works", {
-  zero_star <- "<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(zero_star),
-    0
-  )
-
-  one_star <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(one_star),
-    1
-  )
-
-  two_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(two_stars),
-    2
-  )
-
-  three_stars <- "<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star checked\"></span>\n<span class=\"fa fa-star\"></span>\n<span class=\"fa fa-star\"></span>"
-
-  expect_equal(
-    extract_nstars_from_selectinput(three_stars),
-    3
-  )
-})

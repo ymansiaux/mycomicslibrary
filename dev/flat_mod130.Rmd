@@ -34,6 +34,7 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
       titre,
       annee_publication,
       nb_pages,
+      auteur,
       editeur,
       note,
       type_publication,

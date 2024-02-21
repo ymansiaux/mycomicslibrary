@@ -24,6 +24,7 @@ $(document).ready(function () {
             'data-field': 'nb_pages'
           }
         },
+        "auteur",
         "editeur",
         {
           name: 'note',
