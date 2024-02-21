@@ -12,9 +12,9 @@ Shiny.addCustomMessageHandler('waitForModalModifyBookInCollection', function (ar
 
   var setDefaultValuesWhenModalShows = function () {
     console.log("le modal est ici");
-    Shiny.setInputValue(arg.id_note, "0");
-    Shiny.setInputValue(arg.id_format, "BD");
-    Shiny.setInputValue(arg.id_etat, "A lire");
+    Shiny.setInputValue(arg.id_note, arg.note_initial_value);
+    Shiny.setInputValue(arg.id_format, arg.format_initial_value);
+    Shiny.setInputValue(arg.id_etat, arg.etat_initial_value);
   }
 
   waitForEl(

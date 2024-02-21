@@ -58,18 +58,25 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
       # browser()
       print("tu as cliqué sur le button")
       print(input$modify_button_clicked_id)
+
+      r_local$current_book <- r_global$comics_db |>
+        dplyr::filter(id_document == input$document_to_modify_id) |>
+        get_most_recent_entry_per_doc()
+
+
       golem::invoke_js(
         "waitForModalModifyBookInCollection",
         message = list(
           modalToWaitFor = ns("modal_modify_book_in_collection"),
           id_note = ns("note"),
+          note_initial_value = r_local$current_book$note,
           id_format = ns("format"),
-          id_etat = ns("etat")
+          format_initial_value = r_local$current_book$type_publication,
+          id_etat = ns("etat"),
+          etat_initial_value = r_local$current_book$statut
         )
       )
-      r_local$current_book <- r_global$comics_db |>
-        dplyr::filter(id_document == input$document_to_modify_id) |>
-        get_most_recent_entry_per_doc()
+
       golem::invoke_js(
         "modal_modify_book_in_collection",
         message = list(
@@ -84,10 +91,6 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
     observeEvent(input$do_i_modify_the_book_in_collection, {
       req(input$do_i_modify_the_book_in_collection)
-      # document_to_modify <- input$document_to_modify_id
-      # document_to_modify_values_in_db <- r_global$comics_db |>
-      #   dplyr::filter(id_document == document_to_modify) |>
-      #   get_most_recent_entry_per_doc()
 
       append_res <- append_comics_db(
         ISBN = r_local$current_book$ISBN,
