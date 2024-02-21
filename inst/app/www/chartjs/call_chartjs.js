@@ -2,7 +2,11 @@ $(document).ready(function () {
   Shiny.addCustomMessageHandler('call_chartjs', function (arg) {
     const ctx = document.getElementById(arg.id);
 
-    new Chart(ctx, {
+    let chartStatus = Chart.getChart(arg.id);
+    if (chartStatus != undefined) {
+      chartStatus.destroy();
+    }
+    const myLineChart = new Chart(ctx, {
       type: 'doughnut',
       data: {
         labels: arg.labels,

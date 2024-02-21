@@ -12,12 +12,9 @@ mod_500_chartjs_ui <- function(id) {
   tagList(
     htmlTemplate(
       app_sys("app/www/templates_html/template_chartjs.html"),
-      id = ns("myChart")
+      id = ns("myChart"),
+      groupbuttonid = ns("chart_group_button")
     )
-    # div(
-    #   style = "height: 90%; width: 90%; text-align: -webkit-center; margin: auto; padding: 10px; background-color: white; border-radius: 10px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);",
-    #   tags$canvas(id = ns("myChart"))
-    # )
   )
 }
 
@@ -28,8 +25,22 @@ mod_500_chartjs_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+    observeEvent(input$myChart_button, {
+      if (input$myChart_button == "Année de publication") {
+        r_local$var_to_use <- "annee_publication"
+      } else if (input$myChart_button == "Note") {
+        r_local$var_to_use <- "note"
+      } else if (input$myChart_button == "Etat") {
+        r_local$var_to_use <- "statut"
+      } else {
+        r_local$var_to_use <- "type_publication"
+      }
+      print(r_local$var_to_use)
+    })
+
     r_local <- reactiveValues(
-      current_db = NULL
+      current_db = NULL,
+      var_to_use = NULL
     )
 
 
@@ -41,22 +52,26 @@ mod_500_chartjs_server <- function(id, r_global) {
         filter(possede == 1)
     })
 
-    observeEvent(r_local$current_db, {
+    observeEvent(r_local$var_to_use, {
       req(nrow(r_local$current_db) > 0)
-
-
+      req(r_local$var_to_use)
+      browser()
       golem::invoke_js(
         "call_chartjs",
         message = list(
           id = ns("myChart"),
-          labels = sort(r_local$current_db$annee_publication),
+          labels = r_local$current_db |>
+            dplyr::count(.data[[r_local$var_to_use]]) |>
+            dplyr::arrange(.data[[r_local$var_to_use]]) |>
+            dplyr::pull(.data[[r_local$var_to_use]]),
           label = "Nombre d'albums",
           data = r_local$current_db |>
-            dplyr::count(annee_publication) |>
-            dplyr::arrange(annee_publication) |>
+            dplyr::count(.data[[r_local$var_to_use]]) |>
+            dplyr::arrange(.data[[r_local$var_to_use]]) |>
             dplyr::pull(n)
         )
       )
+      # problème avec les accents dans A définir je pense
     })
   })
 }
