@@ -146,7 +146,7 @@ append_comics_db <- function(
   )
   id_document <- paste0(
     "doc_",
-    digest::digest(ISBN)
+    digest::digest(as.character(ISBN))
   )
 
   con <- connect_to_comics_db()

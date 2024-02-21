@@ -1,7 +1,15 @@
 $(document).ready(function () {
 
   Shiny.addCustomMessageHandler('build_my_collection', function (arg) {
-    new gridjs.Grid({
+    console.log("gridjs");
+
+    // var gridIsAlreadyHere = ($("#130_poc_gridjs_1-my_collection").length) > 0;
+
+    // console.log(gridIsAlreadyHere);
+    // https://stackoverflow.com/questions/68263328/how-do-you-add-or-replace-the-data-in-grid-js-once-it-has-been-rendered
+
+
+    const mygrid = new gridjs.Grid({
       columns: [
         "titre",
         {
@@ -77,5 +85,6 @@ $(document).ready(function () {
         }
       }
     }).render(document.getElementById(arg.id));
+
   })
 });

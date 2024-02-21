@@ -77,6 +77,44 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
     observeEvent(input$do_i_modify_the_book_in_collection, {
       req(input$do_i_modify_the_book_in_collection)
+      document_to_modify <- input$document_to_modify_id
+      document_to_modify_values_in_db <- r_global$comics_db |>
+        dplyr::filter(id_document == document_to_modify) |>
+        get_most_recent_entry_per_doc()
+
+      append_res <- append_comics_db(
+        ISBN = document_to_modify_values_in_db$ISBN,
+        auteur = document_to_modify_values_in_db$auteur,
+        titre = document_to_modify_values_in_db$titre,
+        possede = document_to_modify_values_in_db$possede,
+        date_publication = document_to_modify_values_in_db$date_publication,
+        nb_pages = document_to_modify_values_in_db$nb_pages,
+        editeur = document_to_modify_values_in_db$editeur,
+        note = input$note,
+        type_publication = input$format,
+        statut = input$etat,
+        lien_cover = document_to_modify_values_in_db$lien_cover
+      )
+
+      if (append_res == 1) {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "success",
+            msg = "Le livre a été modifié avec succès"
+          )
+        )
+      } else {
+        golem::invoke_js(
+          "call_sweetalert2",
+          message = list(
+            type = "error",
+            msg = "Le livre n'a pu être modifié"
+          )
+        )
+      }
+
+      r_global$comics_db <- read_comics_db()
     })
 
     observe({

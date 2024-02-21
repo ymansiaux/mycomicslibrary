@@ -60,6 +60,7 @@ make_stars_rating_div <- function(
 prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   db <- comics_db |>
     select(
+      id_document,
       titre,
       date_publication,
       nb_pages,
@@ -89,8 +90,8 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
         Math.random(),
         {priority : 'event'}
       );",
-        ns("modify_button_clicked_id"),
-        ns(paste0("modify_book_button", i)),
+        ns("document_to_modify_id"),
+        db$id_document[i],
         ns("modify_button_clicked")
       )
     )
@@ -111,8 +112,8 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
         Math.random(),
         {priority : 'event'}
       );",
-        ns("delete_button_clicked_id"),
-        ns(paste0("delete_book_button", i)),
+        ns("document_to_delete_id"),
+        db$id_document[i],
         ns("delete_button_clicked")
       )
     )
@@ -127,7 +128,8 @@ prepare_comics_db_to_see_collection <- function(comics_db, ns) {
   db$modify_properties_buttons <- modify_properties_buttons
   db$delete_book_buttons <- delete_book_buttons
 
-  db
+  db |>
+    select(-id_document)
 
   # selectinput_statut <- sapply(seq_len(nrow(db)), function(i) {
   # selectInput(
