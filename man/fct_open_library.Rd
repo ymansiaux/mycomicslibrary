@@ -3,6 +3,7 @@
 \name{call_open_library_api}
 \alias{call_open_library_api}
 \alias{clean_open_library_result}
+\alias{get_cover}
 \alias{give_me_one_random_isbn}
 \title{Appel à l'API Open Library}
 \usage{
@@ -13,19 +14,29 @@ call_open_library_api(
 
 clean_open_library_result(book_tibble)
 
+get_cover(
+  root_api = "http://covers.openlibrary.org/b/isbn",
+  isbn_number,
+  cover_size = "M"
+)
+
 give_me_one_random_isbn()
 }
 \arguments{
-\item{root_api}{l'URL de base de l'API}
+\item{root_api}{the base URL of the API}
 
-\item{isbn_number}{le numéro ISBN 10}
+\item{isbn_number}{the ISBN 10 number or the ISBN 13 number of the book}
 
 \item{book_tibble}{a tibble with the result of the API call}
+
+\item{cover_size}{the size of the cover}
 }
 \value{
 un tibble avec les informations de l'API
 
 a tibble with the cleaned result of the API call
+
+a URL to the cover of the book
 
 a random ISBN
 }
@@ -33,6 +44,8 @@ a random ISBN
 Appel à l'API Open Library
 
 Nettoyage du résultat de l'API Open Library
+
+Get the cover of a book from Open Library
 
 Return a random ISBN from mycomicslibrary::isbn_sample
 }
@@ -42,5 +55,6 @@ isbn_number <- "2365772013"
 result <- call_open_library_api(isbn_number = isbn_number)
 
 clean_open_library_result(result)
+get_cover(isbn_number = "9782365772013")
 give_me_one_random_isbn()
 }

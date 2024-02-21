@@ -131,7 +131,7 @@ test_that("clean_open_library_result works", {
         author = c(`ISBN:2365772013` = "Brian K. Vaughan, Fiona Staples"),
         info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
         thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
-        publish_date = "Mar 14, 2013",
+        publish_date = "2013",
         number_of_pages = 168,
         isbn_10 = c(`ISBN:2365772013` = "2365772013"),
         isbn_13 = c(`ISBN:2365772013` = "9782365772013"),
@@ -143,6 +143,18 @@ test_that("clean_open_library_result works", {
       ),
       class = "data.frame"
     )
+  )
+})
+
+test_that("get_cover works", {
+  expect_equal(
+    get_cover(isbn_number = "9782365772013"),
+    "http://covers.openlibrary.org/b/isbn/9782365772013-M.jpg"
+  )
+
+  expect_equal(
+    get_cover(isbn_number = "9782365772013", cover_size = "S"),
+    "http://covers.openlibrary.org/b/isbn/9782365772013-S.jpg"
   )
 })
 

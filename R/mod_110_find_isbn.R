@@ -178,15 +178,25 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           r_local$api_call_status <- "success"
         }
-
+        r_local$trigger_api_call_status <- Sys.time()
         r_local$api_res <- api_res
       })
 
-      observeEvent(r_local$api_call_status, {
+      observeEvent(r_local$trigger_api_call_status, {
         req(r_local$api_call_status)
 
         if (r_local$api_call_status == "error") {
-          golem::invoke_js("disable", paste0("#", ns("show_api_call_result")))
+          golem::invoke_js(
+            "disable",
+            paste0("#", ns("show_api_call_result"))
+          )
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "error",
+              msg = "Erreur lors de l'appel à l'API"
+            )
+          )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
@@ -194,7 +204,17 @@ mod_110_find_isbn_server <- function(id, r_global) {
             icon = icon("exclamation-triangle")
           )
         } else if (r_local$api_call_status == "warning") {
-          golem::invoke_js("disable", paste0("#", ns("show_api_call_result")))
+          golem::invoke_js(
+            "disable",
+            paste0("#", ns("show_api_call_result"))
+          )
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "error",
+              msg = "Aucun livre trouvé !"
+            )
+          )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
@@ -202,7 +222,17 @@ mod_110_find_isbn_server <- function(id, r_global) {
             icon = icon("exclamation-triangle")
           )
         } else {
-          golem::invoke_js("reable", paste0("#", ns("show_api_call_result")))
+          golem::invoke_js(
+            "reable",
+            paste0("#", ns("show_api_call_result"))
+          )
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "success",
+              msg = "Livre trouvé !"
+            )
+          )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
@@ -244,28 +274,36 @@ mod_110_find_isbn_server <- function(id, r_global) {
         to_add <- list(
           ISBN = r_local$cleaned_res$isbn_13,
           titre = r_local$cleaned_res$title,
-          date_publication = r_local$cleaned_res$publish_date,
+          auteur = r_local$cleaned_res$author,
+          annee_publication = r_local$cleaned_res$publish_date,
           nb_pages = r_local$cleaned_res$number_of_pages,
           editeur = r_local$cleaned_res$publisher,
-          note = "",
-          type_publication = "",
-          statut = "",
+          note = 1,
+          type_publication = "A définir",
+          statut = "A définir",
           lien_cover = get_cover(
             isbn_number = r_local$cleaned_res$isbn_13
           )
-        )
+        ) |> map(function(x) {
+          if (is.null(x)) {
+            return("")
+          } else {
+            return(x)
+          }
+        })
 
-        if (input$do_i_add_to_library) {
-          to_add$possede <- 1
-        } else {
-          to_add$possede <- 0
-        }
+
+        to_add$possede <- as.numeric(
+          as.logical(
+            input$do_i_add_to_library
+          )
+        )
 
         is_the_book_already_in_db <- read_comics_db() |>
           get_most_recent_entry_per_doc() |>
-          filter(ISBN == to_add$ISBN) |>
-          nrow()
-        is_the_book_already_in_db <- is_the_book_already_in_db > 0
+          filter(ISBN == to_add$ISBN)
+
+        is_the_book_already_in_db <- nrow(is_the_book_already_in_db) > 0 & is_the_book_already_in_db$possede != -1
 
         if (isTRUE(is_the_book_already_in_db)) {
           golem::invoke_js(
@@ -278,9 +316,10 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           append_res <- append_comics_db(
             ISBN = to_add$ISBN,
+            auteur = to_add$auteur,
             titre = to_add$titre,
             possede = to_add$possede,
-            date_publication = to_add$date_publication,
+            annee_publication = to_add$annee_publication,
             nb_pages = to_add$nb_pages,
             editeur = to_add$editeur,
             note = to_add$note,
@@ -307,6 +346,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
           }
         }
 
+        r_global$comics_db <- read_comics_db()
+        r_global$new_entry_in_db <- Sys.time()
         print(read_comics_db())
       })
     }
