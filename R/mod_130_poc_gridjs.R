@@ -26,7 +26,8 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
     ns <- session$ns
 
     r_local <- reactiveValues(
-      current_db = NULL
+      current_db = NULL,
+      current_book = NULL
     )
 
     observeEvent(r_global$comics_db, {
@@ -66,34 +67,40 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
           id_etat = ns("etat")
         )
       )
+      r_local$current_book <- r_global$comics_db |>
+        dplyr::filter(id_document == input$document_to_modify_id) |>
+        get_most_recent_entry_per_doc()
       golem::invoke_js(
         "modal_modify_book_in_collection",
         message = list(
           id_valider_modification = ns("do_i_modify_the_book_in_collection"),
-          html = create_html_for_modal_modify_book_in_collection(ns = ns) |> as.character()
+          html = create_html_for_modal_modify_book_in_collection(
+            current_book = r_local$current_book,
+            ns = ns
+          ) |> as.character()
         )
       )
     })
 
     observeEvent(input$do_i_modify_the_book_in_collection, {
       req(input$do_i_modify_the_book_in_collection)
-      document_to_modify <- input$document_to_modify_id
-      document_to_modify_values_in_db <- r_global$comics_db |>
-        dplyr::filter(id_document == document_to_modify) |>
-        get_most_recent_entry_per_doc()
+      # document_to_modify <- input$document_to_modify_id
+      # document_to_modify_values_in_db <- r_global$comics_db |>
+      #   dplyr::filter(id_document == document_to_modify) |>
+      #   get_most_recent_entry_per_doc()
 
       append_res <- append_comics_db(
-        ISBN = document_to_modify_values_in_db$ISBN,
-        auteur = document_to_modify_values_in_db$auteur,
-        titre = document_to_modify_values_in_db$titre,
-        possede = document_to_modify_values_in_db$possede,
-        date_publication = document_to_modify_values_in_db$date_publication,
-        nb_pages = document_to_modify_values_in_db$nb_pages,
-        editeur = document_to_modify_values_in_db$editeur,
+        ISBN = r_local$current_book$ISBN,
+        auteur = r_local$current_book$auteur,
+        titre = r_local$current_book$titre,
+        possede = r_local$current_book$possede,
+        date_publication = r_local$current_book$date_publication,
+        nb_pages = r_local$current_book$nb_pages,
+        editeur = r_local$current_book$editeur,
         note = input$note,
         type_publication = input$format,
         statut = input$etat,
-        lien_cover = document_to_modify_values_in_db$lien_cover
+        lien_cover = r_local$current_book$lien_cover
       )
 
       if (append_res == 1) {

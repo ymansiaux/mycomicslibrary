@@ -10,7 +10,9 @@
 #' @examples
 #' create_html_for_modal_modify_book_in_collection()
 create_html_for_modal_modify_book_in_collection <- function(
-  ns) {
+  current_book,
+  ns
+) {
   tagList(
     tags$div(
       id = ns("modal_modify_book_in_collection"),
@@ -24,17 +26,20 @@ create_html_for_modal_modify_book_in_collection <- function(
           selectInput(
             inputId = ns("note"),
             label = "Note",
-            choices = 0:5
+            choices = 0:5,
+            selected = current_book$note
           ),
           selectInput(
             inputId = ns("format"),
             label = "Format",
-            choices = c("BD", "Comics", "Roman graphique", "Autre")
+            choices = c("BD", "Comics", "Roman graphique", "Autre", "A définir"),
+            selected = current_book$type_publication
           ),
           selectInput(
             inputId = ns("etat"),
             label = "Etat",
-            choices = c("A lire", "En cours", "Lu")
+            choices = c("A lire", "En cours", "Lu", "A définir"),
+            selected = current_book$statut
           )
         )
       )

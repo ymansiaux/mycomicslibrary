@@ -5,7 +5,7 @@
 \alias{create_html_for_modal_modify_book_in_collection}
 \title{Title}
 \usage{
-create_html_for_modal_modify_book_in_collection(ns)
+create_html_for_modal_modify_book_in_collection(current_book, ns)
 }
 \description{
 Description
