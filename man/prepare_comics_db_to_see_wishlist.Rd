@@ -6,6 +6,11 @@
 \usage{
 prepare_comics_db_to_see_wishlist(comics_db, ns)
 }
+\arguments{
+\item{comics_db}{a comics database}
+
+\item{ns}{the namespace}
+}
 \value{
 a comics database with only the columns needed to see the wishlist
 }
