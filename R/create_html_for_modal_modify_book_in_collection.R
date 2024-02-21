@@ -21,13 +21,10 @@ create_html_for_modal_modify_book_in_collection <- function(
       tags$div(
         tags$ul(
           style = "text-align: left; list-style-type: none;",
-          sliderInput(
+          textInput(
             inputId = ns("annee_publication"),
             label = "Année de publication",
-            min = 1900,
-            max = as.numeric(format(Sys.time(), "%Y")),
-            value = current_book$annee_publication,
-            step = 1
+            value = current_book$annee_publication
           ),
           textInput(
             inputId = ns("nb_pages"),
