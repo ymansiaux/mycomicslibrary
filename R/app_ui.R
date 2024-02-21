@@ -27,7 +27,8 @@ app_ui <- function(request) {
       app_sys("app/www/templates_html/template.html"),
       module1 = mod_100_search_isbn_ui("100_search_isbn_1"),
       module2 = mod_200_add_picture_ui("120_add_picture_1"),
-      module3 = mod_130_manage_collection_ui("130_poc_gridjs_1")
+      module3 = mod_130_manage_collection_ui("130_poc_gridjs_1"),
+      module4 = mod_140_manage_wishlist_ui("140_manage_wishlist_1")
     )
   )
 }
