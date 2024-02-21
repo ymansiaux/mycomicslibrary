@@ -13,7 +13,7 @@ mod_130_poc_gridjs_ui <- function(id) {
     tags$div(
       class = "col",
       h3("Ma collection"),
-      tags$div(id = ns("ma_collection"))
+      tags$div(id = ns("my_collection"))
     )
   )
 }
@@ -27,7 +27,6 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
     observeEvent(r_global$comics_db, {
       req(nrow(r_global$comics_db) > 0)
-      # browser()
 
       db <- r_global$comics_db |>
         get_most_recent_entry_per_doc() |>
@@ -38,19 +37,41 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
 
       golem::invoke_js(
-        "build_ma_collection",
+        "build_my_collection",
         list(
-          id = ns("ma_collection"),
+          id = ns("my_collection"),
           columns = names(db),
           data = do.call(cbind, lapply(db, as.character))
         )
       )
     })
 
-    observeEvent(input$button_clicked, {
+    observeEvent(input$modify_button_clicked, {
       # browser()
       print("tu as cliqué sur le button")
-      print(input$button_clicked_id)
+      print(input$modify_button_clicked_id)
+      golem::invoke_js(
+        "waitForModalModifyBookInCollection",
+        message = list(
+          modalToWaitFor = ns("modal_modify_book_in_collection"),
+          id_note = ns("note"),
+          id_format = ns("format"),
+          id_etat = ns("etat")
+        )
+      )
+      golem::invoke_js(
+        "modal_api_search_result",
+        message = list(
+          id_ajout_bibliotheque = ns("do_i_add_to_library"),
+          html = create_html_for_modal_modify_book_in_collection(ns = ns) |> as.character()
+        )
+      )
+    })
+
+    observe({
+      print(input$note)
+      print(input$format)
+      print(input$etat)
     })
   })
 }

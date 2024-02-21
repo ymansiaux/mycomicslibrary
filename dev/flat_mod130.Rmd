@@ -262,6 +262,61 @@ test_that("extract_nstars_from_selectinput works", {
 ```
   
 
+# create_html_for_modal_modify_book_in_collection
+    
+```{r function-create_html_for_modal_modify_book_in_collection}
+#' Title
+#'
+#' Description
+#'
+#' @return
+#'
+#' @export
+create_html_for_modal_modify_book_in_collection <- function(
+  ns) {
+  tagList(
+    tags$div(
+      id = ns("modal_modify_book_in_collection"),
+      style = "
+          display: flex;
+          flex-direction: column;
+          ",
+      tags$div(
+        tags$ul(
+          style = "text-align: left; list-style-type: none;",
+          selectInput(
+            inputId = ns("note"),
+            label = "Note",
+            choices = 0:5
+          ),
+          selectInput(
+            inputId = ns("format"),
+            label = "Format",
+            choices = c("BD", "Comics", "Roman graphique", "Autre")
+          ),
+          selectInput(
+            inputId = ns("etat"),
+            label = "Etat",
+            choices = c("A lire", "En cours", "Lu")
+          )
+        )
+      )
+    )
+  )
+}
+```
+  
+```{r example-create_html_for_modal_modify_book_in_collection}
+create_html_for_modal_modify_book_in_collection()
+```
+  
+```{r tests-create_html_for_modal_modify_book_in_collection}
+test_that("create_html_for_modal_modify_book_in_collection works", {
+  expect_true(inherits(create_html_for_modal_modify_book_in_collection, "function"))
+})
+```
+  
+
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop
