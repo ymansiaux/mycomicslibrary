@@ -10,6 +10,15 @@ Shiny.addCustomMessageHandler('waitForModalModifyBookInCollection', function (ar
     }
   };
 
+  var setInputValuesWhenValueChanges = function (id) {
+    $("#" + id).on("change", function (e) {
+      Shiny.setInputValue(
+        id,
+        $("#" + id).val(),
+        { priority: 'event' });
+    });
+  }
+
   var setDefaultValuesWhenModalShows = function () {
     console.log("le modal est ici");
     Shiny.setInputValue(arg.id_note, arg.note_initial_value);
@@ -21,26 +30,10 @@ Shiny.addCustomMessageHandler('waitForModalModifyBookInCollection', function (ar
     "#" + arg.modalToWaitFor, () => {
       setDefaultValuesWhenModalShows();
 
-      $("#" + arg.id_note).on("change", function (e) {
-        Shiny.setInputValue(
-          arg.id_note,
-          $("#" + arg.id_note).val(),
-          { priority: 'event' });
-      });
+      setInputValuesWhenValueChanges(arg.id_note);
+      setInputValuesWhenValueChanges(arg.id_format);
+      setInputValuesWhenValueChanges(arg.id_etat);
 
-      $("#" + arg.id_format).on("change", function (e) {
-        Shiny.setInputValue(
-          arg.id_format,
-          $("#" + arg.id_format).val(),
-          { priority: 'event' });
-      });
-
-      $("#" + arg.id_etat).on("change", function (e) {
-        Shiny.setInputValue(
-          arg.id_etat,
-          $("#" + arg.id_etat).val(),
-          { priority: 'event' });
-      });
     }
   );
 });
