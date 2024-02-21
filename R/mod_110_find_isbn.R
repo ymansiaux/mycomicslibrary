@@ -186,7 +186,17 @@ mod_110_find_isbn_server <- function(id, r_global) {
         req(r_local$api_call_status)
 
         if (r_local$api_call_status == "error") {
-          golem::invoke_js("disable", paste0("#", ns("show_api_call_result")))
+          golem::invoke_js(
+            "disable",
+            paste0("#", ns("show_api_call_result"))
+          )
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "error",
+              msg = "Erreur lors de l'appel à l'API"
+            )
+          )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
@@ -194,7 +204,17 @@ mod_110_find_isbn_server <- function(id, r_global) {
             icon = icon("exclamation-triangle")
           )
         } else if (r_local$api_call_status == "warning") {
-          golem::invoke_js("disable", paste0("#", ns("show_api_call_result")))
+          golem::invoke_js(
+            "disable",
+            paste0("#", ns("show_api_call_result"))
+          )
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "error",
+              msg = "Aucun livre trouvé !"
+            )
+          )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
@@ -202,7 +222,17 @@ mod_110_find_isbn_server <- function(id, r_global) {
             icon = icon("exclamation-triangle")
           )
         } else {
-          golem::invoke_js("reable", paste0("#", ns("show_api_call_result")))
+          golem::invoke_js(
+            "reable",
+            paste0("#", ns("show_api_call_result"))
+          )
+          golem::invoke_js(
+            "call_sweetalert2",
+            message = list(
+              type = "success",
+              msg = "Livre trouvé !"
+            )
+          )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
