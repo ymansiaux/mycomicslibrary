@@ -55,10 +55,6 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
     })
 
     observeEvent(input$modify_button_clicked, {
-      # browser()
-      print("tu as cliqué sur le button")
-      print(input$modify_button_clicked_id)
-
       r_local$current_book <- r_global$comics_db |>
         dplyr::filter(id_document == input$document_to_modify_id) |>
         get_most_recent_entry_per_doc()
@@ -73,7 +69,15 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
           id_format = ns("format"),
           format_initial_value = r_local$current_book$type_publication,
           id_etat = ns("etat"),
-          etat_initial_value = r_local$current_book$statut
+          etat_initial_value = r_local$current_book$statut,
+          id_annee_publication = ns("annee_publication"),
+          annee_publication_initial_value = r_local$current_book$annee_publication,
+          id_nb_pages = ns("nb_pages"),
+          nb_pages_initial_value = r_local$current_book$nb_pages,
+          id_auteur = ns("auteur"),
+          auteur_initial_value = r_local$current_book$auteur,
+          id_editeur = ns("editeur"),
+          editeur_initial_value = r_local$current_book$editeur
         )
       )
 
@@ -94,12 +98,12 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
 
       append_res <- append_comics_db(
         ISBN = r_local$current_book$ISBN,
-        auteur = r_local$current_book$auteur,
+        auteur = input$auteur,
         titre = r_local$current_book$titre,
         possede = r_local$current_book$possede,
-        annee_publication = r_local$current_book$annee_publication,
-        nb_pages = r_local$current_book$nb_pages,
-        editeur = r_local$current_book$editeur,
+        annee_publication = input$annee_publication,
+        nb_pages = input$nb_pages,
+        editeur = input$editeur,
         note = input$note,
         type_publication = input$format,
         statut = input$etat,
@@ -125,13 +129,6 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
       }
 
       r_global$comics_db <- read_comics_db()
-    })
-
-    observe({
-      print(input$note)
-      print(input$format)
-      print(input$etat)
-      print(input$do_i_modify_the_book_in_collection)
     })
   })
 }

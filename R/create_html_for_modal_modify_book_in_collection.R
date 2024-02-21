@@ -23,11 +23,28 @@ create_html_for_modal_modify_book_in_collection <- function(
       tags$div(
         tags$ul(
           style = "text-align: left; list-style-type: none;",
-          dateInput(
+          sliderInput(
             inputId = ns("annee_publication"),
             label = "Année de publication",
-            choices = 0:5,
-            selected = current_book$note
+            min = 1900,
+            max = as.numeric(format(Sys.time(), "%Y")),
+            value = current_book$annee_publication,
+            step = 1
+          ),
+          textInput(
+            inputId = ns("nb_pages"),
+            label = "Nombre de pages",
+            value = current_book$nb_pages
+          ),
+          textInput(
+            inputId = ns("auteur"),
+            label = "Auteur(s)",
+            value = current_book$auteur
+          ),
+          textInput(
+            inputId = ns("editeur"),
+            label = "Editeur(s)",
+            value = current_book$editeur
           ),
           selectInput(
             inputId = ns("note"),

@@ -24,6 +24,10 @@ Shiny.addCustomMessageHandler('waitForModalModifyBookInCollection', function (ar
     Shiny.setInputValue(arg.id_note, arg.note_initial_value);
     Shiny.setInputValue(arg.id_format, arg.format_initial_value);
     Shiny.setInputValue(arg.id_etat, arg.etat_initial_value);
+    Shiny.setInputValue(arg.id_annee_publication, arg.annee_publication_initial_value);
+    Shiny.setInputValue(arg.id_nb_pages, arg.nb_pages_initial_value);
+    Shiny.setInputValue(arg.id_auteur, arg.auteur_initial_value);
+    Shiny.setInputValue(arg.id_editeur, arg.editeur_initial_value);
   }
 
   waitForEl(
@@ -33,6 +37,10 @@ Shiny.addCustomMessageHandler('waitForModalModifyBookInCollection', function (ar
       setInputValuesWhenValueChanges(arg.id_note);
       setInputValuesWhenValueChanges(arg.id_format);
       setInputValuesWhenValueChanges(arg.id_etat);
+      setInputValuesWhenValueChanges(arg.id_annee_publication);
+      setInputValuesWhenValueChanges(arg.id_nb_pages);
+      setInputValuesWhenValueChanges(arg.id_auteur);
+      setInputValuesWhenValueChanges(arg.id_editeur);
 
     }
   );

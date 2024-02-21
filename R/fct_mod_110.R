@@ -26,7 +26,7 @@ create_html_for_modal_api_search_result <- function(
             sprintf("Auteur(s) : %s", book$author)
           ),
           tags$li(
-            sprintf("Date de publication : %s", book$publish_date)
+            sprintf("Année de publication : %s", book$publish_date)
           ),
           tags$li(
             sprintf("Nombre de pages : %s", book$number_of_pages)
