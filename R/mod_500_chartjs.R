@@ -10,10 +10,14 @@
 mod_500_chartjs_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    div(
-      style = "height: 90%; width: 90%; text-align: -webkit-center; margin: auto; padding: 10px; background-color: white; border-radius: 10px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);",
-      tags$canvas(id = ns("myChart"))
+    htmlTemplate(
+      app_sys("app/www/templates_html/template_chartjs.html"),
+      id = ns("myChart")
     )
+    # div(
+    #   style = "height: 90%; width: 90%; text-align: -webkit-center; margin: auto; padding: 10px; background-color: white; border-radius: 10px; box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);",
+    #   tags$canvas(id = ns("myChart"))
+    # )
   )
 }
 
@@ -53,19 +57,6 @@ mod_500_chartjs_server <- function(id, r_global) {
             dplyr::pull(n)
         )
       )
-
-
-
-
-      # golem::invoke_js(
-      #   "call_chartjs",
-      #   message = list(
-      #     id = ns("myChart"),
-      #     labels = c("Red", "Blue", "Yellow", "Green", "Purple", "Orange"),
-      #     label = "# of Votes",
-      #     data = c(12, 19, 3, 5, 2, 3)
-      #   )
-      # )
     })
   })
 }
