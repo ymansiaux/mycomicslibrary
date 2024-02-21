@@ -25,23 +25,30 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+    r_local <- reactiveValues(
+      current_db = NULL
+    )
+
     observeEvent(r_global$comics_db, {
       req(nrow(r_global$comics_db) > 0)
 
-      db <- r_global$comics_db |>
+      r_local$current_db <- r_global$comics_db |>
         get_most_recent_entry_per_doc() |>
         prepare_comics_db_to_see_collection(
           ns = ns
         )
-      # il faut garder la dernière entrée
+      r_local$trigger_new_book_in_db <- Sys.time()
+    })
 
-
+    observeEvent(r_local$current_db, {
+      req(nrow(r_local$current_db) > 0)
+      print("tu as ajouté un nouveau livre")
       golem::invoke_js(
         "build_my_collection",
         list(
           id = ns("my_collection"),
-          columns = names(db),
-          data = do.call(cbind, lapply(db, as.character))
+          columns = names(r_local$current_db),
+          data = do.call(cbind, lapply(r_local$current_db, as.character))
         )
       )
     })
@@ -60,18 +67,23 @@ mod_130_poc_gridjs_server <- function(id, r_global) {
         )
       )
       golem::invoke_js(
-        "modal_api_search_result",
+        "modal_modify_book_in_collection",
         message = list(
-          id_ajout_bibliotheque = ns("do_i_add_to_library"),
+          id_valider_modification = ns("do_i_modify_the_book_in_collection"),
           html = create_html_for_modal_modify_book_in_collection(ns = ns) |> as.character()
         )
       )
+    })
+
+    observeEvent(input$do_i_modify_the_book_in_collection, {
+      req(input$do_i_modify_the_book_in_collection)
     })
 
     observe({
       print(input$note)
       print(input$format)
       print(input$etat)
+      print(input$do_i_modify_the_book_in_collection)
     })
   })
 }

@@ -52,6 +52,7 @@ get_most_recent_entry_per_doc <- function(db) {
 #'       read_comics_db()
 #'       append_comics_db(
 #'         ISBN = "1234567890",
+#'         auteur = "BILL",
 #'         titre = "BOBI",
 #'         possede = 1,
 #'         date_publication = "2020-01-01",
@@ -82,6 +83,7 @@ init_comics_db <- function() {
         id_db = "TEXT",
         id_document = "TEXT",
         ISBN = "TEXT",
+        auteur = "TEXT",
         possede = "INTEGER",
         titre = "TEXT",
         date_publication = "TEXT",
@@ -113,6 +115,7 @@ read_comics_db <- function() {
 
 append_comics_db <- function(
   ISBN,
+  auteur,
   titre,
   possede,
   date_publication,
@@ -128,6 +131,7 @@ append_comics_db <- function(
   id_db <- digest::digest(
     c(
       ISBN,
+      auteur,
       titre,
       possede,
       date_publication,
@@ -156,6 +160,7 @@ append_comics_db <- function(
       id_db = id_db,
       id_document = id_document,
       ISBN = ISBN,
+      auteur = auteur,
       titre = titre,
       possede = possede,
       date_publication = date_publication,

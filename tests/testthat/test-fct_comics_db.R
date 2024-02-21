@@ -31,6 +31,7 @@ test_that("init/read/append works", {
         expect_equal(
           append_comics_db(
             ISBN = "1234567890",
+            auteur = "BILL",
             titre = "BOBI",
             possede = 1,
             date_publication = "2020-01-01",
@@ -49,6 +50,11 @@ test_that("init/read/append works", {
         expect_equal(
           db$ISBN,
           "1234567890"
+        )
+
+        expect_equal(
+          db$auteur,
+          "BILL"
         )
 
         expect_equal(
@@ -110,6 +116,7 @@ test_that("get_most_recent_entry_per_doc works", {
         # Document 1
         append_comics_db(
           ISBN = "1234567890",
+          auteur = "BILL",
           titre = "BOBI",
           possede = 0,
           date_publication = "2020-01-01",
@@ -140,6 +147,7 @@ test_that("get_most_recent_entry_per_doc works", {
 
         append_comics_db(
           ISBN = "1234567890",
+          auteur = "BILL",
           titre = "BOBI",
           possede = 1,
           date_publication = "2020-01-01",
@@ -171,6 +179,7 @@ test_that("get_most_recent_entry_per_doc works", {
 
         append_comics_db(
           ISBN = "1234567890",
+          auteur = "BILL",
           titre = "BOBI",
           possede = 1,
           date_publication = "2020-01-01",
@@ -203,6 +212,7 @@ test_that("get_most_recent_entry_per_doc works", {
         # Document 2
         append_comics_db(
           ISBN = "9786543210",
+          auteur = "BILL",
           titre = "BOBI2",
           possede = 1,
           date_publication = "2020-01-01",
@@ -233,6 +243,7 @@ test_that("get_most_recent_entry_per_doc works", {
 
         append_comics_db(
           ISBN = "9786543210",
+          auteur = "BILL",
           titre = "BOBI2",
           possede = 1,
           date_publication = "2020-01-01",
@@ -263,4 +274,5 @@ test_that("get_most_recent_entry_per_doc works", {
       }
     )
   })
+  unlink("BOBI.sqlite")
 })

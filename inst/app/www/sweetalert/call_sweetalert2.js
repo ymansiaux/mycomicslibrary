@@ -46,7 +46,6 @@ $(document).ready(function () {
 
 
   Shiny.addCustomMessageHandler('modal_result_detect_isbn', function (arg) {
-
     Swal.fire({
       title: arg.msg,
       icon: "success",
@@ -66,8 +65,6 @@ $(document).ready(function () {
         Swal.fire("Résultat non conservé", "", "info");
       }
     });
-
-
   });
 
 
@@ -102,8 +99,30 @@ $(document).ready(function () {
         });
       }
     });
-
-
   });
+
+  //9782756061832
+  Shiny.addCustomMessageHandler('modal_modify_book_in_collection', function (arg) {
+    Swal.fire({
+      title: `Modifier les informations du livre`,
+      icon: "info",
+      html: arg.html,
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: "Modifier le livre",
+      cancelButtonText: `Quitter`
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Livre modifié !", "", "success");
+        Shiny.setInputValue(arg.id_valider_modification, result.isConfirmed, {
+          priority: "event"
+        });
+      } else {
+        Swal.fire("Modification non réalisée", "", "info");
+      }
+    });
+  });
+
 
 });

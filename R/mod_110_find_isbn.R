@@ -274,6 +274,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         to_add <- list(
           ISBN = r_local$cleaned_res$isbn_13,
           titre = r_local$cleaned_res$title,
+          auteur = r_local$cleaned_res$author,
           date_publication = r_local$cleaned_res$publish_date,
           nb_pages = r_local$cleaned_res$number_of_pages,
           editeur = r_local$cleaned_res$publisher,
@@ -283,7 +284,14 @@ mod_110_find_isbn_server <- function(id, r_global) {
           lien_cover = get_cover(
             isbn_number = r_local$cleaned_res$isbn_13
           )
-        )
+        ) |> map(function(x) {
+          if (is.null(x)) {
+            return("")
+          } else {
+            return(x)
+          }
+        })
+
 
         to_add$possede <- as.numeric(
           as.logical(
@@ -308,6 +316,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         } else {
           append_res <- append_comics_db(
             ISBN = to_add$ISBN,
+            auteur = to_add$auteur,
             titre = to_add$titre,
             possede = to_add$possede,
             date_publication = to_add$date_publication,
@@ -338,6 +347,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         }
 
         r_global$comics_db <- read_comics_db()
+        r_global$new_entry_in_db <- Sys.time()
         print(read_comics_db())
       })
     }
