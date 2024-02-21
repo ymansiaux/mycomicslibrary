@@ -255,11 +255,11 @@ mod_110_find_isbn_server <- function(id, r_global) {
           )
         )
 
-        if (input$do_i_add_to_library) {
-          to_add$possede <- 1
-        } else {
-          to_add$possede <- 0
-        }
+        to_add$possede <- as.numeric(
+          as.logical(
+            input$do_i_add_to_library
+          )
+        )
 
         is_the_book_already_in_db <- read_comics_db() |>
           get_most_recent_entry_per_doc() |>

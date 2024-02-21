@@ -87,15 +87,15 @@ $(document).ready(function () {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         Swal.fire("Le livre va être ajouté à la bibliothèque !", "", "info");
-        Shiny.setInputValue(arg.id_ajout_bibliotheque, true, {
+        Shiny.setInputValue(arg.id_ajout_bibliotheque, "TRUE", {
           priority: "event"
         });
       } else if (result.isDenied) {
         Swal.fire("Le livre va être ajouté à la liste d'envies !", "", "info");
-        Shiny.setInputValue(arg.id_ajout_bibliotheque, false, {
+        Shiny.setInputValue(arg.id_ajout_bibliotheque, "FALSE", {
           priority: "event"
         });
-      } else {
+      } else if (result.isDismissed) {
         Swal.fire("Livre non enregistré", "", "info");
         Shiny.setInputValue(arg.id_ajout_bibliotheque, "", {
           priority: "event"
