@@ -55,24 +55,28 @@ mod_500_chartjs_server <- function(id, r_global) {
     observeEvent(r_local$var_to_use, {
       req(nrow(r_local$current_db) > 0)
       req(r_local$var_to_use)
-      browser()
+
+      my_labels <- r_local$current_db |>
+        dplyr::count(.data[[r_local$var_to_use]]) |>
+        dplyr::arrange(.data[[r_local$var_to_use]]) |>
+        dplyr::pull(.data[[r_local$var_to_use]])
+      if (length(my_labels) == 1) my_labels <- list(my_labels)
+
+      my_data <- r_local$current_db |>
+        dplyr::count(.data[[r_local$var_to_use]]) |>
+        dplyr::arrange(.data[[r_local$var_to_use]]) |>
+        dplyr::pull(n)
+      if (length(my_data) == 1) my_data <- list(my_data)
+
       golem::invoke_js(
         "call_chartjs",
         message = list(
           id = ns("myChart"),
-          labels = r_local$current_db |>
-            dplyr::count(.data[[r_local$var_to_use]]) |>
-            dplyr::arrange(.data[[r_local$var_to_use]]) |>
-            dplyr::pull(.data[[r_local$var_to_use]]) |>
-            stringi::stri_trans_general("latin-ascii"),
+          labels = my_labels,
           label = "Nombre d'albums",
-          data = r_local$current_db |>
-            dplyr::count(.data[[r_local$var_to_use]]) |>
-            dplyr::arrange(.data[[r_local$var_to_use]]) |>
-            dplyr::pull(n)
+          data = my_data
         )
       )
-      # problème avec les accents dans A définir je pense (et les espaces ?)
     })
   })
 }
