@@ -167,7 +167,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         req(input$isbn)
         req(r_local$isbn_is_valid)
 
-        api_res <- call_open_library_api(
+        api_res <- call_open_library_api_mem(
           isbn_number = input$isbn
         )
 
