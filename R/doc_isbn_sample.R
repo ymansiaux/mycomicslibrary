@@ -1,8 +1,8 @@
 #' isbn_sample
 #'
-#' A sample of isbn
+#' Description.
 #'
-#' @format A vector of 50 isbn from my personal collection.
+#' @format A data frame with  rows and  variables:
 #' \describe{
 #' }
 #' @source Source

@@ -56,6 +56,19 @@ flat_open_library.Rmd:
     check: false
     document: true
     overwrite: ask
+flat_spinner.Rmd:
+  path: dev/flat_spinner.Rmd
+  state: active
+  R: R/fct_spinner.R
+  tests: []
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_spinner.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_webcam.Rmd:
   path: dev/flat_webcam.Rmd
   state: active

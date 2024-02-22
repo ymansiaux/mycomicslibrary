@@ -9,6 +9,7 @@ app_server <- function(input, output, session) {
     session$onSessionEnded(stopApp)
   })
 
+
   session$onSessionEnded(function() {
     if (length(session$userData$uploaded_img) > 0) {
       sapply(

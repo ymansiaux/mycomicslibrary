@@ -5,7 +5,7 @@
 \alias{isbn_sample}
 \title{isbn_sample}
 \format{
-A vector of 50 isbn from my personal collection.
+A data frame with  rows and  variables:
 \describe{
 }
 }
@@ -16,6 +16,6 @@ Source
 isbn_sample
 }
 \description{
-A sample of isbn
+Description.
 }
 \keyword{datasets}

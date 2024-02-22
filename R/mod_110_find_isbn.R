@@ -134,6 +134,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         }
       )
 
+
       observeEvent(input$surprise_me, {
         updateTextInput(
           session = session,
@@ -166,9 +167,12 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$search, {
         req(input$isbn)
         req(r_local$isbn_is_valid)
-
-        api_res <- call_open_library_api_mem(
-          isbn_number = input$isbn
+        withSpinner(
+          expr = {
+            api_res <- call_open_library_api_mem(
+              isbn_number = input$isbn
+            )
+          }
         )
 
         if (inherits(api_res, "try-error")) {
