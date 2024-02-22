@@ -19,6 +19,10 @@ mod_110_find_isbn_ui <- function(id) {
             class = "bg-dark",
             "Chercher une BD à partir de son ISBN (10 ou 13 chiffres)"
           ),
+          actionButton(
+            inputId = ns("showspinner"),
+            label = "Afficher le spinner pendant 5 secondes"
+          ),
           card_body(
             fluidRow(
               column(
@@ -133,6 +137,16 @@ mod_110_find_isbn_server <- function(id, r_global) {
           }
         }
       )
+      observeEvent(
+        input$showspinner,
+        {
+          withSpinner_dsfr(
+            expr = {
+              Sys.sleep(15)
+            }
+          )
+        }
+      )
 
       observeEvent(input$surprise_me, {
         updateTextInput(
@@ -166,9 +180,12 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$search, {
         req(input$isbn)
         req(r_local$isbn_is_valid)
-
-        api_res <- call_open_library_api_mem(
-          isbn_number = input$isbn
+        withSpinner_dsfr(
+          expr = {
+            api_res <- call_open_library_api_mem(
+              isbn_number = input$isbn
+            )
+          }
         )
 
         if (inherits(api_res, "try-error")) {
