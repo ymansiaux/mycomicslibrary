@@ -1,0 +1,26 @@
+<div>
+  <div class="btn-group chartjs_buttons" id="{{groupbuttonid}}" role="group" aria-label="Basic example">
+    <button type="button" class="btn btn-primary">Année de publication</button>
+    <button type="button" class="btn btn-primary">Note</button>
+    <button type="button" class="btn btn-primary">Format</button>
+    <button type="button" class="btn btn-primary">Etat</button>
+  </div>
+  <div style="height: 90%;
+ width: 90%;
+ text-align: -webkit-center;
+ margin: auto;
+ padding: 10px;
+ background-color: white;
+ border-radius: 10px;
+ box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1)">
+    <canvas id={{id}}></canvas>
+  </div>
+</div>
+</div>
+<script>
+  $('#{{groupbuttonid}}').on('click', 'button', function (event) {
+    console.log($(this).text());
+    Shiny.setInputValue("{{id}}_button", $(this).text());
+  });
+</script>
+<!-- Si on capture le clic dans un bouton il faut faire un setinputvalue de sa valeur-->

@@ -22,8 +22,9 @@ attachment::att_amend_desc()
 ## Create a module infrastructure in R/
 golem::add_module(name = "100_search_isbn", with_test = TRUE) # Name of the module
 golem::add_module(name = "110_find_isbn", with_test = TRUE) # Name of the module
-golem::add_module(name = "130_manage_collection", with_test = TRUE) # Name of the module
-golem::add_module(name = "140_manage_wishlist", with_test = TRUE) # Name of the module
+golem::add_module(name = "300_manage_collection", with_test = TRUE) # Name of the module
+golem::add_module(name = "400_manage_wishlist", with_test = TRUE) # Name of the module
+golem::add_module(name = "500_chartjs", with_test = TRUE) # Name of the module
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -43,7 +44,12 @@ golem::use_external_js_file(
 )
 golem::add_js_handler("gridjs")
 
+golem::use_external_js_file(
+  "https://cdn.jsdelivr.net/npm/chart.js"
+)
+
 golem::add_js_handler("call_sweetalert2")
+golem::add_js_handler("call_chartjs")
 golem::add_css_file("ccsY")
 golem::add_sass_file("custom")
 golem::add_html_template("template")

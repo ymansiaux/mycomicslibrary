@@ -55,6 +55,7 @@ app_server <- function(input, output, session) {
       mod_200_add_picture_server("120_add_picture_1", r_global)
       mod_300_manage_collection_server("130_poc_gridjs_1", r_global)
       mod_400_manage_wishlist_server("140_manage_wishlist_1", r_global)
+      mod_500_chartjs_server("500_chartjs_1", r_global)
     }
   })
 

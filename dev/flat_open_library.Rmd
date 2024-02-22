@@ -204,9 +204,14 @@ test_that("call_open_library_api works", {
 #' @importFrom janitor clean_names
 #' @importFrom dplyr select mutate
 #' @importFrom tidyselect everything any_of
-#' @importFrom purrr map map_chr
+#' @importFrom purrr map map_chr possibly
 #' @export
 #' @rdname fct_open_library
+#' @examples
+#' isbn_number <- "2365772013"
+#' result <- call_open_library_api(isbn_number = isbn_number)
+#'
+#' clean_open_library_result(result)
 clean_open_library_result <- function(book_tibble) {
   book_tibble_cleaned_names <- book_tibble |>
     clean_names()
@@ -227,10 +232,15 @@ clean_open_library_result <- function(book_tibble) {
 
   json <- book_tibble_cleaned_names$json
 
-  author <- get_authors(json)
-  isbn_10 <- get_isbn10(json)
-  isbn_13 <- get_isbn13(json)
-  publisher <- get_publishers(json)
+  possibly_get_authors <- possibly(get_authors, otherwise = NA_character_)
+  possibly_get_isbn10 <- possibly(get_isbn10, otherwise = NA_character_)
+  possibly_get_isbn13 <- possibly(get_isbn13, otherwise = NA_character_)
+  possibly_get_publishers <- possibly(get_publishers, otherwise = NA_character_)
+  possibly_get_date <- possibly(clean_date, otherwise = NA_character_)
+  author <- possibly_get_authors(json)
+  isbn_10 <- possibly_get_isbn10(json)
+  isbn_13 <- possibly_get_isbn13(json)
+  publisher <- possibly_get_publishers(json)
 
 
   df_part <- df_part |>
@@ -239,7 +249,7 @@ clean_open_library_result <- function(book_tibble) {
       isbn_10 = isbn_10,
       isbn_13 = isbn_13,
       publisher = publisher,
-      details_publish_date = regmatches(details_publish_date, regexec("\\d{4,4}", details_publish_date))[[1]]
+      details_publish_date = possibly_get_date(details_publish_date)
     )
 
   colnames(df_part) <- gsub("details_", "", colnames(df_part))
@@ -289,6 +299,11 @@ get_isbn13 <- function(json) {
 #' @noRd
 get_publishers <- function(json) {
   get_nested_field(json, "publishers")
+}
+
+#' @noRd
+clean_date <- function(date) {
+  regmatches(date, regexec("\\d{4,4}", date))[[1]]
 }
 ```
   

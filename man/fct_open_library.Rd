@@ -55,6 +55,10 @@ isbn_number <- "2365772013"
 result <- call_open_library_api(isbn_number = isbn_number)
 
 clean_open_library_result(result)
+isbn_number <- "2365772013"
+result <- call_open_library_api(isbn_number = isbn_number)
+
+clean_open_library_result(result)
 get_cover(isbn_number = "9782365772013")
 give_me_one_random_isbn()
 }
