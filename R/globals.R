@@ -19,5 +19,7 @@ globalVariables(unique(c(
   "statut",
   "lien_cover",
   "auteur",
-  "possede"
+  "possede",
+  ".data",
+  "n"
 )))
