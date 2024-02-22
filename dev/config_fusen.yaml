@@ -59,8 +59,8 @@ flat_open_library.Rmd:
 flat_spinner.Rmd:
   path: dev/flat_spinner.Rmd
   state: active
-  R: R/withspinner_dsfr.R
-  tests: tests/testthat/test-withspinner_dsfr.R
+  R: R/fct_spinner.R
+  tests: []
   vignettes: []
   inflate:
     flat_file: dev/flat_spinner.Rmd

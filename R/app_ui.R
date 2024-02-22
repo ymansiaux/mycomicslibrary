@@ -22,7 +22,6 @@ app_ui <- function(request) {
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
-    # addWithSpinner(),
     bootstrapLib(theme = bslib::bs_theme(version = 5)),
     htmlTemplate(
       app_sys("app/www/templates_html/template.html"),
