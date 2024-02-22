@@ -1,3 +1,5 @@
+^renv$
+^renv\.lock$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
@@ -10,3 +12,4 @@ $run_dev.*
 ^CODE_OF_CONDUCT\.md$
 ^\.github$
 ^\.here$
+^deploy$
