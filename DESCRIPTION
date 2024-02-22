@@ -28,7 +28,8 @@ Imports:
     RSQLite,
     shiny (>= 1.7.5.1),
     tidyjson,
-    tidyselect
+    tidyselect,
+    utils
 Suggests: 
     spelling,
     testthat (>= 3.0.0),

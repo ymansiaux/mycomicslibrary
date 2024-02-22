@@ -11,6 +11,19 @@ app_server <- function(input, output, session) {
 
 
   session$onSessionEnded(function() {
+    # covers <- list.files(
+    #   app_sys(
+    #     "app",
+    #     "www",
+    #     "cover_tmp"
+    #   ),
+    #   full.names = TRUE,
+    #   pattern = "\\d{13}\\.jpg$"
+    # )
+    # if (length(covers) > 0) {
+    #   file.remove(covers)
+    # }
+
     if (length(session$userData$uploaded_img) > 0) {
       sapply(
         session$userData$uploaded_img,
