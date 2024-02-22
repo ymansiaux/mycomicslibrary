@@ -153,17 +153,52 @@ clean_date <- function(date) {
 #' @param cover_size the size of the cover
 #' @return a URL to the cover of the book
 #' @importFrom glue glue
+#' @importFrom utils download.file
 #' @rdname fct_open_library
 #' @export
 #' @examples
 #' get_cover(isbn_number = "9782365772013")
+#' path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 get_cover <- function(
   root_api = "http://covers.openlibrary.org/b/isbn",
   isbn_number,
   cover_size = "M"
 ) {
   match.arg(cover_size, c("S", "M", "L"))
-  glue("{root_api}/{isbn_number}-{cover_size}.jpg")
+  url <- glue("{root_api}/{isbn_number}-{cover_size}.jpg")
+  cover_output <- file.path(
+    app_sys(
+      "app",
+      "www",
+      "cover_tmp"
+    ),
+    paste0(isbn_number, ".jpg")
+  )
+
+  if (!file.exists(cover_output)) {
+    cover_dl <- try(
+      download.file(
+        url = url,
+        cover_output,
+        mode = "wb"
+      ),
+      silent = TRUE
+    )
+
+    if (inherits(cover_dl, "try-error")) {
+      cover_output <- file.path(
+        app_sys(
+          "app",
+          "www",
+          "img"
+        ),
+        "image-not-found.jpg"
+      )
+    }
+  }
+  return(
+    cover_output
+  )
 }
 
 #' Return a random ISBN from mycomicslibrary::isbn_sample

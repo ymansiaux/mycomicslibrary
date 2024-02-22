@@ -249,23 +249,24 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$show_api_call_result, {
         req(r_local$api_res)
 
-        r_local$cleaned_res <- clean_open_library_result(
-          book_tibble = r_local$api_res
-        )
-        book_cover <- try(
-          get_cover(
-            isbn_number = input$isbn,
-            cover_size = "M"
-          ),
-          silent = TRUE
-        )
+        withSpinner(expr = {
+          r_local$cleaned_res <- clean_open_library_result(
+            book_tibble = r_local$api_res
+          )
+          r_local$book_cover <- file.path(
+            "www",
+            "cover_tmp",
+            basename(get_cover_mem(isbn_number = r_local$cleaned_res$isbn_13))
+          )
+        })
+
         golem::invoke_js(
           "modal_api_search_result",
           message = list(
             id_ajout_bibliotheque = ns("do_i_add_to_library"),
             html = create_html_for_modal_api_search_result(
               book = r_local$cleaned_res,
-              book_cover = book_cover
+              book_cover = r_local$book_cover
             ) |> as.character()
           )
         )
@@ -285,9 +286,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
           note = 1,
           type_publication = "A définir",
           statut = "A définir",
-          lien_cover = get_cover(
-            isbn_number = r_local$cleaned_res$isbn_13
-          )
+          lien_cover = r_local$book_cover
         ) |> map(function(x) {
           if (is.null(x)) {
             return("")

@@ -60,5 +60,6 @@ result <- call_open_library_api(isbn_number = isbn_number)
 
 clean_open_library_result(result)
 get_cover(isbn_number = "9782365772013")
+path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 give_me_one_random_isbn()
 }

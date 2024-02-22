@@ -76,9 +76,9 @@ call_open_library_api(isbn_number = "2365772013")
 ```
   
 ```{r tests-call_open_library_api}
-test_that("call_open_library_api works", {
-  skip_if_offline()
+skip_if_offline()
 
+test_that("call_open_library_api works", {
   isbn_number <- "2365772013"
 
   result <- call_open_library_api(isbn_number = isbn_number)
@@ -353,6 +353,7 @@ test_that("clean_open_library_result works", {
 #' @param cover_size the size of the cover
 #' @return a URL to the cover of the book
 #' @importFrom glue glue
+#' @importFrom utils download.file
 #' @rdname fct_open_library
 #' @export
 get_cover <- function(
@@ -361,25 +362,80 @@ get_cover <- function(
   cover_size = "M"
 ) {
   match.arg(cover_size, c("S", "M", "L"))
-  glue("{root_api}/{isbn_number}-{cover_size}.jpg")
+  url <- glue("{root_api}/{isbn_number}-{cover_size}.jpg")
+  cover_output <- file.path(
+    app_sys(
+      "app",
+      "www",
+      "cover_tmp"
+    ),
+    paste0(isbn_number, ".jpg")
+  )
+
+  if (!file.exists(cover_output)) {
+    cover_dl <- try(
+      download.file(
+        url = url,
+        cover_output,
+        mode = "wb"
+      ),
+      silent = TRUE
+    )
+
+    if (inherits(cover_dl, "try-error")) {
+      cover_output <- file.path(
+        app_sys(
+          "app",
+          "www",
+          "img"
+        ),
+        "image-not-found.jpg"
+      )
+    }
+  }
+  return(
+    cover_output
+  )
 }
 ```
   
 ```{r example-get_cover}
 get_cover(isbn_number = "9782365772013")
+path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 ```
   
 ```{r tests-get_cover}
+skip_if_offline()
 test_that("get_cover works", {
-  expect_equal(
-    get_cover(isbn_number = "9782365772013"),
-    "http://covers.openlibrary.org/b/isbn/9782365772013-M.jpg"
+  list.files(
+    app_sys(
+      "app",
+      "www",
+      "cover_tmp"
+    ),
+    full.names = TRUE,
+    pattern = "\\d{13}\\.jpg$"
+  ) |>
+    file.remove()
+
+  cover_path <- get_cover(isbn_number = "9782365772013")
+
+  expect_true(
+    file.exists(cover_path)
   )
 
   expect_equal(
-    get_cover(isbn_number = "9782365772013", cover_size = "S"),
-    "http://covers.openlibrary.org/b/isbn/9782365772013-S.jpg"
+    cover_path,
+    file.path(
+      app_sys(
+        "app",
+        "www",
+        "cover_tmp"
+      ),
+      "9782365772013.jpg"
+    )
   )
+  unlink(cover_path)
 })
 ```
   
