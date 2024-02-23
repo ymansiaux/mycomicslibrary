@@ -26,16 +26,7 @@ mod_500_chartjs_server <- function(id, r_global) {
     ns <- session$ns
 
     observeEvent(input$myChart_button, {
-      if (input$myChart_button == "Année de publication") {
-        r_local$var_to_use <- "annee_publication"
-      } else if (input$myChart_button == "Note") {
-        r_local$var_to_use <- "note"
-      } else if (input$myChart_button == "Etat") {
-        r_local$var_to_use <- "statut"
-      } else {
-        r_local$var_to_use <- "type_publication"
-      }
-      print(r_local$var_to_use)
+      r_local$var_to_use <- get_var_to_display_on_chartjs()[[input$myChart_button]]
     })
 
     r_local <- reactiveValues(
