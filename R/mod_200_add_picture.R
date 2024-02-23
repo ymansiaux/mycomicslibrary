@@ -133,15 +133,15 @@ mod_200_add_picture_server <- function(id, r_global) {
       file.copy(
         from = input$upload_picture$datapath,
         to = file.path(
-          app_sys("app/www/img_tmp"),
+          r_global$resource_path,
           basename(img_name)
         ),
         overwrite = TRUE
       )
 
+
       r_local$uploaded_img <- file.path(
-        "www",
-        "img_tmp",
+        "img_app",
         basename(img_name)
       )
 
@@ -156,8 +156,9 @@ mod_200_add_picture_server <- function(id, r_global) {
       req(r_local$last_picture)
 
       source_python(app_sys("python/decode_photo.py"))
+
       detected_barcode_python <- decode_my_photo(
-        app_sys("app", r_local$last_picture)
+        file.path(r_global$resource_path, basename(r_local$last_picture))
       )
 
       if (length(detected_barcode_python) == 0) {
