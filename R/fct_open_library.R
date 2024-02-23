@@ -160,8 +160,6 @@ clean_date <- function(date) {
 #' @examples
 #' get_cover(isbn_number = "9782365772013")
 #' path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
-#' get_cover(isbn_number = "9782365772013")
-#' path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 get_cover <- function(
   root_api = "http://covers.openlibrary.org/b/isbn",
   isbn_number,

@@ -254,7 +254,6 @@ mod_110_find_isbn_server <- function(id, r_global) {
           r_local$cleaned_res <- clean_open_library_result(
             book_tibble = r_local$api_res
           )
-          browser()
           r_local$book_cover <- file.path(
             "covers",
             basename(get_cover_mem(isbn_number = r_local$cleaned_res$isbn_13))

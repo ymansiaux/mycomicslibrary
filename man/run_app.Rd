@@ -35,6 +35,10 @@ request to determine whether the \code{ui} should be used to handle the
 request. Note that the entire request path must match the regular
 expression in order for the match to be considered successful.}
 
+\item{img_dir}{The directory where the images will be stored.}
+
+\item{cover_dir}{The directory where the covers will be stored.}
+
 \item{...}{arguments to pass to golem_opts.
 See `?golem::get_golem_options` for more details.}
 }

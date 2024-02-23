@@ -148,35 +148,25 @@ test_that("clean_open_library_result works", {
 
 skip_if_offline()
 test_that("get_cover works", {
-  list.files(
-    app_sys(
-      "app",
-      "www",
-      "cover_tmp"
-    ),
-    full.names = TRUE,
-    pattern = "\\d{13}\\.jpg$"
-  ) |>
-    file.remove()
-
-  cover_path <- get_cover(isbn_number = "9782365772013")
-
-  expect_true(
-    file.exists(cover_path)
-  )
-
-  expect_equal(
-    cover_path,
-    file.path(
-      app_sys(
-        "app",
-        "www",
-        "cover_tmp"
-      ),
-      "9782365772013.jpg"
+  withr::with_tempdir({
+    cover_path <- get_cover(
+      isbn_number = "9782365772013",
+      resourcepath = getwd()
     )
-  )
-  unlink(cover_path)
+
+    expect_true(
+      file.exists(cover_path)
+    )
+
+    expect_equal(
+      cover_path,
+      file.path(
+        getwd(),
+        "9782365772013.jpg"
+      )
+    )
+    unlink(cover_path)
+  })
 })
 
 test_that("give_me_one_random_isbn works", {
