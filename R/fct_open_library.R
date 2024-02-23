@@ -151,6 +151,7 @@ clean_date <- function(date) {
 #' @param root_api the base URL of the API
 #' @param isbn_number the ISBN 10 number or the ISBN 13 number of the book
 #' @param cover_size the size of the cover
+#' @param resourcepath the path to the resource
 #' @return a URL to the cover of the book
 #' @importFrom glue glue
 #' @importFrom utils download.file
@@ -159,19 +160,18 @@ clean_date <- function(date) {
 #' @examples
 #' get_cover(isbn_number = "9782365772013")
 #' path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
+#' get_cover(isbn_number = "9782365772013")
+#' path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 get_cover <- function(
   root_api = "http://covers.openlibrary.org/b/isbn",
   isbn_number,
-  cover_size = "M"
+  cover_size = "M",
+  resourcepath = resourcePaths()["img_app"]
 ) {
   match.arg(cover_size, c("S", "M", "L"))
   url <- glue("{root_api}/{isbn_number}-{cover_size}.jpg")
   cover_output <- file.path(
-    app_sys(
-      "app",
-      "www",
-      "cover_tmp"
-    ),
+    resourcepath,
     paste0(isbn_number, ".jpg")
   )
 
@@ -187,11 +187,7 @@ get_cover <- function(
 
     if (inherits(cover_dl, "try-error")) {
       cover_output <- file.path(
-        app_sys(
-          "app",
-          "www",
-          "img"
-        ),
+        resourcepath,
         "image-not-found.jpg"
       )
     }

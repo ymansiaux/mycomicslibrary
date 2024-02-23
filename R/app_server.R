@@ -11,33 +11,7 @@ app_server <- function(input, output, session) {
 
 
   session$onSessionEnded(function() {
-    # covers <- list.files(
-    #   app_sys(
-    #     "app",
-    #     "www",
-    #     "cover_tmp"
-    #   ),
-    #   full.names = TRUE,
-    #   pattern = "\\d{13}\\.jpg$"
-    # )
-    # if (length(covers) > 0) {
-    #   file.remove(covers)
-    # }
-
-    if (length(session$userData$uploaded_img) > 0) {
-      sapply(
-        session$userData$uploaded_img,
-        function(x) {
-          if (file.exists(
-            file.path(app_sys("app"), x)
-          )) {
-            file.remove(
-              file.path(app_sys("app"), x)
-            )
-          }
-        }
-      )
-    }
+    removeResourcePath("img_app")
   })
 
   r_global <- reactiveValues()
@@ -49,6 +23,7 @@ app_server <- function(input, output, session) {
       init_comics_db()
     )
     r_global$comics_db_init <- !inherits(init_db, "try-error")
+    r_global$resource_path <- resourcePaths()["img_app"]
   })
 
 
@@ -77,7 +52,7 @@ app_server <- function(input, output, session) {
   #  Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
   observeEvent(input$base64url, {
     img_name <- file.path(
-      app_sys("app/www/img_tmp"),
+      resourcePaths()["img_app"],
       basename(tempfile(fileext = ".jpg"))
     )
 
@@ -90,8 +65,7 @@ app_server <- function(input, output, session) {
     session$userData$uploaded_img <- c(
       session$userData$uploaded_img,
       file.path(
-        "www",
-        "img_tmp",
+        "img_app",
         basename(img_name)
       )
     )

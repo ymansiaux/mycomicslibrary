@@ -17,7 +17,8 @@ clean_open_library_result(book_tibble)
 get_cover(
   root_api = "http://covers.openlibrary.org/b/isbn",
   isbn_number,
-  cover_size = "M"
+  cover_size = "M",
+  resourcepath = resourcePaths()["img_app"]
 )
 
 give_me_one_random_isbn()
@@ -30,6 +31,8 @@ give_me_one_random_isbn()
 \item{book_tibble}{a tibble with the result of the API call}
 
 \item{cover_size}{the size of the cover}
+
+\item{resourcepath}{the path to the resource}
 }
 \value{
 un tibble avec les informations de l'API
@@ -59,6 +62,8 @@ isbn_number <- "2365772013"
 result <- call_open_library_api(isbn_number = isbn_number)
 
 clean_open_library_result(result)
+get_cover(isbn_number = "9782365772013")
+path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 get_cover(isbn_number = "9782365772013")
 path <- "home/yohann/Documents/perso/mycomicslibrary/inst/app/www/cover_tmp/9782365772013.jpg"
 give_me_one_random_isbn()
