@@ -1,6 +1,11 @@
-<div>
-  <div class="btn-group chartjs_buttons" id="{{groupbuttonid}}" role="group" aria-label="Basic example">
-    <button type="button" class="btn btn-primary">Année de publication</button>
+<div style="
+  display: flex;
+  flex-direction: column;  
+  align-items: flex-start;
+  " id="{{divchart}}">
+  <div class="btn-group chartjs_buttons" id="{{groupbuttonid}}" role="group" aria-label="Basic example"
+    style="padding:10px;">
+    <button type=" button" class="btn btn-primary">Année de publication</button>
     <button type="button" class="btn btn-primary">Note</button>
     <button type="button" class="btn btn-primary">Format</button>
     <button type="button" class="btn btn-primary">Etat</button>
@@ -12,7 +17,7 @@
  padding: 10px;
  background-color: white;
  border-radius: 10px;
- box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1)">
+ box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1)" id=container_{{id}}>
     <canvas id={{id}}></canvas>
   </div>
 </div>

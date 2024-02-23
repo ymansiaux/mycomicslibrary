@@ -10,10 +10,12 @@
 mod_500_chartjs_ui <- function(id) {
   ns <- NS(id)
   tagList(
+    tags$h4(id = ns("nobook"), "Aucun livre dans la collection pour le moment", style = "display: none;"),
     htmlTemplate(
       app_sys("app/www/templates_html/template_chartjs.html"),
       id = ns("myChart"),
-      groupbuttonid = ns("chart_group_button")
+      groupbuttonid = ns("chart_group_button"),
+      divchart = ns("divchart")
     )
   )
 }
@@ -43,8 +45,24 @@ mod_500_chartjs_server <- function(id, r_global) {
         filter(possede == 1)
     })
 
+    observeEvent(r_local$current_db, ignoreNULL = FALSE, {
+      req(r_local$var_to_use)
+      show_hide_ids_depending_on_db_size(
+        db = r_local$current_db,
+        table_id = ns("divchart"),
+        nobook_id = ns("nobook")
+      )
+    })
+
+    observeEvent(r_local$var_to_use, ignoreNULL = FALSE, {
+      if (!isTruthy(r_local$var_to_use)) {
+        golem::invoke_js("hideid", paste0("container_", ns("myChart")))
+      } else {
+        golem::invoke_js("showid", paste0("container_", ns("myChart")))
+      }
+    })
+
     observeEvent(r_local$var_to_use, {
-      req(nrow(r_local$current_db) > 0)
       req(r_local$var_to_use)
 
       my_labels <- r_local$current_db |>
