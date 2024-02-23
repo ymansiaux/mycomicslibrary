@@ -1,0 +1,64 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# show_hide_ids_depending_on_db_size
+    
+```{r function-show_hide_ids_depending_on_db_size}
+#' Title
+#'
+#' Description
+#'
+#' @return
+#' @rdname fct_mod300_400
+#' @noRd
+#' @export
+show_hide_ids_depending_on_db_size <- function(db, table_id, nobook_id) {
+  if (
+    !isTruthy(db) ||
+      nrow(db) == 0
+  ) {
+    golem::invoke_js(
+      "showid",
+      nobook_id
+    )
+    golem::invoke_js(
+      "hideid",
+      table_id
+    )
+  } else {
+    golem::invoke_js(
+      "hideid",
+      nobook_id
+    )
+    golem::invoke_js(
+      "showid",
+      table_id
+    )
+  }
+}
+```
+
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_mod300_400.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

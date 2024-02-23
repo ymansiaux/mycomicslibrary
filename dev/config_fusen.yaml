@@ -43,6 +43,19 @@ flat_mod130.Rmd:
     check: false
     document: true
     overwrite: ask
+flat_mod300_400.Rmd:
+  path: dev/flat_mod300_400.Rmd
+  state: active
+  R: R/fct_mod300_400.R
+  tests: []
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_mod300_400.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_open_library.Rmd:
   path: dev/flat_open_library.Rmd
   state: active
