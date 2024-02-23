@@ -4,7 +4,6 @@
 #' See `?golem::get_golem_options` for more details.
 #' @inheritParams shiny::shinyApp
 #' @param img_dir The directory where the images will be stored.
-#' @param cover_dir The directory where the covers will be stored.
 #' @export
 #' @importFrom shiny shinyApp
 #' @importFrom golem with_golem_options
