@@ -14,7 +14,6 @@ run_app <- function(
   enableBookmarking = NULL,
   uiPattern = "/",
   img_dir = tempfile(),
-  cover_dir = tempfile(),
   ...
 ) {
   dir.create(img_dir)
@@ -32,15 +31,13 @@ run_app <- function(
   )
 
   if (isTRUE(getOption("golem.app.prod"))) {
-    cover_dir <- Sys.getenv("cover.dir")
+    cover_dir <- Sys.getenv("COVERS_PATH")
   } else {
-    cover_dir <- app_sys(
-      "app",
-      "www",
-      "covers"
-    )
+    cover_dir <- Sys.getenv("COVERS_PATH", unset = tempfile())
+    if (!dir.exists(cover_dir)) {
+      dir.create(cover_dir)
+    }
   }
-
 
   shiny::addResourcePath("covers", cover_dir)
 

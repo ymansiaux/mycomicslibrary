@@ -7,17 +7,19 @@ $(document).ready(function () {
         title: "Oups...",
         text: arg.msg
       });
-    }
-
-    if (arg.type == "success") {
+    } else if (arg.type == "success") {
       Swal.fire({
         icon: "success",
         title: "Succès",
         text: arg.msg
       });
-    }
-
-    if (arg.type == "autoclose") {
+    } else if (arg.type == "warning") {
+      Swal.fire({
+        icon: "warning",
+        title: "Attention",
+        html: arg.msg
+      });
+    } else if (arg.type == "autoclose") {
       let timerInterval;
       Swal.fire({
         title: arg.msg,

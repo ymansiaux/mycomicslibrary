@@ -22,7 +22,7 @@ connect_to_comics_db <- function() {
 get_database_path <- function() {
   Sys.getenv(
     "COMICS_SQL_PATH",
-    unset = file.path(system.file(package = "mycomicslibrary"), "db", "comics_db.sqlite")
+    unset = ""
   )
 }
 

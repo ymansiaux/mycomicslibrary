@@ -17,7 +17,39 @@ app_server <- function(input, output, session) {
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
+    print(Sys.getenv("COMICS_SQL_PATH"))
+    env_var_are_missing <- FALSE
+    msg <- ""
+    if (Sys.getenv("COMICS_SQL_PATH") == "") {
+      msg <- paste0(msg, "La variable d'environnement 'COMICS_SQL_PATH' n'est pas renseignée. Un fichier temporaire sera utilisé, vous ne pourrez pas retrouver le contenu de votre base la prochaine fois !<br>")
+      env_var_are_missing <- TRUE
+      Sys.setenv(COMICS_SQL_PATH = tempfile(fileext = ".sqlite"))
+    }
+
+    if (Sys.getenv("COVERS_PATH") == "") {
+      env_var_are_missing <- TRUE
+      msg <- paste0(
+        msg,
+        "<br>La variable d'environnement 'COVERS_PATH' n'est pas renseignée. Un dossier temporaire sera utilisé, vous ne pourrez pas retrouver les images de couverture de vos BD la prochaine fois !"
+      )
+    }
+
+    if (env_var_are_missing) {
+      msg <- paste0(
+        "<p>",
+        msg,
+        "</p>"
+      )
+      golem::invoke_js(
+        "call_sweetalert2",
+        message = list(
+          type = "warning",
+          msg = msg
+        )
+      )
+    }
     # unlink(get_database_path())
+
     init_db <- try(
       init_comics_db()
     )
@@ -30,13 +62,7 @@ app_server <- function(input, output, session) {
 
   observeEvent(r_global$comics_db_init, {
     req(r_global$comics_db_init)
-    # golem::invoke_js(
-    #   "call_sweetalert2",
-    #   message = list(
-    #     type = "autoclose",
-    #     msg = "Connexion à la base de données réussie"
-    #   )
-    # )
+
     if (isTRUE(r_global$comics_db_init)) {
       r_global$comics_db <- read_comics_db()
       print(r_global$comics_db)
@@ -72,4 +98,3 @@ app_server <- function(input, output, session) {
     r_global$new_picture_taken <- Sys.time()
   })
 }
-# 9782917371329

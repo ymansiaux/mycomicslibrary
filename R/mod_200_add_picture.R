@@ -82,7 +82,7 @@ mod_200_add_picture_ui <- function(id) {
                     actionButton(
                       inputId = ns("detect_isbn_from_picture"),
                       label = "Détecter l'ISBN"
-                    )
+                    ) |> shiny::tagAppendAttributes("disabled" = "disabled")
                   )
                 )
               )
@@ -114,11 +114,13 @@ mod_200_add_picture_server <- function(id, r_global) {
         r_local$last_picture <- session$userData$uploaded_img[length(
           session$userData$uploaded_img
         )]
+        golem::invoke_js("reable", paste0("#", ns("detect_isbn_from_picture")))
       }
     )
 
     output$current_image <- renderUI({
       req(r_local$last_picture)
+
       tags$img(
         src = r_local$last_picture,
         style = "max-width: 25%;"

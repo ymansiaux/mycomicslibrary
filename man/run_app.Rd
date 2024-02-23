@@ -10,7 +10,6 @@ run_app(
   enableBookmarking = NULL,
   uiPattern = "/",
   img_dir = tempfile(),
-  cover_dir = tempfile(),
   ...
 )
 }
@@ -37,10 +36,10 @@ expression in order for the match to be considered successful.}
 
 \item{img_dir}{The directory where the images will be stored.}
 
-\item{cover_dir}{The directory where the covers will be stored.}
-
 \item{...}{arguments to pass to golem_opts.
 See `?golem::get_golem_options` for more details.}
+
+\item{cover_dir}{The directory where the covers will be stored.}
 }
 \description{
 Run the Shiny Application
