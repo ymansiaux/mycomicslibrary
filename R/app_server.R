@@ -5,10 +5,9 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
-  observe({
-    session$onSessionEnded(stopApp)
-  })
-
+  # observe({
+  #   session$onSessionEnded(stopApp)
+  # })
 
   session$onSessionEnded(function() {
     removeResourcePath("img_app")
