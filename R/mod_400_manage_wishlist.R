@@ -30,20 +30,11 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
     )
 
     observeEvent(r_local$current_db, ignoreNULL = FALSE, {
-      if (
-        !isTruthy(r_local$current_db) ||
-          nrow(r_local$current_db) == 0
-      ) {
-        golem::invoke_js(
-          "showid",
-          ns("nobook")
-        )
-      } else {
-        golem::invoke_js(
-          "hideid",
-          ns("nobook")
-        )
-      }
+      show_hide_ids_depending_on_db_size(
+        db = r_local$current_db,
+        table_id = ns("my_wishlist"),
+        nobook_id = ns("nobook")
+      )
     })
 
     observeEvent(r_global$comics_db, {
@@ -58,8 +49,6 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
     })
 
     observeEvent(r_local$current_db, {
-      req(nrow(r_local$current_db) > 0)
-
       golem::invoke_js(
         "build_my_wishlist",
         list(
@@ -122,23 +111,13 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
         lien_cover = r_local$current_book$lien_cover
       )
 
-      if (append_res == 1) {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "success",
-            msg = "Le livre a été déplacé avec succès"
-          )
-        )
-      } else {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "error",
-            msg = "Le livre n'a pu être déplacé"
-          )
-        )
-      }
+      call_sweet_alert_depending_on_db_append(
+        append_res = append_res,
+        msg_success = "Le livre a été déplacé avec succès",
+        msg_error = "Le livre n'a pu être déplacé"
+      )
+
+
 
       r_global$comics_db <- read_comics_db()
     })
@@ -163,23 +142,13 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
         lien_cover = r_local$current_book$lien_cover
       )
 
-      if (append_res == 1) {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "success",
-            msg = "Le livre a été supprimé avec succès"
-          )
-        )
-      } else {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "error",
-            msg = "Le livre n'a pu être supprimé"
-          )
-        )
-      }
+
+      call_sweet_alert_depending_on_db_append(
+        append_res = append_res,
+        msg_success = "Le livre a été supprimé avec succès",
+        msg_error = "Le livre n'a pu être supprimé"
+      )
+
 
       r_global$comics_db <- read_comics_db()
     })
