@@ -17,14 +17,11 @@ pkgload::load_all(export_all = FALSE)
 # show_hide_ids_depending_on_db_size
     
 ```{r function-show_hide_ids_depending_on_db_size}
-#' Title
+#' show or hide elements depending on the size of a database
 #'
-#' Description
-#'
-#' @return
+#' @return side effect
 #' @rdname fct_mod300_400
 #' @noRd
-#' @export
 show_hide_ids_depending_on_db_size <- function(db, table_id, nobook_id) {
   if (
     !isTruthy(db) ||
@@ -51,6 +48,35 @@ show_hide_ids_depending_on_db_size <- function(db, table_id, nobook_id) {
 }
 ```
 
+# call_sweet_alert_depending_on_db_append
+    
+```{r function-call_sweet_alert_depending_on_db_append}
+#' call sweet alert depending on the result of an append operation
+
+#' @return side effect
+#' @rdname fct_mod300_400
+#' @noRd
+call_sweet_alert_depending_on_db_append <- function(append_res, msg_success, msg_error) {
+  if (append_res == 1) {
+    golem::invoke_js(
+      "call_sweetalert2",
+      message = list(
+        type = "success",
+        msg = msg_success
+      )
+    )
+  } else {
+    golem::invoke_js(
+      "call_sweetalert2",
+      message = list(
+        type = "error",
+        msg = msg_error
+      )
+    )
+  }
+}
+```
+  
 
 ```{r development-inflate, eval=FALSE}
 # Run but keep eval=FALSE to avoid infinite loop

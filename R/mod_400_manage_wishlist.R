@@ -111,23 +111,13 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
         lien_cover = r_local$current_book$lien_cover
       )
 
-      if (append_res == 1) {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "success",
-            msg = "Le livre a été déplacé avec succès"
-          )
-        )
-      } else {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "error",
-            msg = "Le livre n'a pu être déplacé"
-          )
-        )
-      }
+      call_sweet_alert_depending_on_db_append(
+        append_res = append_res,
+        msg_success = "Le livre a été déplacé avec succès",
+        msg_error = "Le livre n'a pu être déplacé"
+      )
+
+
 
       r_global$comics_db <- read_comics_db()
     })
@@ -152,23 +142,13 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
         lien_cover = r_local$current_book$lien_cover
       )
 
-      if (append_res == 1) {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "success",
-            msg = "Le livre a été supprimé avec succès"
-          )
-        )
-      } else {
-        golem::invoke_js(
-          "call_sweetalert2",
-          message = list(
-            type = "error",
-            msg = "Le livre n'a pu être supprimé"
-          )
-        )
-      }
+
+      call_sweet_alert_depending_on_db_append(
+        append_res = append_res,
+        msg_success = "Le livre a été supprimé avec succès",
+        msg_error = "Le livre n'a pu être supprimé"
+      )
+
 
       r_global$comics_db <- read_comics_db()
     })

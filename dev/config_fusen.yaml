@@ -46,7 +46,9 @@ flat_mod130.Rmd:
 flat_mod300_400.Rmd:
   path: dev/flat_mod300_400.Rmd
   state: active
-  R: R/fct_mod300_400.R
+  R:
+  - R/fct_mod300_400.R
+  - R/call_sweet_alert_depending_on_db_append.R
   tests: []
   vignettes: []
   inflate:
