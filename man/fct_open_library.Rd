@@ -18,7 +18,7 @@ get_cover(
   root_api = "http://covers.openlibrary.org/b/isbn",
   isbn_number,
   cover_size = "M",
-  resourcepath = resourcePaths()["img_app"]
+  resourcepath = resourcePaths()["covers"]
 )
 
 give_me_one_random_isbn()

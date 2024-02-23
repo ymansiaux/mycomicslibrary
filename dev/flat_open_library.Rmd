@@ -364,7 +364,7 @@ get_cover <- function(
   root_api = "http://covers.openlibrary.org/b/isbn",
   isbn_number,
   cover_size = "M",
-  resourcepath = resourcePaths()["img_app"]
+  resourcepath = resourcePaths()["covers"]
 ) {
   match.arg(cover_size, c("S", "M", "L"))
   url <- glue("{root_api}/{isbn_number}-{cover_size}.jpg")

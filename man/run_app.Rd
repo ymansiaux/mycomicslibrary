@@ -10,6 +10,7 @@ run_app(
   enableBookmarking = NULL,
   uiPattern = "/",
   img_dir = tempfile(),
+  cover_dir = tempfile(),
   ...
 )
 }

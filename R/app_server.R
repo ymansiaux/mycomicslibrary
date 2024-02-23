@@ -24,6 +24,7 @@ app_server <- function(input, output, session) {
     )
     r_global$comics_db_init <- !inherits(init_db, "try-error")
     r_global$resource_path <- resourcePaths()["img_app"]
+    r_global$cover_path <- resourcePaths()["covers"]
   })
 
 
