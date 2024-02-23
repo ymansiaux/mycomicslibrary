@@ -38,10 +38,18 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
           "showid",
           ns("nobook")
         )
+        golem::invoke_js(
+          "hideid",
+          ns("my_wishlist")
+        )
       } else {
         golem::invoke_js(
           "hideid",
           ns("nobook")
+        )
+        golem::invoke_js(
+          "showid",
+          ns("my_wishlist")
         )
       }
     })
@@ -58,8 +66,6 @@ mod_400_manage_wishlist_server <- function(id, r_global) {
     })
 
     observeEvent(r_local$current_db, {
-      req(nrow(r_local$current_db) > 0)
-
       golem::invoke_js(
         "build_my_wishlist",
         list(

@@ -38,10 +38,18 @@ mod_300_manage_collection_server <- function(id, r_global) {
           "showid",
           ns("nobook")
         )
+        golem::invoke_js(
+          "hideid",
+          ns("my_collection")
+        )
       } else {
         golem::invoke_js(
           "hideid",
           ns("nobook")
+        )
+        golem::invoke_js(
+          "showid",
+          ns("my_collection")
         )
       }
     })
@@ -58,8 +66,6 @@ mod_300_manage_collection_server <- function(id, r_global) {
     })
 
     observeEvent(r_local$current_db, {
-      req(nrow(r_local$current_db) > 0)
-
       golem::invoke_js(
         "build_my_collection",
         list(
