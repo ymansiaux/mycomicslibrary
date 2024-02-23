@@ -37,6 +37,7 @@ run_app <- function(
       dir.create(cover_dir)
     }
   }
+  print(list.files(cover_dir))
 
   shiny::addResourcePath("covers", cover_dir)
 

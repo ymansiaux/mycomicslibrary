@@ -2,5 +2,5 @@ docker build -f Dockerfile_base --progress=plain -t mycomicslibrary_base .
 docker build -f Dockerfile --progress=plain -t mycomicslibrary:latest .
 docker run -p 80:80 mycomicslibrary:latest
 # then go to 127.0.0.1:80
-#docker run -v /home/yohann/Documents/tests_docker:/storage -p 80:80 mycomicslibrary:latest
+docker run -v /home/yohann/Documents/tests_docker:/storage -p 80:80 mycomicslibrary:latest
 docker run -v /home/debian/storage_db_comics:/storage -p 80:80 mycomicslibrary:latest
