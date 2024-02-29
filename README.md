@@ -10,16 +10,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R-CMD-check](https://github.com/ymansiaux/mycomicslibrary/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ymansiaux/mycomicslibrary/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-The goal of mycomicslibrary is to …
-
-Lien vers le template html utilisé :
-
-<https://startbootstrap.com/>
-<https://startbootstrap.com/template/scrolling-nav>
-
-Lien vers le code pour gérer la webcam :
-
-<https://usefulangle.com/post/352/javascript-capture-image-from-camera>
+The objective of the {mycomicslibrary} package is to manage your comics
+library.
 
 ## Installation
 
@@ -31,35 +23,21 @@ You can install the development version of mycomicslibrary from
 devtools::install_github("ymansiaux/mycomicslibrary")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
+To run the app, you can use the following command:
 
 ``` r
-library(mycomicslibrary)
-## basic example code
+mycomicslibrary::run_app()
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+The app has been developed using the {shiny} package and the following
+ressources:
 
-``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
-```
-
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-<img src="man/figures/README-pressure-1.png" width="100%" />
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+  - html template : <https://startbootstrap.com/template/scrolling-nav>
+  - Python code to extract ISBN from images :
+    <https://stackoverflow.com/questions/67423405/is-there-an-r-package-to-read-a-barcode-from-an-image>
+  - JS libraries
+      - sweetalert2: <https://sweetalert2.github.io/>
+      - gridjs : <https://gridjs.io/>
+      - chartjs : <https://www.chartjs.org/>
+  - html template to take pictures with the webcam :
+    <https://usefulangle.com/post/352/javascript-capture-image-from-camera>
