@@ -37,7 +37,7 @@ mod_200_add_picture_ui <- function(id) {
                   justify-content: space-between;
                   ",
                     div(
-                      fileInput(
+                      customfileinput(
                         inputId = ns("upload_picture"),
                         label = "Uploader une photo",
                         buttonLabel = "Choisir une photo",
