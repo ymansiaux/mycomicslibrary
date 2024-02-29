@@ -1,0 +1,51 @@
+---
+title: "flat_additional.Rmd empty"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r development, include=FALSE}
+library(testthat)
+```
+
+```{r development-load}
+# Load already included functions if relevant
+pkgload::load_all(export_all = FALSE)
+```
+
+# customfileinput
+    
+```{r function-customfileinput}
+#' fileInput which does not scroll to the top of the page
+#' @param inputId the input id
+#' @param ... other arguments passed to fileInput
+#' @return a file input
+#' @importFrom htmltools tagQuery
+#' @importFrom shiny fileInput
+#' @noRd
+#' @rdname fct_misc
+customfileinput <- function(inputId, ...) {
+  el <- fileInput(inputId, ...)
+
+  tagQ <- htmltools::tagQuery(el)
+
+  tagQ$
+    find(sprintf("input#%s", inputId))$
+    removeAttrs("style")$
+    addAttrs("style" = "display:none;")$
+    allTags()
+}
+```
+  
+
+```{r development-inflate, eval=FALSE}
+# Run but keep eval=FALSE to avoid infinite loop
+# Execute in the console directly
+fusen::inflate(
+  flat_file = "dev/flat_misc.Rmd",
+  vignette_name = NA,
+  check = FALSE
+)
+```
+

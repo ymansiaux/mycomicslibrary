@@ -11,6 +11,19 @@ flat_database.Rmd:
     check: false
     document: true
     overwrite: ask
+flat_misc.Rmd:
+  path: dev/flat_misc.Rmd
+  state: active
+  R: R/fct_misc.R
+  tests: []
+  vignettes: []
+  inflate:
+    flat_file: dev/flat_misc.Rmd
+    vignette_name: .na
+    open_vignette: true
+    check: false
+    document: true
+    overwrite: ask
 flat_mod110.Rmd:
   path: dev/flat_mod110.Rmd
   state: active
