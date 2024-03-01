@@ -9,83 +9,70 @@ test_that("call_open_library_api works", {
 
   expect_equal(
     result,
-    structure(
-      list(
-        document.id = 1L,
-        bib_key = "ISBN:2365772013",
-        info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-        preview = "noview",
-        preview_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-        thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
-        details.title = "SAGA - Tome 1",
-        details.publish_date = "Mar 14, 2013",
-        details.number_of_pages = 168,
-        details.physical_format = "paperback",
-        details.key = "/books/OL32230088M",
-        details.latest_revision = 1,
-        details.revision = 1,
-        details.type.key = "/type/edition",
-        details.notes.type = "/type/text",
-        details.notes.value = "Source title: SAGA - Tome 1 (URBAN INDIES) (French Edition)",
-        details.created.type = "/type/datetime",
-        details.created.value = "2021-04-22T18:16:16.598948",
-        details.last_modified.type = "/type/datetime",
-        details.last_modified.value = "2021-04-22T18:16:16.598948",
-        ..JSON = list(`ISBN:2365772013` = list(
-          bib_key = "ISBN:2365772013",
-          info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-          preview = "noview",
-          preview_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-          thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
-          details = list(
-            type = list(key = "/type/edition"),
-            title = "SAGA - Tome 1",
-            authors = list(
-              list(
-                key = "/authors/OL9159259A",
-                name = "Brian K. Vaughan"
-              ),
-              list(
-                key = "/authors/OL9159260A",
-                name = "Fiona Staples"
-              )
-            ),
-            publish_date = "Mar 14, 2013",
-            source_records = list("amazon:2365772013"),
-            number_of_pages = 168L,
-            publishers = list("URBAN COMICS"),
-            isbn_10 = list(
-              "2365772013"
-            ),
-            isbn_13 = list("9782365772013"),
-            physical_format = "paperback",
-            notes = list(
-              type = "/type/text",
-              value = "Source title: SAGA - Tome 1 (URBAN INDIES) (French Edition)"
-            ),
-            covers = list(10867159L),
-            works = list(list(key = "/works/OL24344304W")),
-            key = "/books/OL32230088M",
-            latest_revision = 1L,
-            revision = 1L,
-            created = list(
-              type = "/type/datetime",
-              value = "2021-04-22T18:16:16.598948"
-            ),
-            last_modified = list(
-              type = "/type/datetime",
-              value = "2021-04-22T18:16:16.598948"
-            )
-          )
-        ))
+    list(
+      numFound = 1L,
+      start = 0L,
+      numFoundExact = TRUE,
+      docs = list(
+        list(
+          key = "/works/OL24344304W",
+          type = "work",
+          seed = list(
+            "/books/OL32230088M",
+            "/works/OL24344304W",
+            "/authors/OL9159259A",
+            "/authors/OL9159260A"
+          ),
+          title = "SAGA - Tome 1",
+          title_suggest = "SAGA - Tome 1",
+          title_sort = "SAGA - Tome 1",
+          edition_count = 1L,
+          edition_key = list(
+            "OL32230088M"
+          ),
+          publish_date = list("Mar 14, 2013"),
+          publish_year = list(2013L),
+          first_publish_year = 2013L,
+          number_of_pages_median = 168L,
+          isbn = list(
+            "9782365772013",
+            "2365772013"
+          ),
+          last_modified_i = 1619115376L,
+          ebook_count_i = 0L,
+          ebook_access = "no_ebook",
+          has_fulltext = FALSE,
+          public_scan_b = FALSE,
+          ratings_count_1 = 0L,
+          ratings_count_2 = 0L,
+          ratings_count_3 = 0L,
+          ratings_count_4 = 1L,
+          ratings_count_5 = 0L,
+          ratings_average = 4,
+          ratings_sortable = 2.3286738,
+          ratings_count = 1L,
+          readinglog_count = 1L,
+          want_to_read_count = 0L,
+          currently_reading_count = 0L,
+          already_read_count = 1L,
+          cover_edition_key = "OL32230088M",
+          cover_i = 10867159L,
+          publisher = list("URBAN COMICS"),
+          author_key = list("OL9159259A", "OL9159260A"),
+          author_name = list(
+            "Vaughan Brian K.",
+            "Staples Fiona"
+          ),
+          publisher_facet = list(
+            "URBAN COMICS"
+          ),
+          `_version_` = 1767915710134091776,
+          author_facet = list("OL9159259A Vaughan Brian K.", "OL9159260A Staples Fiona")
+        )
       ),
-      row.names = 1L,
-      class = c(
-        "tbl_json",
-        "tbl_df",
-        "tbl",
-        "data.frame"
-      )
+      num_found = 1L,
+      q = "",
+      offset = NULL
     )
   )
 
@@ -93,7 +80,7 @@ test_that("call_open_library_api works", {
   result <- call_open_library_api(isbn_number = "XXXX")
 
   expect_equal(
-    nrow(result),
+    result$numFound,
     0
   )
 
@@ -128,19 +115,13 @@ test_that("clean_open_library_result works", {
     structure(
       list(
         title = "SAGA - Tome 1",
-        author = c(`ISBN:2365772013` = "Brian K. Vaughan, Fiona Staples"),
-        info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-        thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
+        author = "Vaughan Brian K., Staples Fiona",
+        publisher = "URBAN COMICS",
         publish_date = "2013",
-        number_of_pages = 168,
-        isbn_10 = c(`ISBN:2365772013` = "2365772013"),
-        isbn_13 = c(`ISBN:2365772013` = "9782365772013"),
-        publisher = c(`ISBN:2365772013` = "URBAN COMICS")
+        number_of_pages = "168",
+        isbn = "9782365772013"
       ),
-      row.names = c(
-        NA,
-        -1L
-      ),
+      row.names = c(NA, -1L),
       class = "data.frame"
     )
   )

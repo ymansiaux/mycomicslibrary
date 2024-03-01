@@ -210,6 +210,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(input$search, {
         req(input$isbn)
         req(r_local$isbn_is_valid)
+
         withSpinner(
           expr = {
             api_res <- call_open_library_api_mem(
@@ -217,10 +218,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
             )
           }
         )
-
         if (inherits(api_res, "try-error")) {
           r_local$api_call_status <- "error"
-        } else if (nrow(api_res) == 0) {
+        } else if (api_res$numFound == 0) {
           r_local$api_call_status <- "warning"
         } else {
           r_local$api_call_status <- "success"
@@ -317,11 +317,11 @@ mod_110_find_isbn_server <- function(id, r_global) {
 
         withSpinner(expr = {
           r_local$cleaned_res <- clean_open_library_result(
-            book_tibble = r_local$api_res
+            book = r_local$api_res
           )
           r_local$book_cover <- file.path(
             "covers",
-            basename(get_cover_mem(isbn_number = r_local$cleaned_res$isbn_13))
+            basename(get_cover_mem(isbn_number = r_local$cleaned_res$isbn))
           )
         })
 
@@ -342,7 +342,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         req(r_local$cleaned_res)
 
         to_add <- list(
-          ISBN = r_local$cleaned_res$isbn_13,
+          ISBN = r_local$cleaned_res$isbn,
           titre = r_local$cleaned_res$title,
           auteur = r_local$cleaned_res$author,
           annee_publication = r_local$cleaned_res$publish_date,
@@ -366,7 +366,6 @@ mod_110_find_isbn_server <- function(id, r_global) {
             input$do_i_add_to_library
           )
         )
-
         is_the_book_already_in_db <- read_comics_db() |>
           get_most_recent_entry_per_doc() |>
           filter(ISBN == to_add$ISBN)
