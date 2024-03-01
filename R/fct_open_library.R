@@ -7,28 +7,26 @@
 #' @importFrom cli cli_alert_warning
 #' @importFrom glue glue
 #' @importFrom httr2 request req_perform resp_body_json
-#' @importFrom tidyjson spread_all
 #' @export
 #' @rdname fct_open_library
 #' @examples
 #' call_open_library_api(isbn_number = "2365772013")
 call_open_library_api <- function(
-  root_api = "https://openlibrary.org/api/books",
+  root_api = "https://openlibrary.org/search.json",
   isbn_number
 ) {
   if (isFALSE(as.character(isbn_number))) {
     stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
 
-  url <- glue("{root_api}?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
+  url <- glue("{root_api}?isbn={isbn_number}")
 
   req <- request(url)
 
   result <- try(
     req |>
       req_perform() |>
-      resp_body_json() |>
-      spread_all(),
+      resp_body_json(),
     silent = TRUE
   )
 
@@ -36,12 +34,9 @@ call_open_library_api <- function(
 }
 
 #' Nettoyage du résultat de l'API Open Library
-#' @param book_tibble a tibble with the result of the API call
+#' @param book result of the API call
 #' @return a tibble with the cleaned result of the API call
-#' @importFrom janitor clean_names
-#' @importFrom dplyr select mutate
-#' @importFrom tidyselect everything any_of
-#' @importFrom purrr map map_chr possibly
+#' @importFrom purrr map map_chr possibly set_names
 #' @export
 #' @rdname fct_open_library
 #' @examples
@@ -53,98 +48,43 @@ call_open_library_api <- function(
 #' result <- call_open_library_api(isbn_number = isbn_number)
 #'
 #' clean_open_library_result(result)
-clean_open_library_result <- function(book_tibble) {
-  book_tibble_cleaned_names <- book_tibble |>
-    clean_names()
+clean_open_library_result <- function(book) {
+  possibly_get_nested_element <- possibly(
+    get_nested_element,
+    otherwise = NA_character_
+  )
 
-  df_part <- book_tibble_cleaned_names |>
-    as.data.frame() |>
-    select(
-      any_of(
-        c(
-          "info_url",
-          "thumbnail_url",
-          "details_title",
-          "details_publish_date",
-          "details_number_of_pages"
-        )
-      )
-    )
+  names_df <- c(
+    "title",
+    "author_name",
+    "publisher",
+    "publish_year",
+    "number_of_pages_median"
+  )
+  expected_names <- c(
+    "title",
+    "author",
+    "publisher",
+    "publish_date",
+    "number_of_pages"
+  )
 
-  json <- book_tibble_cleaned_names$json
+  df <- map(
+    names_df,
+    ~ possibly_get_nested_element(book, .x)
+  ) |>
+    set_names(expected_names)
 
-  possibly_get_authors <- possibly(get_authors, otherwise = NA_character_)
-  possibly_get_isbn10 <- possibly(get_isbn10, otherwise = NA_character_)
-  possibly_get_isbn13 <- possibly(get_isbn13, otherwise = NA_character_)
-  possibly_get_publishers <- possibly(get_publishers, otherwise = NA_character_)
-  possibly_get_date <- possibly(clean_date, otherwise = NA_character_)
-  author <- possibly_get_authors(json)
-  isbn_10 <- possibly_get_isbn10(json)
-  isbn_13 <- possibly_get_isbn13(json)
-  publisher <- possibly_get_publishers(json)
-
-
-  df_part <- df_part |>
-    mutate(
-      author = author,
-      isbn_10 = isbn_10,
-      isbn_13 = isbn_13,
-      publisher = publisher,
-      details_publish_date = possibly_get_date(details_publish_date)
-    )
-
-  colnames(df_part) <- gsub("details_", "", colnames(df_part))
-
-  df_part |>
-    select(
-      title,
-      author,
-      everything()
-    )
+  df <- data.frame(df)
+  df$isbn <- unlist(map(book$docs, "isbn"))[1]
+  df
 }
 
-#' @noRd
-get_nested_field <- function(json, field) {
-  json |>
-    purrr::map(~ .x$details) |>
-    purrr::map(~ .x[[field]]) |>
-    purrr::map(
-      ~ .x |>
-        purrr::map_chr(~ .x[[1]])
-    ) |>
-    purrr::map_chr(~ paste(.x, collapse = ", "))
-}
-
-#' @noRd
-get_authors <- function(json) {
-  json |>
-    purrr::map(~ .x$details) |>
-    purrr::map(~ .x[["authors"]]) |>
-    purrr::map(
-      ~ .x |>
-        purrr::map_chr(~ .x$name)
-    ) |>
-    purrr::map_chr(~ paste(.x, collapse = ", "))
-}
-
-#' @noRd
-get_isbn10 <- function(json) {
-  get_nested_field(json, "isbn_10")
-}
-
-#' @noRd
-get_isbn13 <- function(json) {
-  get_nested_field(json, "isbn_13")
-}
-
-#' @noRd
-get_publishers <- function(json) {
-  get_nested_field(json, "publishers")
-}
-
-#' @noRd
-clean_date <- function(date) {
-  regmatches(date, regexec("\\d{4,4}", date))[[1]]
+# #' @noRd
+get_nested_element <- function(book, element) {
+  map(book$docs, element) |>
+    unlist() |>
+    paste0(collapse = ", ")
 }
 
 #' Get the cover of a book from Open Library

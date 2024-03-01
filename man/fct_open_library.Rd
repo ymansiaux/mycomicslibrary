@@ -8,11 +8,11 @@
 \title{Appel à l'API Open Library}
 \usage{
 call_open_library_api(
-  root_api = "https://openlibrary.org/api/books",
+  root_api = "https://openlibrary.org/search.json",
   isbn_number
 )
 
-clean_open_library_result(book_tibble)
+clean_open_library_result(book)
 
 get_cover(
   root_api = "http://covers.openlibrary.org/b/isbn",
@@ -28,7 +28,7 @@ give_me_one_random_isbn()
 
 \item{isbn_number}{the ISBN 10 number or the ISBN 13 number of the book}
 
-\item{book_tibble}{a tibble with the result of the API call}
+\item{book}{result of the API call}
 
 \item{cover_size}{the size of the cover}
 

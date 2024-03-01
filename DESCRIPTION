@@ -21,14 +21,11 @@ Imports:
     golem (>= 0.4.1),
     htmltools,
     httr2,
-    janitor,
     memoise,
     purrr,
     reticulate,
     RSQLite,
     shiny (>= 1.7.5.1),
-    tidyjson,
-    tidyselect,
     utils
 Suggests: 
     spelling,

@@ -44,26 +44,24 @@ cover_url <- glue::glue("http://covers.openlibrary.org/b/isbn/1931498717-M.jpg")
 #' @importFrom cli cli_alert_warning
 #' @importFrom glue glue
 #' @importFrom httr2 request req_perform resp_body_json
-#' @importFrom tidyjson spread_all
 #' @export
 #' @rdname fct_open_library
 call_open_library_api <- function(
-  root_api = "https://openlibrary.org/api/books",
+  root_api = "https://openlibrary.org/search.json",
   isbn_number
 ) {
   if (isFALSE(as.character(isbn_number))) {
     stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
   }
 
-  url <- glue("{root_api}?bibkeys=ISBN:{isbn_number}&jscmd=details&format=json")
+  url <- glue("{root_api}?isbn={isbn_number}")
 
   req <- request(url)
 
   result <- try(
     req |>
       req_perform() |>
-      resp_body_json() |>
-      spread_all(),
+      resp_body_json(),
     silent = TRUE
   )
 
@@ -85,83 +83,70 @@ test_that("call_open_library_api works", {
 
   expect_equal(
     result,
-    structure(
-      list(
-        document.id = 1L,
-        bib_key = "ISBN:2365772013",
-        info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-        preview = "noview",
-        preview_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-        thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
-        details.title = "SAGA - Tome 1",
-        details.publish_date = "Mar 14, 2013",
-        details.number_of_pages = 168,
-        details.physical_format = "paperback",
-        details.key = "/books/OL32230088M",
-        details.latest_revision = 1,
-        details.revision = 1,
-        details.type.key = "/type/edition",
-        details.notes.type = "/type/text",
-        details.notes.value = "Source title: SAGA - Tome 1 (URBAN INDIES) (French Edition)",
-        details.created.type = "/type/datetime",
-        details.created.value = "2021-04-22T18:16:16.598948",
-        details.last_modified.type = "/type/datetime",
-        details.last_modified.value = "2021-04-22T18:16:16.598948",
-        ..JSON = list(`ISBN:2365772013` = list(
-          bib_key = "ISBN:2365772013",
-          info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-          preview = "noview",
-          preview_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-          thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
-          details = list(
-            type = list(key = "/type/edition"),
-            title = "SAGA - Tome 1",
-            authors = list(
-              list(
-                key = "/authors/OL9159259A",
-                name = "Brian K. Vaughan"
-              ),
-              list(
-                key = "/authors/OL9159260A",
-                name = "Fiona Staples"
-              )
-            ),
-            publish_date = "Mar 14, 2013",
-            source_records = list("amazon:2365772013"),
-            number_of_pages = 168L,
-            publishers = list("URBAN COMICS"),
-            isbn_10 = list(
-              "2365772013"
-            ),
-            isbn_13 = list("9782365772013"),
-            physical_format = "paperback",
-            notes = list(
-              type = "/type/text",
-              value = "Source title: SAGA - Tome 1 (URBAN INDIES) (French Edition)"
-            ),
-            covers = list(10867159L),
-            works = list(list(key = "/works/OL24344304W")),
-            key = "/books/OL32230088M",
-            latest_revision = 1L,
-            revision = 1L,
-            created = list(
-              type = "/type/datetime",
-              value = "2021-04-22T18:16:16.598948"
-            ),
-            last_modified = list(
-              type = "/type/datetime",
-              value = "2021-04-22T18:16:16.598948"
-            )
-          )
-        ))
+    list(
+      numFound = 1L,
+      start = 0L,
+      numFoundExact = TRUE,
+      docs = list(
+        list(
+          key = "/works/OL24344304W",
+          type = "work",
+          seed = list(
+            "/books/OL32230088M",
+            "/works/OL24344304W",
+            "/authors/OL9159259A",
+            "/authors/OL9159260A"
+          ),
+          title = "SAGA - Tome 1",
+          title_suggest = "SAGA - Tome 1",
+          title_sort = "SAGA - Tome 1",
+          edition_count = 1L,
+          edition_key = list(
+            "OL32230088M"
+          ),
+          publish_date = list("Mar 14, 2013"),
+          publish_year = list(2013L),
+          first_publish_year = 2013L,
+          number_of_pages_median = 168L,
+          isbn = list(
+            "9782365772013",
+            "2365772013"
+          ),
+          last_modified_i = 1619115376L,
+          ebook_count_i = 0L,
+          ebook_access = "no_ebook",
+          has_fulltext = FALSE,
+          public_scan_b = FALSE,
+          ratings_count_1 = 0L,
+          ratings_count_2 = 0L,
+          ratings_count_3 = 0L,
+          ratings_count_4 = 1L,
+          ratings_count_5 = 0L,
+          ratings_average = 4,
+          ratings_sortable = 2.3286738,
+          ratings_count = 1L,
+          readinglog_count = 1L,
+          want_to_read_count = 0L,
+          currently_reading_count = 0L,
+          already_read_count = 1L,
+          cover_edition_key = "OL32230088M",
+          cover_i = 10867159L,
+          publisher = list("URBAN COMICS"),
+          author_key = list("OL9159259A", "OL9159260A"),
+          author_name = list(
+            "Vaughan Brian K.",
+            "Staples Fiona"
+          ),
+          publisher_facet = list(
+            "URBAN COMICS"
+          ),
+          `_version_` = 1767915710134091776,
+          author_facet = list("OL9159259A Vaughan Brian K.", "OL9159260A Staples Fiona")
+        )
       ),
-      row.names = 1L,
-      class = c(
-        "tbl_json",
-        "tbl_df",
-        "tbl",
-        "data.frame"
-      )
+      num_found = 1L,
+      q = "",
+      offset = NULL
     )
   )
 
@@ -169,7 +154,7 @@ test_that("call_open_library_api works", {
   result <- call_open_library_api(isbn_number = "XXXX")
 
   expect_equal(
-    nrow(result),
+    result$numFound,
     0
   )
 
@@ -199,12 +184,9 @@ test_that("call_open_library_api works", {
     
 ```{r function-clean_open_library_result}
 #' Nettoyage du résultat de l'API Open Library
-#' @param book_tibble a tibble with the result of the API call
+#' @param book result of the API call
 #' @return a tibble with the cleaned result of the API call
-#' @importFrom janitor clean_names
-#' @importFrom dplyr select mutate
-#' @importFrom tidyselect everything any_of
-#' @importFrom purrr map map_chr possibly
+#' @importFrom purrr map map_chr possibly set_names
 #' @export
 #' @rdname fct_open_library
 #' @examples
@@ -212,98 +194,43 @@ test_that("call_open_library_api works", {
 #' result <- call_open_library_api(isbn_number = isbn_number)
 #'
 #' clean_open_library_result(result)
-clean_open_library_result <- function(book_tibble) {
-  book_tibble_cleaned_names <- book_tibble |>
-    clean_names()
+clean_open_library_result <- function(book) {
+  possibly_get_nested_element <- possibly(
+    get_nested_element,
+    otherwise = NA_character_
+  )
 
-  df_part <- book_tibble_cleaned_names |>
-    as.data.frame() |>
-    select(
-      any_of(
-        c(
-          "info_url",
-          "thumbnail_url",
-          "details_title",
-          "details_publish_date",
-          "details_number_of_pages"
-        )
-      )
-    )
+  names_df <- c(
+    "title",
+    "author_name",
+    "publisher",
+    "publish_year",
+    "number_of_pages_median"
+  )
+  expected_names <- c(
+    "title",
+    "author",
+    "publisher",
+    "publish_date",
+    "number_of_pages"
+  )
 
-  json <- book_tibble_cleaned_names$json
+  df <- map(
+    names_df,
+    ~ possibly_get_nested_element(book, .x)
+  ) |>
+    set_names(expected_names)
 
-  possibly_get_authors <- possibly(get_authors, otherwise = NA_character_)
-  possibly_get_isbn10 <- possibly(get_isbn10, otherwise = NA_character_)
-  possibly_get_isbn13 <- possibly(get_isbn13, otherwise = NA_character_)
-  possibly_get_publishers <- possibly(get_publishers, otherwise = NA_character_)
-  possibly_get_date <- possibly(clean_date, otherwise = NA_character_)
-  author <- possibly_get_authors(json)
-  isbn_10 <- possibly_get_isbn10(json)
-  isbn_13 <- possibly_get_isbn13(json)
-  publisher <- possibly_get_publishers(json)
-
-
-  df_part <- df_part |>
-    mutate(
-      author = author,
-      isbn_10 = isbn_10,
-      isbn_13 = isbn_13,
-      publisher = publisher,
-      details_publish_date = possibly_get_date(details_publish_date)
-    )
-
-  colnames(df_part) <- gsub("details_", "", colnames(df_part))
-
-  df_part |>
-    select(
-      title,
-      author,
-      everything()
-    )
+  df <- data.frame(df)
+  df$isbn <- unlist(map(book$docs, "isbn"))[1]
+  df
 }
 
-#' @noRd
-get_nested_field <- function(json, field) {
-  json |>
-    purrr::map(~ .x$details) |>
-    purrr::map(~ .x[[field]]) |>
-    purrr::map(
-      ~ .x |>
-        purrr::map_chr(~ .x[[1]])
-    ) |>
-    purrr::map_chr(~ paste(.x, collapse = ", "))
-}
-
-#' @noRd
-get_authors <- function(json) {
-  json |>
-    purrr::map(~ .x$details) |>
-    purrr::map(~ .x[["authors"]]) |>
-    purrr::map(
-      ~ .x |>
-        purrr::map_chr(~ .x$name)
-    ) |>
-    purrr::map_chr(~ paste(.x, collapse = ", "))
-}
-
-#' @noRd
-get_isbn10 <- function(json) {
-  get_nested_field(json, "isbn_10")
-}
-
-#' @noRd
-get_isbn13 <- function(json) {
-  get_nested_field(json, "isbn_13")
-}
-
-#' @noRd
-get_publishers <- function(json) {
-  get_nested_field(json, "publishers")
-}
-
-#' @noRd
-clean_date <- function(date) {
-  regmatches(date, regexec("\\d{4,4}", date))[[1]]
+# #' @noRd
+get_nested_element <- function(book, element) {
+  map(book$docs, element) |>
+    unlist() |>
+    paste0(collapse = ", ")
 }
 ```
   
@@ -325,19 +252,13 @@ test_that("clean_open_library_result works", {
     structure(
       list(
         title = "SAGA - Tome 1",
-        author = c(`ISBN:2365772013` = "Brian K. Vaughan, Fiona Staples"),
-        info_url = "https://openlibrary.org/books/OL32230088M/SAGA_-_Tome_1",
-        thumbnail_url = "https://covers.openlibrary.org/b/id/10867159-S.jpg",
+        author = "Vaughan Brian K., Staples Fiona",
+        publisher = "URBAN COMICS",
         publish_date = "2013",
-        number_of_pages = 168,
-        isbn_10 = c(`ISBN:2365772013` = "2365772013"),
-        isbn_13 = c(`ISBN:2365772013` = "9782365772013"),
-        publisher = c(`ISBN:2365772013` = "URBAN COMICS")
+        number_of_pages = "168",
+        isbn = "9782365772013"
       ),
-      row.names = c(
-        NA,
-        -1L
-      ),
+      row.names = c(NA, -1L),
       class = "data.frame"
     )
   )
