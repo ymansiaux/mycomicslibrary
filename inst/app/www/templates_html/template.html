@@ -29,7 +29,8 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="#about">A propos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#add_books">Rechercher un ISBN</a></li>
+          <li class="nav-item"><a class="nav-link" id="addbooks" href="#add_books">Rechercher un ISBN</a>
+          </li>
           <li class="nav-item"><a class="nav-link" href="#detectisbn">Ajouter une photo</a></li>
           <li class="nav-item"><a class="nav-link" href="#collection">Ma collection</a></li>
           <li class="nav-item"><a class="nav-link" href="#wishlist">Mes envies</a></li>
@@ -57,7 +58,11 @@
             votre collection, les noter, compléter des infos etc. Vous pouvez également ajouter des
             BD
             à votre liste d'envies si vous ne les possédez pas encore ! <br> <br>
+            La recherche de livres est faite à partir du numéro ISBN 13 : il s'agit du code-barres du livre.<br> <br>
+            Nous vous proposons de taper directement un ISBN, ou bien de le détecter à partir d'une photo, uploadée
+            depuis votre ordinateur ou capturée depuis votre webcam !<br> <br>
             Amusez vous bien ! <br> <br>
+
             <a href="https://github.com/ymansiaux/mycomicslibrary/" , title="Project Repository"><i
                 class="fab fa-github" style='font-size:30px'></i>Sources de
               l'application</a>
@@ -117,7 +122,7 @@
     <div class="container px-4">
       <div class="row gx-4 justify-content-center">
         <div class="col-lg-12">
-          <h2>Consulter ma collection</h2>
+          <h2>Visualiser ma collection</h2>
           <br>
           {{module5}}
         </div>

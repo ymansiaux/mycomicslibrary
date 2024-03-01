@@ -46,7 +46,6 @@ mod_500_chartjs_server <- function(id, r_global) {
     })
 
     observeEvent(r_local$current_db, ignoreNULL = FALSE, {
-      req(r_local$var_to_use)
       show_hide_ids_depending_on_db_size(
         db = r_local$current_db,
         table_id = ns("divchart"),
@@ -62,7 +61,7 @@ mod_500_chartjs_server <- function(id, r_global) {
       }
     })
 
-    observeEvent(r_local$var_to_use, {
+    observeEvent(c(r_local$current_db, r_local$var_to_use), {
       req(r_local$var_to_use)
 
       my_labels <- r_local$current_db |>

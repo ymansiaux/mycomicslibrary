@@ -186,17 +186,19 @@ mod_200_add_picture_server <- function(id, r_global) {
           "modal_result_detect_isbn",
           message = list(
             msg = paste0("ISBN détecté: ", r_local$detected_barcode),
-            id = ns("do_i_keep_the_isbn")
+            id = ns("do_i_keep_the_isbn"),
+            id_trigger = ns("trigger_isbn")
           )
         )
       }
     })
 
     observeEvent(
-      input$do_i_keep_the_isbn,
+      c(input$do_i_keep_the_isbn, input$trigger_isbn),
       {
         r_global$do_i_keep_the_isbn <- as.logical(input$do_i_keep_the_isbn)
         r_global$detected_barcode <- r_local$detected_barcode
+        r_global$trigger_isbn <- input$trigger_isbn
       }
     )
   })
