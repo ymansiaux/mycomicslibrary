@@ -55,14 +55,22 @@ $(document).ready(function () {
       showDenyButton: false,
       showCancelButton: true,
       confirmButtonText: "Ajouter l'ISBN",
-      cancelButtonText: `Quitter`
+      cancelButtonText: `Quitter`,
+      returnFocus: false,
+      willClose: () => {
+        document.getElementById("addbooks").click();
+      }
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("ISBN ajouté !", "", "success");
+        //Swal.fire("ISBN ajouté !", "", "success");
         Shiny.setInputValue(arg.id, result.isConfirmed, {
           priority: "event"
         });
+        Shiny.setInputValue(arg.id_trigger, Math.random(), {
+          priority: "event"
+        });
+
       } else {
         Swal.fire("Résultat non conservé", "", "info");
       }

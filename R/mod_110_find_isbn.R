@@ -135,6 +135,24 @@ mod_110_find_isbn_server <- function(id, r_global) {
         }
       )
 
+      observeEvent(
+        input$isbn,
+        ignoreInit = TRUE,
+        {
+          golem::invoke_js(
+            "disable",
+            paste0("#", ns("show_api_call_result"))
+          )
+
+          updateActionButton(
+            session = session,
+            inputId = "show_api_call_result",
+            label = "Relancez la rechercher avec le nouvel ISBN",
+            icon = icon("exclamation-triangle")
+          )
+        }
+      )
+
 
       observeEvent(input$surprise_me, {
         updateTextInput(
@@ -154,7 +172,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         }
       })
 
-      observeEvent(r_global$do_i_keep_the_isbn, {
+      observeEvent(r_global$trigger_isbn, {
         req(r_global$do_i_keep_the_isbn)
         if (r_global$do_i_keep_the_isbn) {
           updateTextInput(
