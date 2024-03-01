@@ -54,14 +54,12 @@ mycomicslibrary::run_app()
 ```
 
 The app has been developed using the {shiny} package and the following
-ressources:
-
-  - html template : <https://startbootstrap.com/template/scrolling-nav>
-  - Python code to extract ISBN from images :
-    <https://stackoverflow.com/questions/67423405/is-there-an-r-package-to-read-a-barcode-from-an-image>
-  - JS libraries
-      - sweetalert2: <https://sweetalert2.github.io/>
-      - gridjs : <https://gridjs.io/>
-      - chartjs : <https://www.chartjs.org/>
-  - html template to take pictures with the webcam :
-    <https://usefulangle.com/post/352/javascript-capture-image-from-camera>
+ressources: - books characteristics are retrieved from the Open Library
+API : <https://openlibrary.org/dev/docs/api/search> - html template :
+<https://startbootstrap.com/template/scrolling-nav> - Python code to
+extract ISBN from images :
+<https://stackoverflow.com/questions/67423405/is-there-an-r-package-to-read-a-barcode-from-an-image>
+- JS libraries - sweetalert2: <https://sweetalert2.github.io/> - gridjs
+: <https://gridjs.io/> - chartjs : <https://www.chartjs.org/> - html
+template to take pictures with the webcam :
+<https://usefulangle.com/post/352/javascript-capture-image-from-camera>
