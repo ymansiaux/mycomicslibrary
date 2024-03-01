@@ -61,7 +61,7 @@ mod_500_chartjs_server <- function(id, r_global) {
       }
     })
 
-    observeEvent(r_local$var_to_use, {
+    observeEvent(c(r_local$current_db, r_local$var_to_use), {
       req(r_local$var_to_use)
 
       my_labels <- r_local$current_db |>
