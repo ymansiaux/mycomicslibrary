@@ -20,8 +20,32 @@ You can install the development version of mycomicslibrary from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("ymansiaux/mycomicslibrary")
+devtools::install_github("ymansiaux/mycomicslibrary", dependencies = TRUE)
 ```
+
+You should install Python and the required dependencies with the
+following command:
+
+``` r
+reticulate::install_python()
+reticulate::py_install("pyzbar")
+reticulate::py_install("pillow")
+```
+
+It is advised to set the following environment variables in your
+.Renviron file:
+
+``` r
+COVERS_PATH = "path_to_app_storage/covers"
+COMICS_SQL_PATH = "path_to_app_storage/db/db.sqlite"
+```
+
+`COVERS_PATH` will be used to store your books covers and
+`COMICS_SQL_PATH` will be used to store your comics library.
+
+If theses environment variables are not set, the app will use temporary
+directories, which implies that your library and covers will be lost
+when you close the app.
 
 To run the app, you can use the following command:
 
