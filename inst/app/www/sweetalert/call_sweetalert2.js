@@ -57,13 +57,13 @@ $(document).ready(function () {
       confirmButtonText: "Ajouter l'ISBN",
       cancelButtonText: `Quitter`,
       returnFocus: false,
-      willClose: () => {
-        document.getElementById("addbooks").click();
-      }
+      //willClose: () => {
+      //document.getElementById("addbooks").click();
+      //}
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        //Swal.fire("ISBN ajouté !", "", "success");
+        Swal.fire("ISBN ajouté ! RDV dans le menu de recherche", "", "success");
         Shiny.setInputValue(arg.id, result.isConfirmed, {
           priority: "event"
         });
