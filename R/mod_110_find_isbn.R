@@ -94,7 +94,9 @@ mod_110_find_isbn_ui <- function(id) {
                     actionButton(
                       inputId = ns("show_api_call_result"),
                       label = "Pas de résultat à afficher pour le moment"
-                    ) |> shiny::tagAppendAttributes("disabled" = "disabled")
+                    ) |> shiny::tagAppendAttributes(
+                      "disabled" = "disabled"
+                    )
                   )
                 )
               )
@@ -150,6 +152,14 @@ mod_110_find_isbn_server <- function(id, r_global) {
             label = "Relancez la rechercher avec le nouvel ISBN",
             icon = icon("exclamation-triangle")
           )
+
+          golem::invoke_js(
+            "removeClassToAButton",
+            message = list(
+              id = ns("show_api_call_result"),
+              class = "btn-danger"
+            )
+          )
         }
       )
 
@@ -166,9 +176,23 @@ mod_110_find_isbn_server <- function(id, r_global) {
         if (r_local$isbn_is_valid) {
           golem::invoke_js("reable", paste0("#", ns("search")))
           golem::invoke_js("hide", paste0("#", ns("error_isbn_length")))
+          golem::invoke_js(
+            "addClassToAButton",
+            message = list(
+              id = ns("search"),
+              class = "btn-secondary"
+            )
+          )
         } else {
           golem::invoke_js("disable", paste0("#", ns("search")))
           golem::invoke_js("show", paste0("#", ns("error_isbn_length")))
+          golem::invoke_js(
+            "removeClassToAButton",
+            message = list(
+              id = ns("search"),
+              class = "btn-secondary"
+            )
+          )
         }
       })
 
@@ -208,10 +232,26 @@ mod_110_find_isbn_server <- function(id, r_global) {
       observeEvent(r_local$trigger_api_call_status, {
         req(r_local$api_call_status)
 
+        golem::invoke_js(
+          "removeClassToAButton",
+          message = list(
+            id = paste0("#", ns("search")),
+            class = "btn-secondary"
+          )
+        )
+
+        golem::invoke_js(
+          "removeClassToAButton",
+          message = list(
+            id = ns("show_api_call_result"),
+            class = "btn-danger"
+          )
+        )
+
         if (r_local$api_call_status == "error") {
           golem::invoke_js(
             "disable",
-            paste0("#", ns("show_api_call_result"))
+            ns("show_api_call_result")
           )
           golem::invoke_js(
             "call_sweetalert2",
@@ -254,6 +294,13 @@ mod_110_find_isbn_server <- function(id, r_global) {
             message = list(
               type = "success",
               msg = "Livre trouvé !"
+            )
+          )
+          golem::invoke_js(
+            "addClassToAButton",
+            message = list(
+              id = ns("show_api_call_result"),
+              class = "btn-danger"
             )
           )
           updateActionButton(
