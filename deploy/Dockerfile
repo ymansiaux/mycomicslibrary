@@ -6,9 +6,10 @@ RUN apt-get install libzbar-dev -y
 RUN pip install pyzbar
 RUN pip install zbar-py
 COPY renv.lock.prod renv.lock
-RUN R -e 'renv::restore()'
+#RUN R -e 'renv::restore()'
 COPY mycomicslibrary_*.tar.gz /app.tar.gz
-RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'
+#RUN R -e 'remotes::install_local("/app.tar.gz",upgrade="never")'
+RUN R -e 'remotes::install_local("/app.tar.gz",dependencies=TRUE)'
 RUN rm /app.tar.gz
 RUN mkdir storage
 RUN mkdir storage/db
