@@ -78,7 +78,7 @@ app_server <- function(input, output, session) {
   #  Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
   observeEvent(input$base64url, {
     img_name <- file.path(
-      resourcePaths()["img_app"],
+      r_global$resource_path,
       basename(tempfile(fileext = ".jpg"))
     )
 

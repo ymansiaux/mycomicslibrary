@@ -29,13 +29,9 @@ run_app <- function(
     file.path(img_dir, "image-not-found.jpg")
   )
 
-  if (isTRUE(getOption("golem.app.prod"))) {
-    cover_dir <- Sys.getenv("COVERS_PATH")
-  } else {
-    cover_dir <- Sys.getenv("COVERS_PATH", unset = tempfile())
-    if (!dir.exists(cover_dir)) {
-      dir.create(cover_dir)
-    }
+  cover_dir <- Sys.getenv("COVERS_PATH", unset = tempfile())
+  if (!dir.exists(cover_dir)) {
+    dir.create(cover_dir)
   }
   print(list.files(cover_dir))
 

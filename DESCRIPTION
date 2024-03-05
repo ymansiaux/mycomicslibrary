@@ -1,6 +1,6 @@
 Package: mycomicslibrary
 Title: Gestion d'un catalogue de BD
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     person("Yohann", "Mansiaux", , "yohann@thinkr.fr", role = c("cre", "aut"))
 Description: Application shiny permettant de gérer sa collection de BD.
