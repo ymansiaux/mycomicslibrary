@@ -11,6 +11,10 @@ app_server <- function(input, output, session) {
 
   session$onSessionEnded(function() {
     removeResourcePath("img_app")
+    if (Sys.getenv("COMICS_SQL_PATH_INIT") == "empty") {
+      unlink(Sys.getenv("COMICS_SQL_PATH"))
+      Sys.setenv(COMICS_SQL_PATH = "")
+    }
   })
 
   r_global <- reactiveValues()
@@ -24,6 +28,7 @@ app_server <- function(input, output, session) {
       msg <- paste0(msg, "La variable d'environnement 'COMICS_SQL_PATH' n'est pas renseignée. Un fichier temporaire sera utilisé, vous ne pourrez pas retrouver le contenu de votre base la prochaine fois !<br>")
       env_var_are_missing <- TRUE
       Sys.setenv(COMICS_SQL_PATH = tempfile(fileext = ".sqlite"))
+      Sys.setenv(COMICS_SQL_PATH_INIT = "empty")
     }
 
     if (Sys.getenv("COVERS_PATH") == "") {
