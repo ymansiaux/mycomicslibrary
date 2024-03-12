@@ -1,3 +1,4 @@
 *.sqlite
 inst/db/*
 inst/app/www/covers/*
+.Rproj.user

@@ -13,3 +13,5 @@ $run_dev.*
 ^\.github$
 ^\.here$
 ^deploy$
+^app\.R$
+^rsconnect$

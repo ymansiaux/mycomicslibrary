@@ -22,6 +22,7 @@ Imports:
     htmltools,
     httr2,
     memoise,
+    pkgload,
     purrr,
     reticulate,
     RSQLite,
