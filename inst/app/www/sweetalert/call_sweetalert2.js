@@ -51,19 +51,14 @@ $(document).ready(function () {
     Swal.fire({
       title: arg.msg,
       icon: "success",
-      html: `Vous pouvez ajouter cet ISBN au menu de recherche`,
+      html: `Vous pouvez lancer une recherche avec cet ISBN`,
       showDenyButton: false,
       showCancelButton: true,
-      confirmButtonText: "Ajouter l'ISBN",
+      confirmButtonText: "Lancer la recherche",
       cancelButtonText: `Quitter`,
-      returnFocus: false,
-      //willClose: () => {
-      //document.getElementById("addbooks").click();
-      //}
+      returnFocus: false
     }).then((result) => {
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("ISBN ajouté ! RDV dans le menu de recherche", "", "success");
         Shiny.setInputValue(arg.id, result.isConfirmed, {
           priority: "event"
         });

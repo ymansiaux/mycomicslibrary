@@ -204,7 +204,24 @@ mod_110_find_isbn_server <- function(id, r_global) {
             inputId = "isbn",
             value = r_global$detected_barcode
           )
+
+          r_local$trigger_new_search_from_isbn_detected_on_barcode <- Sys.time()
         }
+      })
+
+      observeEvent(r_local$trigger_new_search_from_isbn_detected_on_barcode, {
+        req(r_local$trigger_new_search_from_isbn_detected_on_barcode)
+        golem::invoke_js(
+          "updateIsbnValue",
+          message = list(
+            isbn_field_id = ns("isbn"),
+            new_val = r_global$detected_barcode
+          )
+        )
+        golem::invoke_js(
+          "clickon",
+          paste0("#", ns("search"))
+        )
       })
 
       observeEvent(input$search, {
