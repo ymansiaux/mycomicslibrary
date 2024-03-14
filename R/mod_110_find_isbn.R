@@ -235,7 +235,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
         golem::invoke_js(
           "removeClassToAButton",
           message = list(
-            id = paste0("#", ns("search")),
+            id = ns("search"),
             class = "btn-secondary"
           )
         )
@@ -289,13 +289,12 @@ mod_110_find_isbn_server <- function(id, r_global) {
             "reable",
             paste0("#", ns("show_api_call_result"))
           )
+
           golem::invoke_js(
-            "call_sweetalert2",
-            message = list(
-              type = "success",
-              msg = "Livre trouvé !"
-            )
+            "clickon",
+            paste0("#", ns("show_api_call_result"))
           )
+
           golem::invoke_js(
             "addClassToAButton",
             message = list(
