@@ -28,6 +28,7 @@ Imports:
     shiny (>= 1.7.5.1),
     utils
 Suggests: 
+    pkgload,
     spelling,
     testthat (>= 3.0.0),
     withr
@@ -36,4 +37,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
