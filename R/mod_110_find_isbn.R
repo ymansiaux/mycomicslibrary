@@ -18,7 +18,7 @@ mod_110_find_isbn_ui <- function(id) {
         card(
           card_header(
             class = "bg-dark",
-            "Chercher une BD à partir de son ISBN (10 ou 13 chiffres)"
+            "Search for a book by its ISBN (10 or 13 digits)"
           ),
           card_body(
             fluidRow(
@@ -38,7 +38,7 @@ mod_110_find_isbn_ui <- function(id) {
                       textInput(
                         inputId = ns("isbn"),
                         label = "ISBN",
-                        placeholder = "ISBN (10 ou 13 chiffres)",
+                        placeholder = "ISBN (10 ou 13 digits)",
                         value = "9782365772013"
                       )
                     ),
@@ -49,20 +49,20 @@ mod_110_find_isbn_ui <- function(id) {
                        font-size: .75rem;
                        color: #FF0000BB;",
                       id = ns("error_isbn_length"),
-                      "L'ISBN doit contenir 10 ou 13 chiffres"
+                      "L'ISBN must be 10 or 13 digits-long"
                     )
                   ),
                   div(
                     actionButton(
                       inputId = ns("surprise_me"),
-                      label = "Surprends moi !",
+                      label = "Surprise me !",
                       icon = icon("surprise")
                     )
                   ),
                   div(
                     actionButton(
                       inputId = ns("add_barcode_picture"),
-                      label = "Importer une photo de code-barres",
+                      label = "Use a barcode picture",
                       icon = icon("camera"),
                       onclick = "window.location.href = '#detectisbn';"
                     )
@@ -71,7 +71,7 @@ mod_110_find_isbn_ui <- function(id) {
                     style = "padding-top: 1em;",
                     actionButton(
                       inputId = ns("search"),
-                      label = "Rechercher le livre",
+                      label = "Search",
                       icon = icon("search")
                     )
                   )
@@ -93,7 +93,7 @@ mod_110_find_isbn_ui <- function(id) {
                   div(
                     actionButton(
                       inputId = ns("show_api_call_result"),
-                      label = "Pas de résultat à afficher pour le moment"
+                      label = "No results found"
                     ) |> shiny::tagAppendAttributes(
                       "disabled" = "disabled"
                     )
@@ -149,7 +149,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
-            label = "Relancez la rechercher avec le nouvel ISBN",
+            label = "Search again with the new ISBN",
             icon = icon("exclamation-triangle")
           )
 
@@ -274,13 +274,13 @@ mod_110_find_isbn_server <- function(id, r_global) {
             "call_sweetalert2",
             message = list(
               type = "error",
-              msg = "Erreur lors de l'appel à l'API"
+              msg = "API call error"
             )
           )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
-            label = "Erreur lors de l'appel à l'API",
+            label = "API call error",
             icon = icon("exclamation-triangle")
           )
         } else if (r_local$api_call_status == "warning") {
@@ -292,13 +292,13 @@ mod_110_find_isbn_server <- function(id, r_global) {
             "call_sweetalert2",
             message = list(
               type = "error",
-              msg = "Aucun livre trouvé !"
+              msg = "No book found !"
             )
           )
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
-            label = "Aucun résultat à afficher",
+            label = "No result to display",
             icon = icon("exclamation-triangle")
           )
         } else {
@@ -322,7 +322,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
-            label = "Afficher le résultat",
+            label = "Show the result",
             icon = icon("check")
           )
         }
@@ -393,7 +393,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
             "call_sweetalert2",
             message = list(
               type = "error",
-              msg = "Ce livre est déjà dans la base de données."
+              msg = "This book is already present in your collection !"
             )
           )
         } else {
@@ -415,7 +415,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
               "call_sweetalert2",
               message = list(
                 type = "success",
-                msg = "Le livre a été ajouté avec succès"
+                msg = "The book has been added !"
               )
             )
           } else {
@@ -423,7 +423,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
               "call_sweetalert2",
               message = list(
                 type = "error",
-                msg = "Le livre n'a pu être ajouté à la base de données"
+                msg = "The book was not added !"
               )
             )
           }

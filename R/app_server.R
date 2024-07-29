@@ -25,7 +25,7 @@ app_server <- function(input, output, session) {
     env_var_are_missing <- FALSE
     msg <- ""
     if (Sys.getenv("COMICS_SQL_PATH") == "") {
-      msg <- paste0(msg, "La variable d'environnement 'COMICS_SQL_PATH' n'est pas renseignée. Un fichier temporaire sera utilisé, vous ne pourrez pas retrouver le contenu de votre base la prochaine fois !<br>")
+      msg <- paste0(msg, "The 'COMICS_SQL_PATH' environment variable is not set. A temporary file will be used, so you won't be able to retrieve the contents of your database next time!<br>")
       env_var_are_missing <- TRUE
       Sys.setenv(COMICS_SQL_PATH = tempfile(fileext = ".sqlite"))
       Sys.setenv(COMICS_SQL_PATH_INIT = "empty")
@@ -35,7 +35,7 @@ app_server <- function(input, output, session) {
       env_var_are_missing <- TRUE
       msg <- paste0(
         msg,
-        "<br>La variable d'environnement 'COVERS_PATH' n'est pas renseignée. Un dossier temporaire sera utilisé, vous ne pourrez pas retrouver les images de couverture de vos BD la prochaine fois !"
+        "<br>The 'COVERS_PATH' environment variable is not set. A temporary folder will be used, so you won't be able to find your comic book cover images next time!"
       )
     }
 
@@ -53,7 +53,6 @@ app_server <- function(input, output, session) {
         )
       )
     }
-    # unlink(get_database_path())
 
     init_db <- try(
       init_comics_db()

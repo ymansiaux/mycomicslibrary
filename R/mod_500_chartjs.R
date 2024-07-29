@@ -10,7 +10,7 @@
 mod_500_chartjs_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    tags$h4(id = ns("nobook"), "Aucun livre dans la collection pour le moment", style = "display: none;"),
+    tags$h4(id = ns("nobook"), "No book in the collection for the moment", style = "display: none;"),
     htmlTemplate(
       app_sys("app/www/templates_html/template_chartjs.html"),
       id = ns("myChart"),
@@ -81,7 +81,7 @@ mod_500_chartjs_server <- function(id, r_global) {
         message = list(
           id = ns("myChart"),
           labels = my_labels,
-          label = "Nombre d'albums",
+          label = "Number of books",
           data = my_data
         )
       )

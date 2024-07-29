@@ -16,7 +16,7 @@ call_open_library_api <- function(
   isbn_number
 ) {
   if (isFALSE(as.character(isbn_number))) {
-    stop("Le numéro ISBN doit être passé sous forme de chaine de caractères")
+    stop("The ISBN number must be passed as a string.")
   }
 
   url <- glue("{root_api}?isbn={isbn_number}")
