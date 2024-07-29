@@ -365,8 +365,8 @@ mod_110_find_isbn_server <- function(id, r_global) {
           nb_pages = r_local$cleaned_res$number_of_pages,
           editeur = r_local$cleaned_res$publisher,
           note = 1,
-          type_publication = "A définir",
-          statut = "A définir",
+          type_publication = "To be defined",
+          statut = "To be defined",
           lien_cover = r_local$book_cover
         ) |> map(function(x) {
           if (is.null(x)) {
