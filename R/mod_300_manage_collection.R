@@ -133,7 +133,7 @@ mod_300_manage_collection_server <- function(id, r_global) {
           text = "You won't be able to revert this!",
           icon = "warning",
           confirmButtonText = "Yes, delete it!",
-          cancelButtonText = "No, cancel!",
+          cancelButtonText = "No, cancel!"
         )
       )
     })
