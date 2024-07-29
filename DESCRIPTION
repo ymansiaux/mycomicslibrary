@@ -1,9 +1,9 @@
 Package: mycomicslibrary
-Title: Gestion d'un catalogue de BD
+Title: Manage comics library
 Version: 1.1.0
 Authors@R: 
     person("Yohann", "Mansiaux", , "yohann@thinkr.fr", role = c("cre", "aut"))
-Description: Application shiny permettant de gérer sa collection de BD.
+Description: Shiny app to manage a comics library.
 License: MIT + file LICENSE
 URL: https://github.com/ymansiaux/mycomicslibrary
 BugReports: https://github.com/ymansiaux/mycomicslibrary/issues
@@ -37,4 +37,4 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.1.9000
