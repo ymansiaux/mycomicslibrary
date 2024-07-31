@@ -10,7 +10,7 @@
 mod_500_chartjs_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    tags$h4(id = ns("nobook"), "No book in the collection for the moment", style = "display: none;"),
+    tags$h4(id = ns("nobook"), "No book in the collection for the moment", style = "display: none;opacity:0.5;"),
     htmlTemplate(
       app_sys("app/www/templates_html/template_chartjs.html"),
       id = ns("myChart"),

@@ -11,7 +11,7 @@ mod_400_manage_wishlist_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
-      tags$h4(id = ns("nobook"), "No book in the wishlist for the moment", style = "display: none;"),
+      tags$h4(id = ns("nobook"), "No book in the wishlist for the moment", style = "display: none;opacity:0.5;"),
       tags$div(id = ns("my_wishlist"))
     )
   )
