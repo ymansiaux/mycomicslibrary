@@ -115,20 +115,10 @@ $(document).ready(function () {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire(
-          "The book is going to be added to your library !",
-          "",
-          "info"
-        );
         Shiny.setInputValue(arg.id_ajout_bibliotheque, "TRUE", {
           priority: "event",
         });
       } else if (result.isDenied) {
-        Swal.fire(
-          "The book is going to be added to your wishlist !",
-          "",
-          "info"
-        );
         Shiny.setInputValue(arg.id_ajout_bibliotheque, "FALSE", {
           priority: "event",
         });

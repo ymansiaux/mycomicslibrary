@@ -11,7 +11,7 @@ mod_300_manage_collection_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
-      tags$h4(id = ns("nobook"), "No book in the collection for the moment", style = "display: none;"),
+      tags$h5(id = ns("nobook"), "No book in the collection for the moment", style = "display: none;opacity:0.5;"),
       tags$div(id = ns("my_collection"))
     )
   )
