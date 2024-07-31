@@ -14,7 +14,6 @@ mod_110_find_isbn_ui <- function(id) {
     fluidRow(
       column(
         width = 12,
-        # tags$img(src = "img_app/image-not-found.jpg", width = "100%"),
         card(
           card_header(
             class = "bg-dark",
@@ -49,7 +48,7 @@ mod_110_find_isbn_ui <- function(id) {
                        font-size: .75rem;
                        color: #FF0000BB;",
                       id = ns("error_isbn_length"),
-                      "L'ISBN must be 10 or 13 digits-long"
+                      "The ISBN must be 10 or 13 digits-long"
                     )
                   ),
                   div(
@@ -336,8 +335,9 @@ mod_110_find_isbn_server <- function(id, r_global) {
             book = r_local$api_res
           )
           r_local$book_cover <- file.path(
-            "covers",
-            basename(get_cover_mem(isbn_number = r_local$cleaned_res$isbn))
+            paste0("covers", session$token),
+            basename(get_cover_mem(isbn_number = r_local$cleaned_res$isbn,
+                                   resourcepath = r_global$cover_path))
           )
         })
 

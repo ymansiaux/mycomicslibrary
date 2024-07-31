@@ -143,7 +143,7 @@ mod_200_add_picture_server <- function(id, r_global) {
 
 
       r_local$uploaded_img <- file.path(
-        "img_app",
+        paste0("img_app", session$token),
         basename(img_name)
       )
 

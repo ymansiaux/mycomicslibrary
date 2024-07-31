@@ -13,23 +13,29 @@ app_server <- function(input, output, session) {
   
 
   session$onSessionEnded(function() {
-    if(Sys.getenv("COMICS_USER_STORAGE") != "") {
-      unlink(Sys.getenv("COMICS_USER_STORAGE"), recursive = TRUE)  
+    if(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)) != "") {
+      unlink(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)), recursive = TRUE)
     }
+    DBI::dbDisconnect(connect_to_comics_db())
   })
 
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
     env_var_are_missing <- FALSE
+    print(session$token)
+    
     # Deal with storage folders
     user_storage <- file.path(tempfile(), session$token)
-    Sys.setenv("COMICS_USER_STORAGE" = user_storage)
+    args = list(user_storage)
+    names(args) = paste0("COMICS_USER_STORAGE", session$token)
+    do.call(Sys.setenv, args)
     dir.create(user_storage, recursive = TRUE)
+    print(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)))
     ## Store picture taken from webcam and uploaded by users
     img_dir <- file.path(user_storage, "imgs")
     dir.create(img_dir, recursive = TRUE)
-    shiny::addResourcePath("img_app", img_dir)
+    shiny::addResourcePath(paste0("img_app",session$token), img_dir)
     
     ## sqlite directory
     if (Sys.getenv("COMICS_SQL_PATH") == "") {
@@ -39,20 +45,30 @@ app_server <- function(input, output, session) {
       dir.create(sql_dir, recursive = TRUE)
       sql_db <- tempfile(tmpdir = sql_dir, fileext = ".sqlite")  
       file.create(sql_db)
-      Sys.setenv(SQL_STORAGE_PATH = sql_db)
+      args = list(sql_db)
+      names(args) = paste0("SQL_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
     } else {
-      Sys.setenv(SQL_STORAGE_PATH = Sys.getenv("COMICS_SQL_PATH"))
+      args = list(Sys.getenv("COMICS_SQL_PATH"))
+      names(args) = paste0("SQL_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
     }
     
     ## covers
-    cover_dir <- Sys.getenv("COVERS_PATH", unset = file.path(user_storage, "covers"))
-    if (!dir.exists(cover_dir)) {
-      dir.create(cover_dir, recursive = TRUE)
+    if (Sys.getenv("COVERS_PATH") == "") {
+      print("using a tempfile for covers")
+      covers_dir <- file.path(user_storage, "covers")
+      dir.create(covers_dir, recursive = TRUE)
+      args = list(covers_dir)
+      names(args) = paste0("COVERS_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
+    } else {
+      args = list(Sys.getenv("COVERS_PATH"))
+      names(args) = paste0("COVERS_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
     }
-    print(list.files(cover_dir))
-    
-    shiny::addResourcePath("covers", cover_dir)
-
+ 
+    shiny::addResourcePath(paste0("covers",session$token), Sys.getenv(paste0("COVERS_STORAGE_PATH", session$token)))
     
     if (env_var_are_missing) {
       msg <- "You are using a demo version of the app, which means you won't be able to retrieve the content of your library at your next visit. To be able to fully use mycomicslibrary, please visit the Github repository, everything you need to know is explained there :-)"
@@ -69,8 +85,8 @@ app_server <- function(input, output, session) {
       init_comics_db()
     )
     r_global$comics_db_init <- !inherits(init_db, "try-error")
-    r_global$resource_path <- resourcePaths()["img_app"]
-    r_global$cover_path <- resourcePaths()["covers"]
+    r_global$resource_path <- resourcePaths()[paste0("img_app",session$token)]
+    r_global$cover_path <- resourcePaths()[paste0("covers",session$token)]
   })
 
 
@@ -89,8 +105,8 @@ app_server <- function(input, output, session) {
     }
   })
 
-  #  Webcam related operations are kept at the root level
-  #  Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
+  # Webcam related operations are kept at the root level
+  # Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
   observeEvent(input$base64url, {
     img_name <- file.path(
       r_global$resource_path,
@@ -106,7 +122,7 @@ app_server <- function(input, output, session) {
     session$userData$uploaded_img <- c(
       session$userData$uploaded_img,
       file.path(
-        "img_app",
+        paste0("img_app",session$token),
         basename(img_name)
       )
     )

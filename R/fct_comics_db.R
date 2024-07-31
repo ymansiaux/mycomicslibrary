@@ -19,9 +19,9 @@ connect_to_comics_db <- function() {
 #' @rdname fct_comics_db
 #' @examples
 #' get_database_path()
-get_database_path <- function() {
+get_database_path <- function(session = getDefaultReactiveDomain()) {
   Sys.getenv(
-    "SQL_STORAGE_PATH",
+    paste0("SQL_STORAGE_PATH", session$token),
     unset = ""
   )
 }
