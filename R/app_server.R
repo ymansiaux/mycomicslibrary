@@ -8,47 +8,58 @@ app_server <- function(input, output, session) {
   # observe({
   #   session$onSessionEnded(stopApp)
   # })
+  
+  r_global <- reactiveValues()
+  
 
   session$onSessionEnded(function() {
-    removeResourcePath("img_app")
-    if (Sys.getenv("COMICS_SQL_PATH_INIT") == "empty") {
-      unlink(Sys.getenv("COMICS_SQL_PATH"))
-      Sys.setenv(COMICS_SQL_PATH = "")
+    if(Sys.getenv("COMICS_USER_STORAGE") != "") {
+      unlink(Sys.getenv("COMICS_USER_STORAGE"), recursive = TRUE)  
     }
   })
 
-  r_global <- reactiveValues()
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
-    print(Sys.getenv("COMICS_SQL_PATH"))
     env_var_are_missing <- FALSE
-    msg <- ""
+    # Deal with storage folders
+    user_storage <- file.path(tempfile(), session$token)
+    Sys.setenv("COMICS_USER_STORAGE" = user_storage)
+    dir.create(user_storage, recursive = TRUE)
+    ## Store picture taken from webcam and uploaded by users
+    img_dir <- file.path(user_storage, "imgs")
+    dir.create(img_dir, recursive = TRUE)
+    shiny::addResourcePath("img_app", img_dir)
+    
+    ## sqlite directory
     if (Sys.getenv("COMICS_SQL_PATH") == "") {
-      msg <- paste0(msg, "The 'COMICS_SQL_PATH' environment variable is not set. A temporary file will be used, so you won't be able to retrieve the contents of your database next time!<br>")
       env_var_are_missing <- TRUE
-      Sys.setenv(COMICS_SQL_PATH = tempfile(fileext = ".sqlite"))
-      Sys.setenv(COMICS_SQL_PATH_INIT = "empty")
+      print("using a tempfile for sql")
+      sql_dir <- file.path(user_storage, "sql")
+      dir.create(sql_dir, recursive = TRUE)
+      sql_db <- tempfile(tmpdir = sql_dir, fileext = ".sqlite")  
+      file.create(sql_db)
+      Sys.setenv(SQL_STORAGE_PATH = sql_db)
+    } else {
+      Sys.setenv(SQL_STORAGE_PATH = Sys.getenv("COMICS_SQL_PATH"))
     }
-
-    if (Sys.getenv("COVERS_PATH") == "") {
-      env_var_are_missing <- TRUE
-      msg <- paste0(
-        msg,
-        "<br>The 'COVERS_PATH' environment variable is not set. A temporary folder will be used, so you won't be able to find your comic book cover images next time!"
-      )
+    
+    ## covers
+    cover_dir <- Sys.getenv("COVERS_PATH", unset = file.path(user_storage, "covers"))
+    if (!dir.exists(cover_dir)) {
+      dir.create(cover_dir, recursive = TRUE)
     }
+    print(list.files(cover_dir))
+    
+    shiny::addResourcePath("covers", cover_dir)
 
+    
     if (env_var_are_missing) {
-      msg <- paste0(
-        "<p>",
-        msg,
-        "</p>"
-      )
+      msg <- "You are using a demo version of the app, which means you won't be able to retrieve the content of your library at your next visit. To be able to fully use mycomicslibrary, please visit the Github repository, everything you need to know is explained there :-)"
       golem::invoke_js(
         "call_sweetalert2",
         message = list(
-          type = "warning",
+          type = "info",
           msg = msg
         )
       )

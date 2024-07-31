@@ -12,6 +12,12 @@ $(document).ready(function () {
         title: "Success",
         text: arg.msg,
       });
+    } else if (arg.type == "info") {
+      Swal.fire({
+        icon: "info",
+        title: "Hi folks !",
+        text: arg.msg,
+      });
     } else if (arg.type == "warning") {
       Swal.fire({
         icon: "warning",
