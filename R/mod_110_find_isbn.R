@@ -92,7 +92,7 @@ mod_110_find_isbn_ui <- function(id) {
                   div(
                     actionButton(
                       inputId = ns("show_api_call_result"),
-                      label = "No results found"
+                      label = "Click on search"
                     ) |> shiny::tagAppendAttributes(
                       "disabled" = "disabled"
                     )
@@ -148,7 +148,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
           updateActionButton(
             session = session,
             inputId = "show_api_call_result",
-            label = "Search again with the new ISBN",
+            label = "Click on Search",
             icon = icon("exclamation-triangle")
           )
 
