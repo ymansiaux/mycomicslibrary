@@ -1,2 +1,4 @@
-pillow==10.2.0
+pillow==10.4.0
 pyzbar==0.1.9
+setuptools==72.1.0
+wheel==0.43.0

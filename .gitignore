@@ -4,3 +4,4 @@ inst/app/www/covers/*
 .Rproj.user
 venv/*
 rsconnect/*
+.Rhistory
