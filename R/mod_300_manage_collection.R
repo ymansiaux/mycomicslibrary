@@ -11,7 +11,7 @@ mod_300_manage_collection_ui <- function(id) {
   ns <- NS(id)
   tagList(
     tags$div(
-      tags$h4(id = ns("nobook"), "Aucun livre dans la collection pour le moment", style = "display: none;"),
+      tags$h4(id = ns("nobook"), "No book in the collection for the moment", style = "display: none;"),
       tags$div(id = ns("my_collection"))
     )
   )
@@ -117,8 +117,8 @@ mod_300_manage_collection_server <- function(id, r_global) {
 
       call_sweet_alert_depending_on_db_append(
         append_res = append_res,
-        msg_success = "Le livre a été modifié avec succès",
-        msg_error = "Le livre n'a pu être modifié"
+        msg_success = "The book was successfully edited",
+        msg_error = "The book could not be edited"
       )
 
       r_global$comics_db <- read_comics_db()
@@ -129,11 +129,11 @@ mod_300_manage_collection_server <- function(id, r_global) {
         "modal_2_choices",
         message = list(
           id_resultat_modal = ns("do_i_delete_the_book_in_collection"),
-          title = "Êtes-vous sûr de vouloir supprimer ce livre ?",
-          text = "Vous ne pourrez pas revenir en arrière !",
+          title = "Are you sure?",
+          text = "You won't be able to revert this!",
           icon = "warning",
-          confirmButtonText = "Oui, supprimer !",
-          cancelButtonText = "Non, annuler"
+          confirmButtonText = "Yes, delete it!",
+          cancelButtonText = "No, cancel!"
         )
       )
     })
@@ -160,8 +160,8 @@ mod_300_manage_collection_server <- function(id, r_global) {
 
       call_sweet_alert_depending_on_db_append(
         append_res = append_res,
-        msg_success = "Le livre a été supprimé avec succès",
-        msg_error = "Le livre n'a pu être supprimé"
+        msg_success = "The book was successfully deleted",
+        msg_error = "The book could not be deleted"
       )
 
 

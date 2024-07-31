@@ -4,9 +4,9 @@
 #' @rdname fct_mod500
 get_var_to_display_on_chartjs <- function() {
   list(
-    "Année de publication" = "annee_publication",
-    "Note" = "note",
-    "Etat" = "statut",
-    "Format" = "type_publication"
+    "Publication year" = "annee_publication",
+    "Rating" = "note",
+    "Book condition" = "statut",
+    "Type of book" = "type_publication"
   )
 }

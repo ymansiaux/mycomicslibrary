@@ -20,19 +20,19 @@ create_html_for_modal_api_search_result <- function(
         tags$ul(
           style = "text-align: left; list-style-type: none;",
           tags$li(
-            sprintf("Titre : %s", book$title)
+            sprintf("Title : %s", book$title)
           ),
           tags$li(
-            sprintf("Auteur(s) : %s", book$author)
+            sprintf("Author(s) : %s", book$author)
           ),
           tags$li(
-            sprintf("Année de publication : %s", book$publish_date)
+            sprintf("Publication year : %s", book$publish_date)
           ),
           tags$li(
-            sprintf("Nombre de pages : %s", book$number_of_pages)
+            sprintf("Number of pages : %s", book$number_of_pages)
           ),
           tags$li(
-            sprintf("Editeur : %s", book$publisher)
+            sprintf("Editor : %s", book$publisher)
           )
         )
       ),

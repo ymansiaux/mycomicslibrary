@@ -24,40 +24,40 @@ create_html_for_modal_modify_book_in_collection <- function(
           style = "text-align: left; list-style-type: none;",
           textInput(
             inputId = ns("annee_publication"),
-            label = "Année de publication",
+            label = "Publication year",
             value = current_book$annee_publication
           ),
           textInput(
             inputId = ns("nb_pages"),
-            label = "Nombre de pages",
+            label = "Number of pages",
             value = current_book$nb_pages
           ),
           textInput(
             inputId = ns("auteur"),
-            label = "Auteur(s)",
+            label = "Author(s)",
             value = current_book$auteur
           ),
           textInput(
             inputId = ns("editeur"),
-            label = "Editeur(s)",
+            label = "Editor(s)",
             value = current_book$editeur
           ),
           selectInput(
             inputId = ns("note"),
-            label = "Note",
+            label = "Rating",
             choices = 0:5,
             selected = current_book$note
           ),
           selectInput(
             inputId = ns("format"),
-            label = "Format",
-            choices = c("BD", "Comics", "Roman graphique", "Autre", "A définir"),
+            label = "Type of book",
+            choices = c("Comic strip", "Comic book", "Graphical novel", "Other", "To be defined"),
             selected = current_book$type_publication
           ),
           selectInput(
             inputId = ns("etat"),
             label = "Etat",
-            choices = c("A lire", "En cours", "Lu", "A définir"),
+            choices = c("To be read", "In progress", "Read", "To be defined"),
             selected = current_book$statut
           )
         )

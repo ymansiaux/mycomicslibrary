@@ -16,13 +16,13 @@ mod_200_add_picture_ui <- function(id) {
         card(
           card_header(
             class = "bg-dark",
-            "Chercher une BD à partir de son ISBN (10 ou 13 chiffres)"
+            "Search for a book by its ISBN (10 or 13 digits)"
           ),
           card_body(
             fluidRow(
               column(
                 width = 12,
-                h4("Détecter un ISBN à partir d'une photo"),
+                h4("Detect an ISBN from a picture"),
                 div(
                   style = "
                   padding-top: 1em;
@@ -39,9 +39,9 @@ mod_200_add_picture_ui <- function(id) {
                     div(
                       customfileinput(
                         inputId = ns("upload_picture"),
-                        label = "Uploader une photo",
-                        buttonLabel = "Choisir une photo",
-                        placeholder = "Aucune photo sélectionnée",
+                        label = "Upload a picture",
+                        buttonLabel = "Find a picture",
+                        placeholder = "No picture selected",
                         accept = "image/*"
                       )
                     ),
@@ -51,20 +51,20 @@ mod_200_add_picture_ui <- function(id) {
                         button1 = tagList(
                           actionButton(
                             inputId = "webcam-start-camera",
-                            label = "Démarrer la caméra",
+                            label = "Switch on the camera",
                             onclick = "showcameraelements()"
                           )
                         ),
                         button2 = tagList(
                           actionButton(
                             inputId = "webcam-click-photo",
-                            label = "Prendre une photo"
+                            label = "Take a picture"
                           )
                         ),
                         button3 = tagList(
                           actionButton(
                             inputId = "webcam-stop-camera",
-                            label = "Arrêter la caméra",
+                            label = "Switch off the camera",
                             onclick = "hidecameraelements()"
                           )
                         ),
@@ -81,7 +81,7 @@ mod_200_add_picture_ui <- function(id) {
                     uiOutput(ns("current_image")),
                     actionButton(
                       inputId = ns("detect_isbn_from_picture"),
-                      label = "Détecter l'ISBN"
+                      label = "Detect ISBN from picture",
                     ) |> shiny::tagAppendAttributes("disabled" = "disabled")
                   )
                 )
@@ -178,14 +178,14 @@ mod_200_add_picture_server <- function(id, r_global) {
           "call_sweetalert2",
           message = list(
             type = "error",
-            msg = "Aucun ISBN détecté"
+            msg = "No ISBN detected"
           )
         )
       } else {
         golem::invoke_js(
           "modal_result_detect_isbn",
           message = list(
-            msg = paste0("ISBN détecté: ", r_local$detected_barcode),
+            msg = paste0("Detected ISBN: ", r_local$detected_barcode),
             id = ns("do_i_keep_the_isbn"),
             id_trigger = ns("trigger_isbn")
           )

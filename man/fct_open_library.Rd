@@ -5,7 +5,7 @@
 \alias{clean_open_library_result}
 \alias{get_cover}
 \alias{give_me_one_random_isbn}
-\title{Appel à l'API Open Library}
+\title{Appel a l'API Open Library}
 \usage{
 call_open_library_api(
   root_api = "https://openlibrary.org/search.json",
@@ -44,9 +44,9 @@ a URL to the cover of the book
 a random ISBN
 }
 \description{
-Appel à l'API Open Library
+Appel a l'API Open Library
 
-Nettoyage du résultat de l'API Open Library
+Nettoyage du resultat de l'API Open Library
 
 Get the cover of a book from Open Library
 

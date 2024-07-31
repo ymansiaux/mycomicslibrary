@@ -28,7 +28,7 @@ hideSpinner <- function(
 }
 
 #' withSpinner
-#' @param expr L'opération a réaliser.
+#' @param expr L'operation a realiser.
 #' @param session session shiny
 #' @return html
 #' @rdname fct_spinner
