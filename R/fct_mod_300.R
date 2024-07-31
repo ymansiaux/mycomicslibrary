@@ -56,7 +56,7 @@ create_html_for_modal_modify_book_in_collection <- function(
           ),
           selectInput(
             inputId = ns("etat"),
-            label = "Etat",
+            label = "Condition",
             choices = c("To be read", "In progress", "Read", "To be defined"),
             selected = current_book$statut
           )

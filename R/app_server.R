@@ -16,7 +16,6 @@ app_server <- function(input, output, session) {
     if(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)) != "") {
       unlink(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)), recursive = TRUE)
     }
-    DBI::dbDisconnect(connect_to_comics_db())
   })
 
 
@@ -71,12 +70,16 @@ app_server <- function(input, output, session) {
     shiny::addResourcePath(paste0("covers",session$token), Sys.getenv(paste0("COVERS_STORAGE_PATH", session$token)))
     
     if (env_var_are_missing) {
-      msg <- "You are using a demo version of the app, which means you won't be able to retrieve the content of your library at your next visit. To be able to fully use mycomicslibrary, please visit the Github repository, everything you need to know is explained there :-)"
+      msg <- paste0("You are using a demo version of the app, which means you won't be able to retrieve the content of your library at your next visit. To be able to fully use mycomicslibrary, please visit the ",
+                    "<a href='https://github.com/ymansiaux/mycomicslibrary' target='_blank' rel='noreferrer'>",
+                    "Github repository </a>",
+                    "everything you need to know is explained there :-)"
+      )
       golem::invoke_js(
-        "call_sweetalert2",
+        "call_sweetalert2_with_html",
         message = list(
           type = "info",
-          msg = msg
+          html = msg
         )
       )
     }
