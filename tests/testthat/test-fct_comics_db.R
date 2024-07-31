@@ -3,7 +3,7 @@
 test_that("get_database_path works", {
   expect_equal(
     withr::with_envvar(
-      c("COMICS_SQL_PATH" = "BOBI"),
+      c("SQL_STORAGE_PATH" = "BOBI"),
       {
         get_database_path()
       }
@@ -19,7 +19,7 @@ test_that("connect_to_comics_db works", {
 test_that("init/read/append works", {
   withr::with_tempdir({
     withr::with_envvar(
-      c("COMICS_SQL_PATH" = "BOBI.sqlite"),
+      c("SQL_STORAGE_PATH" = "BOBI.sqlite"),
       {
         init_comics_db()
         expect_true(inherits(read_comics_db(), "data.frame"))
@@ -109,7 +109,7 @@ test_that("init/read/append works", {
 test_that("get_most_recent_entry_per_doc works", {
   withr::with_tempdir({
     withr::with_envvar(
-      c("COMICS_SQL_PATH" = "BOBI.sqlite"),
+      c("SQL_STORAGE_PATH" = "BOBI.sqlite"),
       {
         init_comics_db()
 

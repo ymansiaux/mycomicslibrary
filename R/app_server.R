@@ -8,47 +8,74 @@ app_server <- function(input, output, session) {
   # observe({
   #   session$onSessionEnded(stopApp)
   # })
+  
+  r_global <- reactiveValues()
+  
 
   session$onSessionEnded(function() {
-    removeResourcePath("img_app")
-    if (Sys.getenv("COMICS_SQL_PATH_INIT") == "empty") {
-      unlink(Sys.getenv("COMICS_SQL_PATH"))
-      Sys.setenv(COMICS_SQL_PATH = "")
+    if(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)) != "") {
+      unlink(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)), recursive = TRUE)
     }
+    DBI::dbDisconnect(connect_to_comics_db())
   })
 
-  r_global <- reactiveValues()
 
   # Init comics db
   observeEvent(TRUE, once = TRUE, {
-    print(Sys.getenv("COMICS_SQL_PATH"))
     env_var_are_missing <- FALSE
-    msg <- ""
+    print(session$token)
+    
+    # Deal with storage folders
+    user_storage <- file.path(tempfile(), session$token)
+    args = list(user_storage)
+    names(args) = paste0("COMICS_USER_STORAGE", session$token)
+    do.call(Sys.setenv, args)
+    dir.create(user_storage, recursive = TRUE)
+    print(Sys.getenv(paste0("COMICS_USER_STORAGE", session$token)))
+    ## Store picture taken from webcam and uploaded by users
+    img_dir <- file.path(user_storage, "imgs")
+    dir.create(img_dir, recursive = TRUE)
+    shiny::addResourcePath(paste0("img_app",session$token), img_dir)
+    
+    ## sqlite directory
     if (Sys.getenv("COMICS_SQL_PATH") == "") {
-      msg <- paste0(msg, "The 'COMICS_SQL_PATH' environment variable is not set. A temporary file will be used, so you won't be able to retrieve the contents of your database next time!<br>")
       env_var_are_missing <- TRUE
-      Sys.setenv(COMICS_SQL_PATH = tempfile(fileext = ".sqlite"))
-      Sys.setenv(COMICS_SQL_PATH_INIT = "empty")
+      print("using a tempfile for sql")
+      sql_dir <- file.path(user_storage, "sql")
+      dir.create(sql_dir, recursive = TRUE)
+      sql_db <- tempfile(tmpdir = sql_dir, fileext = ".sqlite")  
+      file.create(sql_db)
+      args = list(sql_db)
+      names(args) = paste0("SQL_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
+    } else {
+      args = list(Sys.getenv("COMICS_SQL_PATH"))
+      names(args) = paste0("SQL_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
     }
-
+    
+    ## covers
     if (Sys.getenv("COVERS_PATH") == "") {
-      env_var_are_missing <- TRUE
-      msg <- paste0(
-        msg,
-        "<br>The 'COVERS_PATH' environment variable is not set. A temporary folder will be used, so you won't be able to find your comic book cover images next time!"
-      )
+      print("using a tempfile for covers")
+      covers_dir <- file.path(user_storage, "covers")
+      dir.create(covers_dir, recursive = TRUE)
+      args = list(covers_dir)
+      names(args) = paste0("COVERS_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
+    } else {
+      args = list(Sys.getenv("COVERS_PATH"))
+      names(args) = paste0("COVERS_STORAGE_PATH", session$token)
+      do.call(Sys.setenv, args)
     }
-
+ 
+    shiny::addResourcePath(paste0("covers",session$token), Sys.getenv(paste0("COVERS_STORAGE_PATH", session$token)))
+    
     if (env_var_are_missing) {
-      msg <- paste0(
-        "<p>",
-        msg,
-        "</p>"
-      )
+      msg <- "You are using a demo version of the app, which means you won't be able to retrieve the content of your library at your next visit. To be able to fully use mycomicslibrary, please visit the Github repository, everything you need to know is explained there :-)"
       golem::invoke_js(
         "call_sweetalert2",
         message = list(
-          type = "warning",
+          type = "info",
           msg = msg
         )
       )
@@ -58,8 +85,8 @@ app_server <- function(input, output, session) {
       init_comics_db()
     )
     r_global$comics_db_init <- !inherits(init_db, "try-error")
-    r_global$resource_path <- resourcePaths()["img_app"]
-    r_global$cover_path <- resourcePaths()["covers"]
+    r_global$resource_path <- resourcePaths()[paste0("img_app",session$token)]
+    r_global$cover_path <- resourcePaths()[paste0("covers",session$token)]
   })
 
 
@@ -78,8 +105,8 @@ app_server <- function(input, output, session) {
     }
   })
 
-  #  Webcam related operations are kept at the root level
-  #  Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
+  # Webcam related operations are kept at the root level
+  # Because if it is located inside a module and called in a addCustomMessageHandler, it will not work (it never asks the user if it wants to use the webcam)
   observeEvent(input$base64url, {
     img_name <- file.path(
       r_global$resource_path,
@@ -95,7 +122,7 @@ app_server <- function(input, output, session) {
     session$userData$uploaded_img <- c(
       session$userData$uploaded_img,
       file.path(
-        "img_app",
+        paste0("img_app",session$token),
         basename(img_name)
       )
     )

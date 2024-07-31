@@ -19,9 +19,9 @@ connect_to_comics_db <- function() {
 #' @rdname fct_comics_db
 #' @examples
 #' get_database_path()
-get_database_path <- function() {
+get_database_path <- function(session = getDefaultReactiveDomain()) {
   Sys.getenv(
-    "COMICS_SQL_PATH",
+    paste0("SQL_STORAGE_PATH", session$token),
     unset = ""
   )
 }
@@ -46,7 +46,7 @@ get_most_recent_entry_per_doc <- function(db) {
 #' @examples
 #' withr::with_tempdir({
 #'   withr::with_envvar(
-#'     c("COMICS_SQL_PATH" = "BOBI.sqlite"),
+#'     c("SQL_STORAGE_PATH" = "BOBI.sqlite"),
 #'     {
 #'       init_comics_db()
 #'       read_comics_db()
