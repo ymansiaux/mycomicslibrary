@@ -43,7 +43,11 @@ app_server <- function(input, output, session) {
       sql_dir <- file.path(user_storage, "sql")
       dir.create(sql_dir, recursive = TRUE)
       sql_db <- tempfile(tmpdir = sql_dir, fileext = ".sqlite")  
-      file.create(sql_db)
+      #file.create(sql_db)
+      file.copy(
+        from = system.file("samples", "db", "db.sqlite", package = "mycomicslibrary"),
+        to = sql_db
+      )
       args = list(sql_db)
       names(args) = paste0("SQL_STORAGE_PATH", session$token)
       do.call(Sys.setenv, args)
@@ -58,6 +62,8 @@ app_server <- function(input, output, session) {
       print("using a tempfile for covers")
       covers_dir <- file.path(user_storage, "covers")
       dir.create(covers_dir, recursive = TRUE)
+      covers_to_copy <- list.files(system.file("samples", "covers", package = "mycomicslibrary"), full.names = TRUE)
+      file.copy(covers_to_copy, covers_dir)
       args = list(covers_dir)
       names(args) = paste0("COVERS_STORAGE_PATH", session$token)
       do.call(Sys.setenv, args)
