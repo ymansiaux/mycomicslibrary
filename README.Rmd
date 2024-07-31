@@ -22,6 +22,8 @@ knitr::opts_chunk$set(
 
 The objective of the {mycomicslibrary} package is to manage your comics library.
 
+The app can be seen there : https://connect.thinkr.fr/mycomicslibrary/
+
 ## Installation
 
 You can install the development version of mycomicslibrary from [GitHub](https://github.com/) with:
@@ -31,12 +33,20 @@ You can install the development version of mycomicslibrary from [GitHub](https:/
 devtools::install_github("ymansiaux/mycomicslibrary", dependencies = TRUE)
 ```
 
-You should install Python and the required dependencies with the following command:
+This app has been developed using R 4.4.0 and Python 3.12.4.
+
+You should install Python.
 
 ``` r
-reticulate::install_python()
-reticulate::py_install("pyzbar")
-reticulate::py_install("pillow")
+# install.packages("reticulate")
+reticulate::install_python("3.12.4")
+```
+
+The dependencies, both R and Python dependencies, can be installed using `{renv}` :
+
+``` r
+# install.packages("renv")
+renv::restore()
 ```
 
 It is advised to set the following environment variables in your .Renviron file:

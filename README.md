@@ -13,6 +13,8 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 The objective of the {mycomicslibrary} package is to manage your comics
 library.
 
+The app can be seen there : <https://connect.thinkr.fr/mycomicslibrary/>
+
 ## Installation
 
 You can install the development version of mycomicslibrary from
@@ -23,13 +25,21 @@ You can install the development version of mycomicslibrary from
 devtools::install_github("ymansiaux/mycomicslibrary", dependencies = TRUE)
 ```
 
-You should install Python and the required dependencies with the
-following command:
+This app has been developed using R 4.4.0 and Python 3.12.4.
+
+You should install Python.
 
 ``` r
-reticulate::install_python()
-reticulate::py_install("pyzbar")
-reticulate::py_install("pillow")
+# install.packages("reticulate")
+reticulate::install_python("3.12.4")
+```
+
+The dependencies, both R and Python dependencies, can be installed using
+`{renv}` :
+
+``` r
+# install.packages("renv")
+renv::restore()
 ```
 
 It is advised to set the following environment variables in your
@@ -56,19 +66,19 @@ mycomicslibrary::run_app()
 The app has been developed using the {shiny} package and the following
 ressources:
 
-  - books characteristics are retrieved from the Open Library API :
-    <https://openlibrary.org/dev/docs/api/search>
+- books characteristics are retrieved from the Open Library API :
+  <https://openlibrary.org/dev/docs/api/search>
 
-  - html template : <https://startbootstrap.com/template/scrolling-nav>
+- html template : <https://startbootstrap.com/template/scrolling-nav>
 
-  - Python code to extract ISBN from images :
-    <https://stackoverflow.com/questions/67423405/is-there-an-r-package-to-read-a-barcode-from-an-image>
+- Python code to extract ISBN from images :
+  <https://stackoverflow.com/questions/67423405/is-there-an-r-package-to-read-a-barcode-from-an-image>
 
-  - JS libraries
-    
-      - sweetalert2: <https://sweetalert2.github.io/>
-      - gridjs : <https://gridjs.io/>
-      - chartjs : <https://www.chartjs.org/>
+- JS libraries
 
-  - html template to take pictures with the webcam :
-    <https://usefulangle.com/post/352/javascript-capture-image-from-camera>
+  - sweetalert2: <https://sweetalert2.github.io/>
+  - gridjs : <https://gridjs.io/>
+  - chartjs : <https://www.chartjs.org/>
+
+- html template to take pictures with the webcam :
+  <https://usefulangle.com/post/352/javascript-capture-image-from-camera>

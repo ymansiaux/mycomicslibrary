@@ -15,7 +15,7 @@ $(document).ready(function () {
     } else if (arg.type == "info") {
       Swal.fire({
         icon: "info",
-        title: "Hi folks !",
+        title: "Info",
         text: arg.msg,
       });
     } else if (arg.type == "warning") {
@@ -46,6 +46,34 @@ $(document).ready(function () {
         if (result.dismiss === Swal.DismissReason.timer) {
           console.log("I was closed by the timer");
         }
+      });
+    }
+  });
+  
+    Shiny.addCustomMessageHandler("call_sweetalert2_with_html", function (arg) {
+    if (arg.type == "error") {
+      Swal.fire({
+        icon: "error",
+        title: "Oups...",
+        html:arg.html
+      });
+    } else if (arg.type == "success") {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        html:arg.html
+      });
+    } else if (arg.type == "info") {
+      Swal.fire({
+        icon: "info",
+        title: "Hi folks !",
+        html:arg.html
+      });
+    } else if (arg.type == "warning") {
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        html:arg.html
       });
     }
   });
@@ -113,7 +141,6 @@ $(document).ready(function () {
     });
   });
 
-  //9782756061832
   Shiny.addCustomMessageHandler(
     "modal_modify_book_in_collection",
     function (arg) {

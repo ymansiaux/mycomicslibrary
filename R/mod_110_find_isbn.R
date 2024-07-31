@@ -31,7 +31,7 @@ mod_110_find_isbn_ui <- function(id) {
                   height: 300px;
                   ",
                   div(
-                    h4("Recherche par ISBN"),
+                    h4("Search using ISBN"),
                     div(
                       style = "padding-top:0.5em;",
                       textInput(
@@ -63,7 +63,7 @@ mod_110_find_isbn_ui <- function(id) {
                       inputId = ns("add_barcode_picture"),
                       label = "Use a barcode picture",
                       icon = icon("camera"),
-                      onclick = "window.location.href = '#detectisbn';"
+                      onclick="document.getElementById('detectisbn').scrollIntoView();"
                     )
                   ),
                   div(
