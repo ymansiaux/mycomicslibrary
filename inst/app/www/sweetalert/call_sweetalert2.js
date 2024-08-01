@@ -67,7 +67,8 @@ $(document).ready(function () {
       Swal.fire({
         icon: "info",
         title: "Hi folks !",
-        html:arg.html
+        html:arg.html,
+        showConfirmButton: false,
       });
     } else if (arg.type == "warning") {
       Swal.fire({
