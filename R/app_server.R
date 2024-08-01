@@ -66,6 +66,14 @@ app_server <- function(input, output, session) {
       names(args) = paste0("COVERS_STORAGE_PATH", session$token)
       do.call(Sys.setenv, args)
     }
+    file.copy(
+      file.path(
+        app_sys(
+          "img"
+        ),
+        "image-not-found.jpg"
+      ),
+      file.path(covers_dir, "image-not-found.jpg")    )
  
     shiny::addResourcePath(paste0("covers",session$token), Sys.getenv(paste0("COVERS_STORAGE_PATH", session$token)))
     

@@ -107,7 +107,7 @@ get_cover <- function(
   resourcepath = resourcePaths()["covers"]
 ) {
   match.arg(cover_size, c("S", "M", "L"))
-  url <- glue("{root_api}/{isbn_number}-{cover_size}.jpg")
+  url <- glue("{root_api}/{isbn_number}-{cover_size}.jpg?default=false")
   cover_output <- file.path(
     resourcepath,
     paste0(isbn_number, ".jpg")
