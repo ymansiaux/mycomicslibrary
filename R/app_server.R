@@ -73,7 +73,10 @@ app_server <- function(input, output, session) {
       msg <- paste0("You are using a demo version of the app, which means you won't be able to retrieve the content of your library at your next visit. To be able to fully use mycomicslibrary, please visit the ",
                     "<a href='https://github.com/ymansiaux/mycomicslibrary' target='_blank' rel='noreferrer'>",
                     "Github repository </a>",
-                    "everything you need to know is explained there :-)"
+                    "everything you need to know is explained there :-)",
+                    "<br /><br /><button type='button' class='btn btn-success' onclick='document.getElementById(\"add_books\").scrollIntoView();'>
+                      <i class='fas fa-book' role='presentation' aria-label='book icon'></i>
+                      I want to add my first book ! </button>"
       )
       golem::invoke_js(
         "call_sweetalert2_with_html",

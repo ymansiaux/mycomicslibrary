@@ -61,8 +61,15 @@ $(document).ready(function () {
               "data-field": "lien_cover",
             },
             formatter: (cell) =>
-              gridjs.html(
+              /*gridjs.html(
                 `<a class = "btn btn-primary"  target="_blank" href='${cell}'>Clic</a>`
+              ),*/
+              
+              gridjs.html(
+                `<a class = "btn btn-primary"  target="_blank" 
+                onclick="Swal.fire({
+                icon: 'info',
+                imageUrl:'${cell}'});">Clic</a>`
               ),
           },
           "ISBN",
@@ -167,9 +174,15 @@ $(document).ready(function () {
               "data-field": "lien_cover",
             },
             formatter: (cell) =>
-              gridjs.html(
+              /*gridjs.html(
                 `<a class = "btn btn-primary" target="_blank" href='${cell}'>Clic</a>`
-              ),
+              ),*/
+              gridjs.html(
+                `<a class = "btn btn-primary"  target="_blank" 
+                onclick="Swal.fire({
+                icon: 'info',
+                imageUrl:'${cell}'});">Clic</a>`
+              )
           },
           "ISBN",
           {
