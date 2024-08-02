@@ -273,7 +273,7 @@ mod_110_find_isbn_server <- function(id, r_global) {
             "call_sweetalert2",
             message = list(
               type = "error",
-              msg = "API call error"
+              msg = "API call error. Please try another ISBN."
             )
           )
           updateActionButton(
