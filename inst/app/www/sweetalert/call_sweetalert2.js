@@ -69,7 +69,7 @@ $(document).ready(function () {
         title: "Hi folks !",
         html:arg.html,
         showConfirmButton: true,
-        didClose: () => location.href="#add_books",
+        didClose: () => document.getElementById("add_books").scrollIntoView(),
         confirmButtonText: `
     <i> <i class='fas fa-book' role='presentation' aria-label='book icon'></i> I want to add my first book ! </i>
   `,
