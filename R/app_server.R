@@ -8,6 +8,8 @@ app_server <- function(input, output, session) {
   # observe({
   #   session$onSessionEnded(stopApp)
   # })
+  reticulate::use_virtualenv('./dev/env/bin/python', required = TRUE)
+  
   
   r_global <- reactiveValues()
   
