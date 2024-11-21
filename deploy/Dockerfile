@@ -15,7 +15,8 @@ RUN mkdir storage
 RUN mkdir storage/db
 RUN mkdir storage/covers
 EXPOSE 80
-CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');options(golem.app.prod = TRUE);Sys.setenv('COMICS_SQL_PATH'='storage/db/db.sqlite');Sys.setenv('COVERS_PATH'='storage/covers/');library(mycomicslibrary);mycomicslibrary::run_app()"
+CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');options(golem.app.prod = TRUE);library(mycomicslibrary);mycomicslibrary::run_app()"
+#CMD R -e "options('shiny.port'=80,shiny.host='0.0.0.0');options(golem.app.prod = TRUE);Sys.setenv('COMICS_SQL_PATH'='storage/db/db.sqlite');Sys.setenv('COVERS_PATH'='storage/covers/');library(mycomicslibrary);mycomicslibrary::run_app()"
 
 
 # mv /home/yohann/Documents/perso/mycomicslibrary_0.0.0.9000.tar.gz deploy/
